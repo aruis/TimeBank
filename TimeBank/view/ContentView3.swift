@@ -8,22 +8,25 @@
 import SwiftUI
 import SwiftData
 
-struct ContentView: View {
+struct ContentView3: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var items: [BankItem]
 
+    @State var isShowAdd = false
     var body: some View {
         NavigationSplitView {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text(item.name)
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text(item.name)
                     }
                 }
                 .onDelete(perform: deleteItems)
+                .onMove(perform: move)
             }
+            
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
 #endif
@@ -42,13 +45,21 @@ struct ContentView: View {
         } detail: {
             Text("Select an item")
         }
+        .sheet(isPresented: $isShowAdd, content: {
+            NewBankItem()
+        })
     }
 
+    func move(from source: IndexSet, to destination: Int) {
+//         items.move(fromOffsets: source, toOffset: destination)
+     }
+    
     private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
+        isShowAdd = true
+//        withAnimation {
+//            let newItem = BankItem(name:"test",sort: 0)
+//            modelContext.insert(newItem)
+//        }
     }
 
     private func deleteItems(offsets: IndexSet) {
@@ -62,5 +73,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: BankItem.self, inMemory: true)
 }

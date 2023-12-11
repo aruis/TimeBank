@@ -10,9 +10,12 @@ import SwiftData
 
 @main
 struct TimeBankApp: App {
+    
+    @State var appData = AppData()
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            BankItem.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -27,6 +30,7 @@ struct TimeBankApp: App {
         WindowGroup {
             ContentView()
         }
+        .environment(appData)
         .modelContainer(sharedModelContainer)
     }
 }

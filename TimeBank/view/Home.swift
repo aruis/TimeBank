@@ -68,14 +68,21 @@ struct Home: View {
             TabView(selection: $pageType) {
                 ListView(pageType: .save)
                     .tag(PageType.save)
+                    #if os(macOS)
+                    .tabItem {Label("SaveTime", systemImage: "tray.and.arrow.down.fill")}
+                    #endif
                     
                 ListView(pageType: .kill)
                     .tag(PageType.kill)
+                    #if os(macOS)
+                    .tabItem {Label("KillTime", systemImage: "tray.and.arrow.down.fill")}
+                    #endif
             }
-            .tabViewStyle(.page)
-            
-            
             .ignoresSafeArea()
+            #if os(iOS)
+            .tabViewStyle(.page)
+            #endif
+
             
 
         }
@@ -88,7 +95,7 @@ struct Home: View {
             addButton()
         })
         .sheet(isPresented: $isShowAdd, content: {
-            NewBankItem()
+            NewBankItem(pageType:$pageType)
         })
 
     }
@@ -103,9 +110,11 @@ struct Home: View {
                 .font(.title)
         }
         .buttonStyle(CircularButtonStyle(color:mainColor.opacity(0.75)))
-        .padding(.trailing,25)
         .shadow(radius: 5,x: 3,y: 3)
         .animation(.default, value: pageType)
+        .ignoresSafeArea()
+        .padding(.trailing,25)
+        .padding(.bottom,25)
     }
     
     var mainColor:Color{

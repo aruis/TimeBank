@@ -46,7 +46,7 @@ struct ContentView3: View {
             Text("Select an item")
         }
         .sheet(isPresented: $isShowAdd, content: {
-            NewBankItem()
+//            NewBankItem()
         })
     }
 

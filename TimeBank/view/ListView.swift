@@ -19,51 +19,52 @@ struct ListView: View {
     @ViewBuilder
     func itemInList(_ item:BankItem) -> some View {
         
-        
-        VStack(spacing:0){
-            Spacer()
-                .frame(height: 70)
+        Button( action: {
             
-            Text(item.name)
-                .font(.largeTitle)
-            
-            Spacer()
-                .frame(height: 10)
-            
-            Text("\(item.saveMin) MIN")
-                .font(.callout)
-                        
-            Spacer()
-            
-            VStack{
-                Text("Last Touch:")
-                if let lastTouch = item.lastTouch {
-                    Text(lastTouch,style: .date)
-                } else{
-                    Text("-")
+        }, label: {
+            VStack(spacing:0){
+                Spacer()
+                    .frame(height: 30)
+                
+                Text(item.name)
+                    .font(.largeTitle)
+                
+                Spacer()
+                    .frame(height: 10)
+                
+                Text("\(item.saveMin) MIN")
+                    .font(.callout)
+                            
+                Spacer()
+                
+                VStack{
+                    Text("Last Execute:")
+                    if let lastTouch = item.lastTouch {
+                        Text(lastTouch,style: .date)
+                    } else{
+                        Text("-")
+                    }
                 }
-            }
-            .font(.caption)
+                .font(.caption)
 
-            Spacer()
-                .frame(height: 10)
-            
-            VStack{
-                Text("Create Time:")
-                Text(item.createTime,style: .date)
             }
-            .font(.caption)
+            .padding()
+            .frame(maxWidth:.infinity,minHeight:  195)
+            .background(
+                mainColor
+                    .gradient.opacity(0.15)
+                    .shadow(.drop(radius: 5, y: 5))
+    //                .shadow(.drop(radius: 15))
+            )
+            .clipShape(
+                RoundedRectangle(cornerSize: CGSize(width: 20, height: 20))
+            )
+        
 
-                                                    
-        }
-        .padding()
-        .frame(maxWidth:.infinity,minHeight:  280)
-        .background(
-            mainColor.gradient.opacity(0.15)
-        )
-        .clipShape(
-            RoundedRectangle(cornerSize: CGSize(width: 20, height: 10))
-        )
+        })
+        .buttonStyle(.plain)
+        
+        
 //        .shadow(radius: 1)
 
 //        .frame(width: 300,height: 100)
@@ -90,11 +91,12 @@ struct ListView: View {
     var body: some View {
         
         ScrollView{
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 165),spacing: 15),],spacing: 15) {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 165),spacing: 12),],spacing: 12) {
                 ForEach(items) { item in
                     itemInList(item)
                 }
             }
+            .padding(.top,10)
             .padding(.horizontal,15)
         }
         .overlay(content: {

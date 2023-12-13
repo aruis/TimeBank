@@ -31,7 +31,7 @@ struct ContentView2: View {
 
     var body: some View {
         HierarchicalListView(items: $items)
-            .environment(\.editMode, .constant(.active)) // 激活编辑模式以支持排序
+//            .environment(\.editMode, .constant(.active)) // 激活编辑模式以支持排序
     }
 }
 

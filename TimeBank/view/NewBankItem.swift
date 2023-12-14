@@ -20,6 +20,8 @@ struct NewBankItem: View {
     @State var isShaking = false
     @FocusState private var nameFocused: Bool
     
+    @Binding var bankItem:BankItem
+    
     var body: some View {
 
         NavigationStack{
@@ -46,42 +48,32 @@ struct NewBankItem: View {
                         })
                         isShaking = false
                     } else {
-                        let newItem = BankItem(name:name,sort: 0)
-                        newItem.lastTouch = Date()
-                        newItem.isSave = pageType == .save
-                        modelContext.insert(newItem)
+                        if !bankItem.name.isEmpty{
+                            bankItem.name = name
+                        } else {
+                            let newItem = BankItem(name:name,sort: 0)
+                            newItem.lastTouch = Date()
+                            newItem.isSave = pageType == .save
+                            modelContext.insert(newItem)
+                        }
+                        
                         dismiss()
                     }
                 }label: {
                     Text("Save")
-                        .font(.title2)
                         .padding()
-//                        .background(.pink)
-//                        .fontWeight(.semibold)
-//                        .padding(.horizontal,45)
-//                        .padding(.vertical,12)
-                        
                 }
-//                .buttonBorderShape(.capsule)
                 .buttonStyle(MyButtonStyle(color: mainColor))
-                .controlSize(.large)
 //                .scaleEffect(isShaking ? 1.12 : 1.0)
-
                 .rotation3DEffect(Angle(degrees: isShaking ? 10 : 0), axis: (x:0,y:1,z:0))
 //                .rotationEffect(Angle(degrees: isShaking ? 1 : 0), anchor: .center)
-                
-//                Animation.easeInOut(duration: 0.2).repeatCount(3, autoreverses: true),
-                
-                
-                
                 Spacer()
             }
             #if os(macOS)
             .frame(width: 400,height: 300)
             #endif
-//            .background(Color.red)
             .padding(.horizontal,20)
-            .navigationTitle("Add Item")
+            .navigationTitle(bankItem.name.isEmpty ?  "Add Item" :"Edit Item")
             #if os(macOS)
             .toolbar(content: {
                 ToolbarItem(placement: .cancellationAction, content: {
@@ -96,6 +88,7 @@ struct NewBankItem: View {
         }
         .onAppear{
             nameFocused = true
+            self.name = bankItem.name
         }
         
         
@@ -130,15 +123,16 @@ struct MyButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .fontWeight(.bold)
             .padding()
+            .font(.title2)
+            .fontWeight(.bold)
             .background(color.gradient.opacity(0.75))
             .foregroundStyle(.white)
             .clipShape(Circle())
-            .shadow(radius: 3)
+            .shadow(radius: 3)            
     }
 }
 
-#Preview {
-    NewBankItem(pageType:.constant(PageType.kill))
-}
+//#Preview {
+//    NewBankItem(pageType:.constant(PageType.kill))
+//}

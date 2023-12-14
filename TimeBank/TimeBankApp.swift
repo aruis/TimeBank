@@ -29,6 +29,9 @@ struct TimeBankApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+            #if os(macOS)
+                .frame(minWidth: 800,minHeight: 580)
+            #endif
         }
         .environment(appData)
         .modelContainer(sharedModelContainer)

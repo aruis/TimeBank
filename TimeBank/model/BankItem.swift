@@ -21,7 +21,7 @@ class BankItem {
     var lastTouch:Date?
     var createTime:Date = Date()
     
-    init(name: String, sort: Int, parent: BankItem? = nil,  isSave: Bool = true) {
+    init(name: String = "", sort: Int = 0, parent: BankItem? = nil,  isSave: Bool = true) {
         self.id = UUID()
         self.name = name
         self.sort = sort

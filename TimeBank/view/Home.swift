@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct Home: View {
-            
+    
     @Environment(AppData.self) private var appData: AppData
     @Environment(\.modelContext) private var modelContext
     @State private var pageType = PageType.save
     @State var isShowAdd = false
     
-//    var size:CGSize
     
     var total:Int{
         appData.totalIn - appData.totalOut
@@ -23,21 +22,21 @@ struct Home: View {
     var body: some View {
         VStack{
             HStack{
-
+                
                 Button(action: {
                     withAnimation(.easeInOut, {
                         pageType = (pageType == .save ? .kill : .save)
-                    })                    
+                    })
                 }, label: {
                     HStack(alignment: .firstTextBaseline,spacing: 4){
                         Text(pageType == PageType.save ? "SAVETIME":"KILLTIME")
                             .font(.title.monospaced())
-                            
+                        
                         Text(pageType == PageType.save ? "\(appData.totalIn)":"\(appData.totalOut)")
                             .font(.subheadline)
-                            
+                        
                     }
-//                    .background(.thinMaterial)
+                    //                    .background(.thinMaterial)
                 })
                 .buttonStyle(.borderless)
                 .foregroundStyle(mainColor)
@@ -48,14 +47,14 @@ struct Home: View {
                 VStack(alignment: .trailing, spacing: 0){
                     Text("Your Balance")
                         .font(.caption)
-//                        .foregroundColor(.black)
-                 
+                    //                        .foregroundColor(.black)
+                    
                     HStack(spacing: 4){
                         Image(systemName: "clock")
                             .fontWeight(.medium)
                         Text("\(total)")
                             .font(.title3)
-                            
+                        
                     }
                     
                     
@@ -63,28 +62,28 @@ struct Home: View {
             }
             .padding([.top,.horizontal],15)
             
-//            Spacer()
+            //            Spacer()
             
             TabView(selection: $pageType) {
                 ListView(pageType: .save)
                     .tag(PageType.save)
-                    #if os(macOS)
+#if os(macOS)
                     .tabItem {Label("SaveTime", systemImage: "tray.and.arrow.down.fill")}
-                    #endif
-                    
+#endif
+                
                 ListView(pageType: .kill)
                     .tag(PageType.kill)
-                    #if os(macOS)
+#if os(macOS)
                     .tabItem {Label("KillTime", systemImage: "tray.and.arrow.down.fill")}
-                    #endif
+#endif
             }
             .ignoresSafeArea()
-            #if os(iOS)
+#if os(iOS)
             .tabViewStyle(.page)
-            #endif
-
+#endif
             
-
+            
+            
         }
         .background(
             Rectangle()
@@ -95,10 +94,11 @@ struct Home: View {
             addButton()
         })
         .sheet(isPresented: $isShowAdd, content: {
-            NewBankItem(pageType:$pageType)
+            NewBankItem(pageType:$pageType,bankItem: .constant(BankItem()))
+                .presentationDetents([.medium])
         })
-
     }
+    
     
     func addButton() -> some View{
         Button{

@@ -25,6 +25,7 @@
 		83BCD6DD2B07369D004FCBE1 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppData.swift */; };
 		83BCD6DF2B0746E6004FCBE1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */; };
 		83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6E02B07474E004FCBE1 /* Home.swift */; };
+		83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB672B2AA3B000F1396E /* ShowItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		83BCD6DC2B07369D004FCBE1 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		83BCD6E02B07474E004FCBE1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		83E0BB672B2AA3B000F1396E /* ShowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +174,7 @@
 				83BCD6DA2B0734EA004FCBE1 /* ListView.swift */,
 				83BCD6E02B07474E004FCBE1 /* Home.swift */,
 				83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */,
+				83E0BB672B2AA3B000F1396E /* ShowItem.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				836F3B7F2B05EB5B0068EC3C /* ListItem.swift in Sources */,
+				83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */,
 				83BCD6DF2B0746E6004FCBE1 /* ContentView.swift in Sources */,
 				83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */,
 				836F3B832B05EB850068EC3C /* ListItemView.swift in Sources */,

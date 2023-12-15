@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ShowItem: View {
     
+    @Environment(\.dismiss) var dismiss
+    
     @Binding var bankItem:BankItem
     
     @State var inTimer = false
@@ -30,10 +32,26 @@ struct ShowItem: View {
                         .transition(.opacity)
                                         
                 }
+                #if os(macOS)
+                .padding(.top,30)
+                #endif
                 .frame(maxWidth: .infinity)
             }
             .navigationTitle(bankItem.name)
             .ignoresSafeArea(edges:.bottom)
+            #if os(macOS)
+            .frame(width: 450,height: 650)
+            .toolbar(content: {
+                ToolbarItem(placement: .cancellationAction, content: {
+                    Button{
+                        dismiss()
+                    }label: {
+                        Text("Cancel")
+                    }
+                })
+            })
+            #endif
+
             
         }
     }

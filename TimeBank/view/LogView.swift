@@ -31,10 +31,8 @@ struct LogView: View {
                             Text("-")
                         }
                     }
-                    .font(.caption)
-                    
-                    
-                    
+                    .font(.caption.monospacedDigit())
+                                                            
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
                     Button(role: .destructive, action: {
@@ -68,7 +66,7 @@ struct LogView: View {
             return logs.sorted{ $0.begin > $1.begin }
         }else{
             return []
-        }    
+        }
     }
 }
 

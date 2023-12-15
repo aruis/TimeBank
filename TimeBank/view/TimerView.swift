@@ -15,6 +15,7 @@ struct TimerView: View {
     @Binding var bankItem:BankItem
     
     @State private var thisLog:ItemLog?
+    @State private var start:Date?
 
     var body: some View {
         Circle()
@@ -93,18 +94,21 @@ struct TimerView: View {
         
         withAnimation{
             isTimerRunning = true
+            
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                self.timeRemaining += 1
+            }
+
+            
+            if bankItem.logs == nil{
+                bankItem.logs = []
+            }
+
+            start = Date()
+            
         }
         
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            self.timeRemaining += 1
-        }
 
-        
-        if bankItem.logs == nil{
-            bankItem.logs = []
-        }
-
-        thisLog = ItemLog(bankItem: bankItem, begin: Date())
 
     }
 
@@ -118,18 +122,19 @@ struct TimerView: View {
         timer?.invalidate()
         timeRemaining = 0
         
-        if let thisLog {
-            
-            DispatchQueue.main.async {
-                thisLog.end = Date()
-                if var logs = bankItem.logs{
-                    logs.append(thisLog)
-                    print("add")
-                }
-
-            }
-
+        if let start {
+            thisLog = ItemLog(bankItem: bankItem, begin: start)
+            thisLog?.end = Date()
         }
+        
+        
+//        if let thisLog {
+//            thisLog.end = Date()
+//            if var logs = bankItem.logs{
+//                logs.append(thisLog)
+//                print("add")
+//            }
+//        }
         
     }
 

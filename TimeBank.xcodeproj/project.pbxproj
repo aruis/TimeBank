@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		830BB56A2B2C00F900C8013D /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830BB5692B2C00F900C8013D /* TimerView.swift */; };
 		83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */; };
 		8317E6352AFCC2B7003543CB /* TimeBankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6342AFCC2B7003543CB /* TimeBankApp.swift */; };
 		8317E6372AFCC2B8003543CB /* ContentView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6362AFCC2B8003543CB /* ContentView3.swift */; };
@@ -50,7 +49,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		830BB5692B2C00F900C8013D /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularButtonStyle.swift; sourceTree = "<group>"; };
 		8317E6312AFCC2B7003543CB /* TimeBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8317E6342AFCC2B7003543CB /* TimeBankApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankApp.swift; sourceTree = "<group>"; };
@@ -184,7 +182,6 @@
 				83BCD6E02B07474E004FCBE1 /* Home.swift */,
 				83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */,
 				83E0BB672B2AA3B000F1396E /* ShowItem.swift */,
-				830BB5692B2C00F900C8013D /* TimerView.swift */,
 				83E0BB6B2B2ADF7300F1396E /* LogView.swift */,
 			);
 			path = view;
@@ -349,7 +346,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				830BB56A2B2C00F900C8013D /* TimerView.swift in Sources */,
 				83E0BB6C2B2ADF7300F1396E /* LogView.swift in Sources */,
 				836F3B7F2B05EB5B0068EC3C /* ListItem.swift in Sources */,
 				83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */,

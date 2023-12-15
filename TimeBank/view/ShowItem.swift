@@ -13,7 +13,15 @@ struct ShowItem: View {
     
     @Binding var bankItem:BankItem
     
-    @State var inTimer = false
+    
+    
+    @State private var timeRemaining = 0
+    @State private var timer: Timer?
+    @State private var isTimerRunning = false
+        
+    
+    @State private var start:Date?
+
     
     var body: some View {
         NavigationStack{
@@ -23,7 +31,53 @@ struct ShowItem: View {
                 let isLarge = size.height > 600
                 VStack(alignment: .center,spacing: 0){
                     
-                    TimerView(bankItem: $bankItem)
+                    Circle()
+                        .frame(width: 200 ,height: 200)
+                        .foregroundColor(mainColor.opacity(0.85))
+                        .overlay(content: {
+                            if isTimerRunning {
+                                Text("\(formatTime(seconds: timeRemaining))")
+                                    .font(.largeTitle.monospacedDigit())
+                                    .fontWeight(.regular)
+                                    .foregroundStyle(Color.white)
+                                    .transition(.moveAndFadeTop)
+                            } else {
+                                Text( "\(bankItem.saveMin) MIN")
+                                    .foregroundStyle(Color.white)
+                                    .font(.largeTitle)
+                                    .fontWeight(.regular)
+                                    .shadow(radius: 3)
+                                //                                    .opacity(inTimer ? 0 : 1)
+                                    .transition(.moveAndFadeBottom)
+                                //                                    .transition(.move(edge: .bottom))
+                                //                                    .animation(.easeInOut, value: inTimer)
+                                
+                            }
+                        })
+                        .overlay{
+                            if !isTimerRunning {
+                                Button(action:startTimer) {
+                                    Image(systemName:  "play.fill")
+                                        .foregroundStyle(Color.white)
+                                        .font(.largeTitle)
+                                        .shadow(radius: 3)
+                                }
+                                .padding(.top,120)
+                            }
+                            
+                        }
+
+                        .overlay{
+                            if isTimerRunning {
+                                Button(action:resetTimer) {
+                                    Image(systemName: "stop.fill" )
+                                        .foregroundStyle(Color.white)
+                                        .font(.largeTitle)
+                                        .shadow(radius: 3)
+                                }
+                                .padding(.top,120)
+                            }
+                        }
                     
                     Spacer()
                         .frame(height: isLarge ? 20 : 120 )
@@ -55,9 +109,86 @@ struct ShowItem: View {
             
         }
     }
+    
+    private func startTimer() {
+        
+        
+        withAnimation{
+            isTimerRunning = true
+        }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            self.timeRemaining += 1
+        }
+
+        
+        if bankItem.logs == nil{
+            bankItem.logs = []
+        }
+
+        start = Date()
+    }
+
+    private func pauseTimer() {
+        isTimerRunning = false
+        timer?.invalidate()
+    }
+
+    private func resetTimer() {
+        withAnimation{
+            isTimerRunning = false
+        }
+        
+        timer?.invalidate()
+        timeRemaining = 0
+        
+        if let start {
+            let now = Date()
+            bankItem.lastTouch = now
+            let thisLog = ItemLog(bankItem: bankItem, begin: start)
+            thisLog.end = now
+            
+            if var logs = bankItem.logs{
+                logs.append(thisLog)
+            }
+        }
+        
+    }
+
+    private func formatTime(seconds: Int) -> String {
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
+        let seconds = seconds % 60
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+
+    
+    var mainColor:Color{
+        if bankItem.isSave {
+            return Color.red
+        }else{
+            return Color.green
+        }
+    }
+
 }
 
 #Preview {
     ShowItem(bankItem: .constant(BankItem(name: "test")))
 }
 
+extension AnyTransition {
+    static var moveAndFadeTop: AnyTransition {
+        .asymmetric(
+            insertion: .move(edge: .top).combined(with: .opacity),
+            removal:  .move(edge: .bottom).combined(with: .opacity)
+        )
+    }
+    
+    static var moveAndFadeBottom: AnyTransition {
+        .asymmetric(
+            insertion: .move(edge: .bottom).combined(with: .opacity),
+            removal:  .move(edge: .top).combined(with: .opacity)
+        )
+    }
+}

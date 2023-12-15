@@ -51,8 +51,7 @@ struct NewBankItem: View {
                         if !bankItem.name.isEmpty{
                             bankItem.name = name
                         } else {
-                            let newItem = BankItem(name:name,sort: 0)
-                            newItem.lastTouch = Date()
+                            let newItem = BankItem(name:name,sort: 0)                            
                             newItem.isSave = pageType == .save
                             modelContext.insert(newItem)
                         }

@@ -16,14 +16,16 @@ struct ListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [BankItem]
     
-    @State private var isShowAdd = false
+    @State private var isShow = false
+    @State private var isEdit = false
     @State private var selectItem:BankItem = BankItem()
     
     @ViewBuilder
     func itemInList(_ item:BankItem) -> some View {
         
         Button( action: {
-            
+            selectItem = item
+            isShow = true
         }, label: {
             VStack(spacing:0){
                 Spacer()
@@ -96,13 +98,13 @@ struct ListView: View {
         ScrollView{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 165),spacing: 12),],spacing: 12) {
                 ForEach(items) { item in
+                    
                     itemInList(item)
                         .id(item.id)
                         .contextMenu{
                             Button{
                                 selectItem = item
-                                print(selectItem.name)
-                                isShowAdd = true
+                                isEdit = true
                             }label: {
                                 Label("Edit",systemImage: "pencil.circle")
                             }
@@ -111,16 +113,8 @@ struct ListView: View {
                                 modelContext.delete(item)
                             }label: {
                                 Label("Delete", systemImage:  "trash")
-                                //                                Text("Delete")
                             }
                         }
-                    
-                    
-                    //                    NavigationLink(value: item, label: {
-                    //
-                    //
-                    //                    })
-                    
                     
                 }
 
@@ -137,10 +131,15 @@ struct ListView: View {
             }
             
         })
-        .sheet(isPresented: $isShowAdd,content: {
+        .sheet(isPresented: $isEdit,content: {
             NewBankItem(pageType:.constant(pageType),bankItem: $selectItem)
+                    .presentationDetents([.medium])
         })
-        
+        .sheet(isPresented: $isShow,content: {
+            ShowItem(bankItem: $selectItem)
+                .presentationDetents([.height(400),.large])
+        })
+
         
         
     }

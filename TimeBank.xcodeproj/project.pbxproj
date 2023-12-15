@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		830BB56A2B2C00F900C8013D /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830BB5692B2C00F900C8013D /* TimerView.swift */; };
 		83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */; };
 		8317E6352AFCC2B7003543CB /* TimeBankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6342AFCC2B7003543CB /* TimeBankApp.swift */; };
 		8317E6372AFCC2B8003543CB /* ContentView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6362AFCC2B8003543CB /* ContentView3.swift */; };
@@ -26,6 +27,9 @@
 		83BCD6DF2B0746E6004FCBE1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */; };
 		83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6E02B07474E004FCBE1 /* Home.swift */; };
 		83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB672B2AA3B000F1396E /* ShowItem.swift */; };
+		83E0BB6A2B2AD87B00F1396E /* ItemLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB692B2AD87B00F1396E /* ItemLog.swift */; };
+		83E0BB6C2B2ADF7300F1396E /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6B2B2ADF7300F1396E /* LogView.swift */; };
+		83E0BB6F2B2AEE8400F1396E /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6E2B2AEE8400F1396E /* DateExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		830BB5692B2C00F900C8013D /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularButtonStyle.swift; sourceTree = "<group>"; };
 		8317E6312AFCC2B7003543CB /* TimeBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8317E6342AFCC2B7003543CB /* TimeBankApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankApp.swift; sourceTree = "<group>"; };
@@ -70,6 +75,9 @@
 		83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		83BCD6E02B07474E004FCBE1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		83E0BB672B2AA3B000F1396E /* ShowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowItem.swift; sourceTree = "<group>"; };
+		83E0BB692B2AD87B00F1396E /* ItemLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLog.swift; sourceTree = "<group>"; };
+		83E0BB6B2B2ADF7300F1396E /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
+		83E0BB6E2B2AEE8400F1396E /* DateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +136,7 @@
 		8317E6332AFCC2B7003543CB /* TimeBank */ = {
 			isa = PBXGroup;
 			children = (
+				83E0BB6D2B2AEE0900F1396E /* ext */,
 				83130D302B21BE9400ACFD84 /* help */,
 				836F3B7D2B05EB460068EC3C /* gpttest */,
 				835B8B7E2AFCDAD3001A144D /* model */,
@@ -175,6 +184,8 @@
 				83BCD6E02B07474E004FCBE1 /* Home.swift */,
 				83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */,
 				83E0BB672B2AA3B000F1396E /* ShowItem.swift */,
+				830BB5692B2C00F900C8013D /* TimerView.swift */,
+				83E0BB6B2B2ADF7300F1396E /* LogView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -183,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				8317E6382AFCC2B8003543CB /* BankItem.swift */,
+				83E0BB692B2AD87B00F1396E /* ItemLog.swift */,
 				83BCD6DC2B07369D004FCBE1 /* AppData.swift */,
 			);
 			path = model;
@@ -197,6 +209,14 @@
 				836F3B842B05EC120068EC3C /* ContentView2.swift */,
 			);
 			path = gpttest;
+			sourceTree = "<group>";
+		};
+		83E0BB6D2B2AEE0900F1396E /* ext */ = {
+			isa = PBXGroup;
+			children = (
+				83E0BB6E2B2AEE8400F1396E /* DateExt.swift */,
+			);
+			path = ext;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -329,6 +349,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				830BB56A2B2C00F900C8013D /* TimerView.swift in Sources */,
+				83E0BB6C2B2ADF7300F1396E /* LogView.swift in Sources */,
 				836F3B7F2B05EB5B0068EC3C /* ListItem.swift in Sources */,
 				83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */,
 				83BCD6DF2B0746E6004FCBE1 /* ContentView.swift in Sources */,
@@ -338,10 +360,12 @@
 				83BCD6DD2B07369D004FCBE1 /* AppData.swift in Sources */,
 				83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */,
 				8317E6372AFCC2B8003543CB /* ContentView3.swift in Sources */,
+				83E0BB6F2B2AEE8400F1396E /* DateExt.swift in Sources */,
 				835B8B7C2AFCDAB5001A144D /* NewBankItem.swift in Sources */,
 				8317E6392AFCC2B8003543CB /* BankItem.swift in Sources */,
 				836F3B852B05EC120068EC3C /* ContentView2.swift in Sources */,
 				8317E6352AFCC2B7003543CB /* TimeBankApp.swift in Sources */,
+				83E0BB6A2B2AD87B00F1396E /* ItemLog.swift in Sources */,
 				836F3B812B05EB6F0068EC3C /* HierarchicalListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -515,8 +539,8 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -554,8 +578,8 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";

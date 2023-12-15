@@ -10,12 +10,6 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         Home()
-        
-//        GeometryReader{
-//            let size = $0.size
-//            
-//            
-//        }
     }
 }
 

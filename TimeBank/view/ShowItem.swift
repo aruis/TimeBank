@@ -18,7 +18,7 @@ struct ShowItem: View {
     @State private var timeRemaining = 0
     @State private var timer: Timer?
     @State private var isTimerRunning = false
-        
+    @State private var lastBackgroundTime: Date?
     
     @State private var start:Date?
 
@@ -80,7 +80,7 @@ struct ShowItem: View {
                         }
                     
                     Spacer()
-                        .frame(height: isLarge ? 20 : 120 )
+                        .frame(height: isLarge ? 25 : 130 )                        
                                             
                     LogView(logs: $bankItem.logs )
                         .transition(.opacity)
@@ -93,6 +93,15 @@ struct ShowItem: View {
             }
             .navigationTitle(bankItem.name)
             .ignoresSafeArea(edges:.bottom)
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+                lastBackgroundTime = Date()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                if let lastBackgroundTime = lastBackgroundTime {
+                    let backgroundDuration = Date().timeIntervalSince(lastBackgroundTime)
+                    timeRemaining += Int(backgroundDuration)
+                }
+            }
             #if os(macOS)
             .frame(width: 450,height: 650)
             .toolbar(content: {
@@ -145,8 +154,7 @@ struct ShowItem: View {
         if let start {
             let now = Date()
             bankItem.lastTouch = now
-            let thisLog = ItemLog(bankItem: bankItem, begin: start)
-            thisLog.end = now
+            let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)            
             
             if var logs = bankItem.logs{
                 logs.append(thisLog)

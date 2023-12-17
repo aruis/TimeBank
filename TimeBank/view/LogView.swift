@@ -23,36 +23,36 @@ struct LogView: View {
 
                     Spacer()
                     
-                    VStack(alignment: .leading){
-                        Text(item.begin.text())
-                        if let end = item.end{
-                            Text("\(end.text())")
-                        } else {
-                            Text("-")
+                    VStack(alignment: .trailing){
+                        Text(item.begin.dayString())
+                            .opacity(0.9)
+                        HStack(spacing:1){
+                            Text(item.begin.timeString())
+                            Text("~")
+                            Text(item.end.timeString())
                         }
+                        .opacity(0.9)
+                        
                     }
                     .font(.caption.monospacedDigit())
                                                             
                 }
+                .id(item.id)
                 .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
                     Button(role: .destructive, action: {
-                        DispatchQueue.main.async {
-                            modelContext.delete(item)
-                            do {
-                                try modelContext.save()
-                            } catch{
-                                print(error)
-                            }
-                        }
-
-                        
-                        
+                        modelContext.delete(item)
                     })  {
                         Image(systemName: "trash")
                     }
 
                 })
-                .id(item.id)
+                .contextMenu{
+                    Button(role:.destructive){
+                        modelContext.delete(item)
+                    }label: {
+                        Label("Delete", systemImage:  "trash")
+                    }
+                }
                 .transition(.slide)
                 
             }
@@ -72,6 +72,6 @@ struct LogView: View {
 
 #Preview {
     LogView(logs:.constant( [
-        ItemLog(bankItem: BankItem(), begin: Date())
+        ItemLog(bankItem: BankItem(), begin: Date(),end: Date())
     ]))
 }

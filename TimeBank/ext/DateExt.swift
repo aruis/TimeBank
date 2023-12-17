@@ -12,18 +12,26 @@ extension Date {
         return format("yyyy-MM-dd HH:mm:ss")
     }
     
+    func dayString() -> String{
+        return format("yyyy-MM-dd")
+    }
+    
+    func timeString() -> String{
+        return format("HH:mm:ss")
+    }
+    
     func format(_ format: String) -> String {
         let dateformat = DateFormatter()
         dateformat.dateFormat = format
         return dateformat.string(from: self)
     }
     
-    func dayString() -> String{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-//        dateFormatter.locale
-        return dateFormatter.string(from: self)
-    }
+//    func dayString() -> String{
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateStyle = .medium
+////        dateFormatter.locale
+//        return dateFormatter.string(from: self)
+//    }
     
     func start() -> Date{
         var calendar = Calendar.current

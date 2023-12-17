@@ -15,7 +15,7 @@ class BankItem {
     var sort:Int = 0
 //    var parent:BankItem?
     
-    var saveMin:Int = 0
+    
     var isSave:Bool = true
     
     var lastTouch:Date?
@@ -34,4 +34,14 @@ class BankItem {
         self.logs = []
     }
     
+    var saveMin:Int {
+        if let logs = logs {
+            return logs.reduce(0) { sum, item in
+                sum + item.saveMin
+            }
+        }else {
+            return 0
+        }
+
+    }
 }

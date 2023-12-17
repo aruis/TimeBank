@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct Home: View {
     
@@ -18,6 +19,8 @@ struct Home: View {
     var total:Int{
         appData.totalIn - appData.totalOut
     }
+    
+    @Query private var items: [BankItem]
     
     var body: some View {
         VStack{
@@ -32,7 +35,7 @@ struct Home: View {
                         Text(pageType == PageType.save ? "SAVETIME":"KILLTIME")
                             .font(.title.monospaced())
                         
-                        Text(pageType == PageType.save ? "\(appData.totalIn)":"\(appData.totalOut)")
+                        Text(pageType == PageType.save ? "\(saveMin)":"\(killMin)")
                             .font(.subheadline)
                         
                     }
@@ -52,7 +55,7 @@ struct Home: View {
                     HStack(spacing: 4){
                         Image(systemName: "clock")
                             .fontWeight(.medium)
-                        Text("\(total)")
+                        Text("\(saveMin-killMin)")
                             .font(.title3)
                         
                     }
@@ -122,6 +125,26 @@ struct Home: View {
             return Color.red
         }else{
             return Color.green
+        }
+    }
+    
+    var saveMin:Int{
+        return items.reduce(0) { sum, item in
+            if (item.isSave){
+              return  sum + item.saveMin
+            } else {
+                return sum
+            }
+        }
+    }
+    
+    var killMin:Int{
+        return items.reduce(0) { sum, item in
+            if (!item.isSave){
+               return sum + item.saveMin
+            } else {
+                return sum
+            }
         }
     }
     

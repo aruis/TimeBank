@@ -66,4 +66,19 @@ extension Date {
     func isSameDay(_ date2:Date) -> Bool{
         return Calendar.current.isDate(self, equalTo: date2, toGranularity: .day)
     }
+    
+    func elapsedMin(_ date2:Date) -> Int{
+        // 使用当前日历
+        let calendar = Calendar.current
+
+        // 计算两个日期之间的差异
+        let diffComponents = calendar.dateComponents([.minute], from: self, to: date2)
+
+        // 获取分钟差异的整数部分
+        if let minutes = diffComponents.minute {
+            return minutes
+        } else {
+            return 0
+        }
+    }
 }

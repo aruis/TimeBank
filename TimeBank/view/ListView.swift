@@ -26,7 +26,9 @@ struct ListView: View {
         Button( action: {
             selectItem = item
             isShow = true
+            #if os(iOS)
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            #endif
         }, label: {
             VStack(spacing:0){
                 Spacer()

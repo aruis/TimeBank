@@ -217,7 +217,10 @@ struct ShowItem: View {
     
     private func startTimer() {
         
+        #if os(iOS)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        #endif
+        
         withAnimation{
             isTimerRunning = true
         }
@@ -254,7 +257,9 @@ struct ShowItem: View {
             if start.elapsedMin(now) < 1 {
                 print("时间不足1分钟")
                 
+                #if os(iOS)
                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+                #endif
                 
                 withAnimation{
                     showTip = true
@@ -269,7 +274,9 @@ struct ShowItem: View {
                 return
             }
             
+            #if os(iOS)
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            #endif
             
             bankItem.lastTouch = now
             let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)

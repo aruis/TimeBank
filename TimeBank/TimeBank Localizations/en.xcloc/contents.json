@@ -1,0 +1,12 @@
+{
+  "developmentRegion" : "en",
+  "project" : "TimeBank.xcodeproj",
+  "targetLocale" : "en",
+  "toolInfo" : {
+    "toolBuildNumber" : "15C65",
+    "toolID" : "com.apple.dt.xcode",
+    "toolName" : "Xcode",
+    "toolVersion" : "15.1"
+  },
+  "version" : "1.0"
+}

@@ -46,6 +46,7 @@ struct NewBankItem: View {
                         withAnimation(Animation.easeIn(duration: 0.12).repeatCount(3, autoreverses: true), {
                             isShaking = true
                         })
+                        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                         isShaking = false
                     } else {
                         if !bankItem.name.isEmpty{
@@ -56,6 +57,7 @@ struct NewBankItem: View {
                             modelContext.insert(newItem)
                         }
                         
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         dismiss()
                     }
                 }label: {

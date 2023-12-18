@@ -1,0 +1,76 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "-" : {
+
+    },
+    "%@" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld MIN" : {
+
+    },
+    "~" : {
+
+    },
+    "Add Item" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Close" : {
+
+    },
+    "Delete" : {
+
+    },
+    "Edit" : {
+
+    },
+    "Edit Item" : {
+
+    },
+    "Execute in less than 1 minute, no record will be made." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "执行时间小于1分钟，不予记录呦。"
+          }
+        }
+      }
+    },
+    "KillTime" : {
+
+    },
+    "KILLTIME" : {
+
+    },
+    "Last Execute:" : {
+
+    },
+    "No Data." : {
+
+    },
+    "Save" : {
+
+    },
+    "SaveTime" : {
+
+    },
+    "SAVETIME" : {
+
+    },
+    "Your Balance" : {
+
+    }
+  },
+  "version" : "1.0"
+}

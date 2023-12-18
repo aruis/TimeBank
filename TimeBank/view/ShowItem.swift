@@ -21,6 +21,8 @@ struct ShowItem: View {
     
     @State private var start:Date?
     
+    @State private var showTip = false
+    
     
     var body: some View {
         NavigationStack{
@@ -42,6 +44,23 @@ struct ShowItem: View {
                 .padding(.top,30)
 #endif
                 .frame(maxWidth: .infinity)
+            }
+            .overlay(alignment: .bottom){
+                if showTip {
+                    Text("Execute in less than 1 minute, no record will be made.")
+                        .opacity(0.9)
+                        .font(.callout)
+                        .padding(.horizontal,15)
+                        .padding(.vertical,8)
+                        .background(
+                            Color.orange
+                                .blur(radius: 4)
+                                .opacity(0.85)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                                                        
+                        )
+                        .padding(.bottom,40)
+                }
             }
             .navigationTitle(bankItem.name)
             .ignoresSafeArea(edges:.bottom)
@@ -198,7 +217,7 @@ struct ShowItem: View {
     
     private func startTimer() {
         
-        
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
         withAnimation{
             isTimerRunning = true
         }
@@ -234,8 +253,23 @@ struct ShowItem: View {
             
             if start.elapsedMin(now) < 1 {
                 print("时间不足1分钟")
-//                return
+                
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+                
+                withAnimation{
+                    showTip = true
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                    withAnimation{
+                        showTip = false
+                    }
+                })
+
+                return
             }
+            
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
             
             bankItem.lastTouch = now
             let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)

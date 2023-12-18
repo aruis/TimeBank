@@ -16,6 +16,7 @@
 		8317E6542AFCC2B9003543CB /* TimeBankUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6532AFCC2B9003543CB /* TimeBankUITests.swift */; };
 		8317E6562AFCC2B9003543CB /* TimeBankUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6552AFCC2B9003543CB /* TimeBankUITestsLaunchTests.swift */; };
 		835B8B7C2AFCDAB5001A144D /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
+		836DD00D2B30392000B3F0FB /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 836DD00C2B30392000B3F0FB /* Localizable.xcstrings */; };
 		83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DA2B0734EA004FCBE1 /* ListView.swift */; };
 		83BCD6DD2B07369D004FCBE1 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppData.swift */; };
 		83BCD6DF2B0746E6004FCBE1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */; };
@@ -58,6 +59,7 @@
 		8317E6532AFCC2B9003543CB /* TimeBankUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankUITests.swift; sourceTree = "<group>"; };
 		8317E6552AFCC2B9003543CB /* TimeBankUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBankItem.swift; sourceTree = "<group>"; };
+		836DD00C2B30392000B3F0FB /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		83BCD6DA2B0734EA004FCBE1 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		83BCD6DC2B07369D004FCBE1 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 		8317E6332AFCC2B7003543CB /* TimeBank */ = {
 			isa = PBXGroup;
 			children = (
+				836DD00C2B30392000B3F0FB /* Localizable.xcstrings */,
 				83E0BB6D2B2AEE0900F1396E /* ext */,
 				83130D302B21BE9400ACFD84 /* help */,
 				835B8B7E2AFCDAD3001A144D /* model */,
@@ -279,6 +282,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 8317E6282AFCC2B7003543CB;
 			productRefGroup = 8317E6322AFCC2B7003543CB /* Products */;
@@ -299,6 +303,7 @@
 			files = (
 				8317E63F2AFCC2B9003543CB /* Preview Assets.xcassets in Resources */,
 				8317E63B2AFCC2B9003543CB /* Assets.xcassets in Resources */,
+				836DD00D2B30392000B3F0FB /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,7 +500,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TimeBank/TimeBank.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"TimeBank/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;
@@ -537,7 +542,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TimeBank/TimeBank.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"TimeBank/Preview Content\"";
 				DEVELOPMENT_TEAM = M84W4U7RV7;

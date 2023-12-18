@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="TimeBank/InfoPlist.xcstrings" source-language="en" target-language="zh-Hans" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="15.1" build-num="15C65"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName" xml:space="preserve">
+        <source>TimeBank</source>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="TimeBank/Localizable.xcstrings" source-language="en" target-language="zh-Hans" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="15.1" build-num="15C65"/>
+    </header>
+    <body>
+      <trans-unit id="" xml:space="preserve">
+        <source/>
+        <note/>
+      </trans-unit>
+      <trans-unit id="%@" xml:space="preserve">
+        <source>%@</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="%lld" xml:space="preserve">
+        <source>%lld</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="%lld MIN" xml:space="preserve">
+        <source>%lld MIN</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="-" xml:space="preserve">
+        <source>-</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Add Item" xml:space="preserve">
+        <source>Add Item</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Cancel" xml:space="preserve">
+        <source>Cancel</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Close" xml:space="preserve">
+        <source>Close</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Delete" xml:space="preserve">
+        <source>Delete</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Edit" xml:space="preserve">
+        <source>Edit</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Edit Item" xml:space="preserve">
+        <source>Edit Item</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Execute in less than 1 minute, no record will be made." xml:space="preserve">
+        <source>Execute in less than 1 minute, no record will be made.</source>
+        <target state="translated">执行时间小于1分钟，不予记录</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="KILLTIME" xml:space="preserve">
+        <source>KILLTIME</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="KillTime" xml:space="preserve">
+        <source>KillTime</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Last Execute:" xml:space="preserve">
+        <source>Last Execute:</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="No Data." xml:space="preserve">
+        <source>No Data.</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="SAVETIME" xml:space="preserve">
+        <source>SAVETIME</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Save" xml:space="preserve">
+        <source>Save</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="SaveTime" xml:space="preserve">
+        <source>SaveTime</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Your Balance" xml:space="preserve">
+        <source>Your Balance</source>
+        <note/>
+      </trans-unit>
+      <trans-unit id="~" xml:space="preserve">
+        <source>~</source>
+        <note/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

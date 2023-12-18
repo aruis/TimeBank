@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="TimeBank/InfoPlist.xcstrings" source-language="en" target-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="15.1" build-num="15C65"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName" xml:space="preserve">
+        <source>TimeBank</source>
+        <target state="new">TimeBank</target>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="TimeBank/Localizable.xcstrings" source-language="en" target-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="15.1" build-num="15C65"/>
+    </header>
+    <body>
+      <trans-unit id="" xml:space="preserve">
+        <source/>
+        <target state="new"/>
+        <note/>
+      </trans-unit>
+      <trans-unit id="%@" xml:space="preserve">
+        <source>%@</source>
+        <target state="new">%@</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="%lld" xml:space="preserve">
+        <source>%lld</source>
+        <target state="new">%lld</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="%lld MIN" xml:space="preserve">
+        <source>%lld MIN</source>
+        <target state="new">%lld MIN</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="-" xml:space="preserve">
+        <source>-</source>
+        <target state="new">-</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Add Item" xml:space="preserve">
+        <source>Add Item</source>
+        <target state="new">Add Item</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Cancel" xml:space="preserve">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Close" xml:space="preserve">
+        <source>Close</source>
+        <target state="new">Close</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Delete" xml:space="preserve">
+        <source>Delete</source>
+        <target state="new">Delete</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Edit" xml:space="preserve">
+        <source>Edit</source>
+        <target state="new">Edit</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Edit Item" xml:space="preserve">
+        <source>Edit Item</source>
+        <target state="new">Edit Item</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Execute in less than 1 minute, no record will be made." xml:space="preserve">
+        <source>Execute in less than 1 minute, no record will be made.</source>
+        <target state="new">Execute in less than 1 minute, no record will be made.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="KILLTIME" xml:space="preserve">
+        <source>KILLTIME</source>
+        <target state="new">KILLTIME</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="KillTime" xml:space="preserve">
+        <source>KillTime</source>
+        <target state="new">KillTime</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Last Execute:" xml:space="preserve">
+        <source>Last Execute:</source>
+        <target state="new">Last Execute:</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="No Data." xml:space="preserve">
+        <source>No Data.</source>
+        <target state="new">No Data.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="SAVETIME" xml:space="preserve">
+        <source>SAVETIME</source>
+        <target state="new">SAVETIME</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Save" xml:space="preserve">
+        <source>Save</source>
+        <target state="new">Save</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="SaveTime" xml:space="preserve">
+        <source>SaveTime</source>
+        <target state="new">SaveTime</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Your Balance" xml:space="preserve">
+        <source>Your Balance</source>
+        <target state="new">Your Balance</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="~" xml:space="preserve">
+        <source>~</source>
+        <target state="new">~</target>
+        <note/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

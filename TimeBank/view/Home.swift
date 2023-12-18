@@ -105,6 +105,7 @@ struct Home: View {
     
     func addButton() -> some View{
         Button{
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
             withAnimation(.default){
                 isShowAdd = true
             }

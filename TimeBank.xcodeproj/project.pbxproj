@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */; };
 		8317E6352AFCC2B7003543CB /* TimeBankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6342AFCC2B7003543CB /* TimeBankApp.swift */; };
-		8317E6372AFCC2B8003543CB /* ContentView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6362AFCC2B8003543CB /* ContentView3.swift */; };
 		8317E6392AFCC2B8003543CB /* BankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6382AFCC2B8003543CB /* BankItem.swift */; };
 		8317E63B2AFCC2B9003543CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8317E63A2AFCC2B9003543CB /* Assets.xcassets */; };
 		8317E63F2AFCC2B9003543CB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8317E63E2AFCC2B9003543CB /* Preview Assets.xcassets */; };
@@ -17,10 +16,6 @@
 		8317E6542AFCC2B9003543CB /* TimeBankUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6532AFCC2B9003543CB /* TimeBankUITests.swift */; };
 		8317E6562AFCC2B9003543CB /* TimeBankUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6552AFCC2B9003543CB /* TimeBankUITestsLaunchTests.swift */; };
 		835B8B7C2AFCDAB5001A144D /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
-		836F3B7F2B05EB5B0068EC3C /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F3B7E2B05EB5B0068EC3C /* ListItem.swift */; };
-		836F3B812B05EB6F0068EC3C /* HierarchicalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F3B802B05EB6F0068EC3C /* HierarchicalListView.swift */; };
-		836F3B832B05EB850068EC3C /* ListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F3B822B05EB850068EC3C /* ListItemView.swift */; };
-		836F3B852B05EC120068EC3C /* ContentView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F3B842B05EC120068EC3C /* ContentView2.swift */; };
 		83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DA2B0734EA004FCBE1 /* ListView.swift */; };
 		83BCD6DD2B07369D004FCBE1 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppData.swift */; };
 		83BCD6DF2B0746E6004FCBE1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */; };
@@ -52,7 +47,6 @@
 		83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularButtonStyle.swift; sourceTree = "<group>"; };
 		8317E6312AFCC2B7003543CB /* TimeBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8317E6342AFCC2B7003543CB /* TimeBankApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankApp.swift; sourceTree = "<group>"; };
-		8317E6362AFCC2B8003543CB /* ContentView3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView3.swift; sourceTree = "<group>"; };
 		8317E6382AFCC2B8003543CB /* BankItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankItem.swift; sourceTree = "<group>"; };
 		8317E63A2AFCC2B9003543CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8317E63C2AFCC2B9003543CB /* TimeBank.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeBank.entitlements; sourceTree = "<group>"; };
@@ -64,10 +58,6 @@
 		8317E6532AFCC2B9003543CB /* TimeBankUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankUITests.swift; sourceTree = "<group>"; };
 		8317E6552AFCC2B9003543CB /* TimeBankUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBankItem.swift; sourceTree = "<group>"; };
-		836F3B7E2B05EB5B0068EC3C /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
-		836F3B802B05EB6F0068EC3C /* HierarchicalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchicalListView.swift; sourceTree = "<group>"; };
-		836F3B822B05EB850068EC3C /* ListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemView.swift; sourceTree = "<group>"; };
-		836F3B842B05EC120068EC3C /* ContentView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView2.swift; sourceTree = "<group>"; };
 		83BCD6DA2B0734EA004FCBE1 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		83BCD6DC2B07369D004FCBE1 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -136,7 +126,6 @@
 			children = (
 				83E0BB6D2B2AEE0900F1396E /* ext */,
 				83130D302B21BE9400ACFD84 /* help */,
-				836F3B7D2B05EB460068EC3C /* gpttest */,
 				835B8B7E2AFCDAD3001A144D /* model */,
 				835B8B7D2AFCDAC0001A144D /* view */,
 				8317E6342AFCC2B7003543CB /* TimeBankApp.swift */,
@@ -176,7 +165,6 @@
 		835B8B7D2AFCDAC0001A144D /* view */ = {
 			isa = PBXGroup;
 			children = (
-				8317E6362AFCC2B8003543CB /* ContentView3.swift */,
 				835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */,
 				83BCD6DA2B0734EA004FCBE1 /* ListView.swift */,
 				83BCD6E02B07474E004FCBE1 /* Home.swift */,
@@ -195,17 +183,6 @@
 				83BCD6DC2B07369D004FCBE1 /* AppData.swift */,
 			);
 			path = model;
-			sourceTree = "<group>";
-		};
-		836F3B7D2B05EB460068EC3C /* gpttest */ = {
-			isa = PBXGroup;
-			children = (
-				836F3B7E2B05EB5B0068EC3C /* ListItem.swift */,
-				836F3B802B05EB6F0068EC3C /* HierarchicalListView.swift */,
-				836F3B822B05EB850068EC3C /* ListItemView.swift */,
-				836F3B842B05EC120068EC3C /* ContentView2.swift */,
-			);
-			path = gpttest;
 			sourceTree = "<group>";
 		};
 		83E0BB6D2B2AEE0900F1396E /* ext */ = {
@@ -347,22 +324,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				83E0BB6C2B2ADF7300F1396E /* LogView.swift in Sources */,
-				836F3B7F2B05EB5B0068EC3C /* ListItem.swift in Sources */,
 				83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */,
 				83BCD6DF2B0746E6004FCBE1 /* ContentView.swift in Sources */,
 				83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */,
-				836F3B832B05EB850068EC3C /* ListItemView.swift in Sources */,
 				83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */,
 				83BCD6DD2B07369D004FCBE1 /* AppData.swift in Sources */,
 				83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */,
-				8317E6372AFCC2B8003543CB /* ContentView3.swift in Sources */,
 				83E0BB6F2B2AEE8400F1396E /* DateExt.swift in Sources */,
 				835B8B7C2AFCDAB5001A144D /* NewBankItem.swift in Sources */,
 				8317E6392AFCC2B8003543CB /* BankItem.swift in Sources */,
-				836F3B852B05EC120068EC3C /* ContentView2.swift in Sources */,
 				8317E6352AFCC2B7003543CB /* TimeBankApp.swift in Sources */,
 				83E0BB6A2B2AD87B00F1396E /* ItemLog.swift in Sources */,
-				836F3B812B05EB6F0068EC3C /* HierarchicalListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

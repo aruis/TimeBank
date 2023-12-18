@@ -46,24 +46,18 @@ struct ShowItem: View {
             .navigationTitle(bankItem.name)
             .ignoresSafeArea(edges:.bottom)
             #if os(iOS)
-            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
-                lastBackgroundTime = Date()
-            }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
-                if let lastBackgroundTime = lastBackgroundTime {
-                    let backgroundDuration = Date().timeIntervalSince(lastBackgroundTime)
-                    timeRemaining += Int(backgroundDuration)
+                if let start {
+                    let backgroundDuration = Date().timeIntervalSince(start)
+                    timeRemaining = Int(backgroundDuration)
                 }
             }
             #endif
             #if os(macOS)
-            .onReceive(NotificationCenter.default.publisher(for: NSApplication.willResignActiveNotification)) { _ in
-                lastBackgroundTime = Date()
-            }
             .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
-                if let lastBackgroundTime = lastBackgroundTime {
-                    let backgroundDuration = Date().timeIntervalSince(lastBackgroundTime)
-                    timeRemaining += Int(backgroundDuration)
+                if let start {
+                    let backgroundDuration = Date().timeIntervalSince(start)
+                    timeRemaining = Int(backgroundDuration)
                 }
             }
             .frame(width: 450,height: 650)
@@ -233,6 +227,7 @@ struct ShowItem: View {
         
         timer?.invalidate()
         timeRemaining = 0
+        lastBackgroundTime = nil
         
         if let start {
             let now = Date()

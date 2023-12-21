@@ -93,6 +93,7 @@ struct ShowItem: View {
             
             
         }
+        .interactiveDismissDisabled(isTimerRunning)
     }
     
     @ViewBuilder

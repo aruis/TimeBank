@@ -84,7 +84,7 @@ struct ListView: View {
         
         _items = Query(filter: #Predicate {
             isIncome ? $0.isSave : !$0.isSave
-        },sort: \.createTime,order: .reverse)
+        },sort: \.lastTouch,order: .reverse)
     }
     
     var mainColor:Color{

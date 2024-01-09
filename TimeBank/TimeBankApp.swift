@@ -30,7 +30,7 @@ struct TimeBankApp: App {
         WindowGroup {
             ContentView()
             #if os(macOS)
-                .frame(minWidth: 800,minHeight: 580)
+                .frame(minWidth: 380,minHeight: 480)
             #endif
         }
         .environment(appData)

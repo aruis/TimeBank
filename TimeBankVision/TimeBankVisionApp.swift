@@ -1,16 +1,15 @@
 //
-//  TimeBankApp.swift
-//  TimeBank
+//  TimeBankVisionApp.swift
+//  TimeBankVision
 //
-//  Created by 牧云踏歌 on 2023/11/9.
+//  Created by 牧云踏歌 on 2024/1/10.
 //
 
 import SwiftUI
 import SwiftData
 
 @main
-struct TimeBankApp: App {
-    
+struct TimeBankVisionApp: App {
     @State var appData = AppData()
     
     var sharedModelContainer: ModelContainer = {

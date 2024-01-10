@@ -7,6 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8302EA932B4E22F400A8ECF8 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 8302EA922B4E22F400A8ECF8 /* RealityKitContent */; };
+		8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */; };
+		8302EA992B4E22F500A8ECF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA982B4E22F500A8ECF8 /* Assets.xcassets */; };
+		8302EA9C2B4E22F500A8ECF8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA9B2B4E22F500A8ECF8 /* Preview Assets.xcassets */; };
+		8302EAA12B4E24A300A8ECF8 /* ItemLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB692B2AD87B00F1396E /* ItemLog.swift */; };
+		8302EAA22B4E24A300A8ECF8 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DA2B0734EA004FCBE1 /* ListView.swift */; };
+		8302EAA32B4E24A300A8ECF8 /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */; };
+		8302EAA42B4E24A300A8ECF8 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6E02B07474E004FCBE1 /* Home.swift */; };
+		8302EAA52B4E24A300A8ECF8 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6B2B2ADF7300F1396E /* LogView.swift */; };
+		8302EAA62B4E24A300A8ECF8 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6E2B2AEE8400F1396E /* DateExt.swift */; };
+		8302EAA72B4E24A300A8ECF8 /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
+		8302EAA82B4E24A300A8ECF8 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppData.swift */; };
+		8302EAA92B4E24A300A8ECF8 /* BankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6382AFCC2B8003543CB /* BankItem.swift */; };
+		8302EAAA2B4E24A300A8ECF8 /* ShowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB672B2AA3B000F1396E /* ShowItem.swift */; };
 		83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */; };
 		8317E6352AFCC2B7003543CB /* TimeBankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6342AFCC2B7003543CB /* TimeBankApp.swift */; };
 		8317E6392AFCC2B8003543CB /* BankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6382AFCC2B8003543CB /* BankItem.swift */; };
@@ -14,15 +28,39 @@
 		8317E63F2AFCC2B9003543CB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8317E63E2AFCC2B9003543CB /* Preview Assets.xcassets */; };
 		835B8B7C2AFCDAB5001A144D /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
 		836DD00D2B30392000B3F0FB /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 836DD00C2B30392000B3F0FB /* Localizable.xcstrings */; };
+		83A51E872B4D39FE00595836 /* WatchHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A51E862B4D39FE00595836 /* WatchHome.swift */; };
 		83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DA2B0734EA004FCBE1 /* ListView.swift */; };
 		83BCD6DD2B07369D004FCBE1 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppData.swift */; };
-		83BCD6DF2B0746E6004FCBE1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */; };
 		83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6E02B07474E004FCBE1 /* Home.swift */; };
 		83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB672B2AA3B000F1396E /* ShowItem.swift */; };
 		83E0BB6A2B2AD87B00F1396E /* ItemLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB692B2AD87B00F1396E /* ItemLog.swift */; };
 		83E0BB6C2B2ADF7300F1396E /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6B2B2ADF7300F1396E /* LogView.swift */; };
 		83E0BB6F2B2AEE8400F1396E /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6E2B2AEE8400F1396E /* DateExt.swift */; };
+		83F410E32B4CF5F8008F004A /* TimeBankWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F410E22B4CF5F8008F004A /* TimeBankWatchApp.swift */; };
+		83F410E72B4CF5F9008F004A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83F410E62B4CF5F9008F004A /* Assets.xcassets */; };
+		83F410EA2B4CF5F9008F004A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83F410E92B4CF5F9008F004A /* Preview Assets.xcassets */; };
+		83F410ED2B4CF5F9008F004A /* TimeBank.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 83F410E02B4CF5F8008F004A /* TimeBank.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		83F410F12B4CF62C008F004A /* ShowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB672B2AA3B000F1396E /* ShowItem.swift */; };
+		83F410F22B4CF62C008F004A /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */; };
+		83F410F32B4CF62C008F004A /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppData.swift */; };
+		83F410F42B4CF62C008F004A /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6E2B2AEE8400F1396E /* DateExt.swift */; };
+		83F410F52B4CF62C008F004A /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DA2B0734EA004FCBE1 /* ListView.swift */; };
+		83F410F62B4CF62C008F004A /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6E02B07474E004FCBE1 /* Home.swift */; };
+		83F410F82B4CF62C008F004A /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
+		83F410F92B4CF62C008F004A /* ItemLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB692B2AD87B00F1396E /* ItemLog.swift */; };
+		83F410FA2B4CF62C008F004A /* BankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6382AFCC2B8003543CB /* BankItem.swift */; };
+		83F410FB2B4CF62C008F004A /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6B2B2ADF7300F1396E /* LogView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		83F410EB2B4CF5F9008F004A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8317E6292AFCC2B7003543CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 83F410DF2B4CF5F8008F004A;
+			remoteInfo = "TimeBankWatch Watch App";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		838402D42B45553500ED2C83 /* Embed Watch Content */ = {
@@ -31,6 +69,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
+				83F410ED2B4CF5F9008F004A /* TimeBank.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -38,6 +77,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8302EA8E2B4E22F400A8ECF8 /* TimeBankVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBankVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8302EA912B4E22F400A8ECF8 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
+		8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankVisionApp.swift; sourceTree = "<group>"; };
+		8302EA982B4E22F500A8ECF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8302EA9B2B4E22F500A8ECF8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		8302EA9D2B4E22F500A8ECF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8302EAAB2B4E24E200A8ECF8 /* TimeBankVision.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeBankVision.entitlements; sourceTree = "<group>"; };
 		83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularButtonStyle.swift; sourceTree = "<group>"; };
 		8317E6312AFCC2B7003543CB /* TimeBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8317E6342AFCC2B7003543CB /* TimeBankApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankApp.swift; sourceTree = "<group>"; };
@@ -48,18 +94,38 @@
 		8317E6402AFCC2B9003543CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBankItem.swift; sourceTree = "<group>"; };
 		836DD00C2B30392000B3F0FB /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		83A51E852B4D2E8200595836 /* TimeBankWatch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TimeBankWatch Watch App.entitlements"; sourceTree = "<group>"; };
+		83A51E862B4D39FE00595836 /* WatchHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHome.swift; sourceTree = "<group>"; };
 		83BCD6DA2B0734EA004FCBE1 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		83BCD6DC2B07369D004FCBE1 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
-		83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		83BCD6E02B07474E004FCBE1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		83E0BB672B2AA3B000F1396E /* ShowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowItem.swift; sourceTree = "<group>"; };
 		83E0BB692B2AD87B00F1396E /* ItemLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLog.swift; sourceTree = "<group>"; };
 		83E0BB6B2B2ADF7300F1396E /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
 		83E0BB6E2B2AEE8400F1396E /* DateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
+		83F410E02B4CF5F8008F004A /* TimeBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		83F410E22B4CF5F8008F004A /* TimeBankWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankWatchApp.swift; sourceTree = "<group>"; };
+		83F410E62B4CF5F9008F004A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		83F410E92B4CF5F9008F004A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8302EA8B2B4E22F400A8ECF8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8302EA932B4E22F400A8ECF8 /* RealityKitContent in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8317E62E2AFCC2B7003543CB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83F410DD2B4CF5F8008F004A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -69,6 +135,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8302EA8F2B4E22F400A8ECF8 /* TimeBankVision */ = {
+			isa = PBXGroup;
+			children = (
+				8302EAAB2B4E24E200A8ECF8 /* TimeBankVision.entitlements */,
+				8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */,
+				8302EA982B4E22F500A8ECF8 /* Assets.xcassets */,
+				8302EA9D2B4E22F500A8ECF8 /* Info.plist */,
+				8302EA9A2B4E22F500A8ECF8 /* Preview Content */,
+			);
+			path = TimeBankVision;
+			sourceTree = "<group>";
+		};
+		8302EA902B4E22F400A8ECF8 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				8302EA912B4E22F400A8ECF8 /* RealityKitContent */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		8302EA9A2B4E22F500A8ECF8 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				8302EA9B2B4E22F500A8ECF8 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		83130D302B21BE9400ACFD84 /* help */ = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +175,9 @@
 			isa = PBXGroup;
 			children = (
 				8317E6332AFCC2B7003543CB /* TimeBank */,
+				83F410E12B4CF5F8008F004A /* TimeBankWatch Watch App */,
+				8302EA8F2B4E22F400A8ECF8 /* TimeBankVision */,
+				8302EA902B4E22F400A8ECF8 /* Packages */,
 				8317E6322AFCC2B7003543CB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,6 +186,8 @@
 			isa = PBXGroup;
 			children = (
 				8317E6312AFCC2B7003543CB /* TimeBank.app */,
+				83F410E02B4CF5F8008F004A /* TimeBank.app */,
+				8302EA8E2B4E22F400A8ECF8 /* TimeBankVision.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -124,7 +223,6 @@
 				835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */,
 				83BCD6DA2B0734EA004FCBE1 /* ListView.swift */,
 				83BCD6E02B07474E004FCBE1 /* Home.swift */,
-				83BCD6DE2B0746E6004FCBE1 /* ContentView.swift */,
 				83E0BB672B2AA3B000F1396E /* ShowItem.swift */,
 				83E0BB6B2B2ADF7300F1396E /* LogView.swift */,
 			);
@@ -149,9 +247,49 @@
 			path = ext;
 			sourceTree = "<group>";
 		};
+		83F410E12B4CF5F8008F004A /* TimeBankWatch Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				83A51E852B4D2E8200595836 /* TimeBankWatch Watch App.entitlements */,
+				83A51E862B4D39FE00595836 /* WatchHome.swift */,
+				83F410E22B4CF5F8008F004A /* TimeBankWatchApp.swift */,
+				83F410E62B4CF5F9008F004A /* Assets.xcassets */,
+				83F410E82B4CF5F9008F004A /* Preview Content */,
+			);
+			path = "TimeBankWatch Watch App";
+			sourceTree = "<group>";
+		};
+		83F410E82B4CF5F9008F004A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				83F410E92B4CF5F9008F004A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		8302EA8D2B4E22F400A8ECF8 /* TimeBankVision */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8302EAA02B4E22F500A8ECF8 /* Build configuration list for PBXNativeTarget "TimeBankVision" */;
+			buildPhases = (
+				8302EA8A2B4E22F400A8ECF8 /* Sources */,
+				8302EA8B2B4E22F400A8ECF8 /* Frameworks */,
+				8302EA8C2B4E22F400A8ECF8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TimeBankVision;
+			packageProductDependencies = (
+				8302EA922B4E22F400A8ECF8 /* RealityKitContent */,
+			);
+			productName = TimeBankVision;
+			productReference = 8302EA8E2B4E22F400A8ECF8 /* TimeBankVision.app */;
+			productType = "com.apple.product-type.application";
+		};
 		8317E6302AFCC2B7003543CB /* TimeBank */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8317E6592AFCC2B9003543CB /* Build configuration list for PBXNativeTarget "TimeBank" */;
@@ -164,10 +302,28 @@
 			buildRules = (
 			);
 			dependencies = (
+				83F410EC2B4CF5F9008F004A /* PBXTargetDependency */,
 			);
 			name = TimeBank;
 			productName = TimeBank;
 			productReference = 8317E6312AFCC2B7003543CB /* TimeBank.app */;
+			productType = "com.apple.product-type.application";
+		};
+		83F410DF2B4CF5F8008F004A /* TimeBankWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83F410EE2B4CF5F9008F004A /* Build configuration list for PBXNativeTarget "TimeBankWatch Watch App" */;
+			buildPhases = (
+				83F410DC2B4CF5F8008F004A /* Sources */,
+				83F410DD2B4CF5F8008F004A /* Frameworks */,
+				83F410DE2B4CF5F8008F004A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TimeBankWatch Watch App";
+			productName = "TimeBankWatch Watch App";
+			productReference = 83F410E02B4CF5F8008F004A /* TimeBank.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -177,11 +333,17 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1510;
+				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1510;
 				TargetAttributes = {
+					8302EA8D2B4E22F400A8ECF8 = {
+						CreatedOnToolsVersion = 15.2;
+					};
 					8317E6302AFCC2B7003543CB = {
 						CreatedOnToolsVersion = 15.0.1;
+					};
+					83F410DF2B4CF5F8008F004A = {
+						CreatedOnToolsVersion = 15.1;
 					};
 				};
 			};
@@ -200,11 +362,22 @@
 			projectRoot = "";
 			targets = (
 				8317E6302AFCC2B7003543CB /* TimeBank */,
+				83F410DF2B4CF5F8008F004A /* TimeBankWatch Watch App */,
+				8302EA8D2B4E22F400A8ECF8 /* TimeBankVision */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8302EA8C2B4E22F400A8ECF8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8302EA9C2B4E22F500A8ECF8 /* Preview Assets.xcassets in Resources */,
+				8302EA992B4E22F500A8ECF8 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8317E62F2AFCC2B7003543CB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -215,16 +388,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		83F410DE2B4CF5F8008F004A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83F410EA2B4CF5F9008F004A /* Preview Assets.xcassets in Resources */,
+				83F410E72B4CF5F9008F004A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8302EA8A2B4E22F400A8ECF8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8302EAA72B4E24A300A8ECF8 /* NewBankItem.swift in Sources */,
+				8302EAA32B4E24A300A8ECF8 /* CircularButtonStyle.swift in Sources */,
+				8302EAA22B4E24A300A8ECF8 /* ListView.swift in Sources */,
+				8302EAA92B4E24A300A8ECF8 /* BankItem.swift in Sources */,
+				8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */,
+				8302EAA42B4E24A300A8ECF8 /* Home.swift in Sources */,
+				8302EAA12B4E24A300A8ECF8 /* ItemLog.swift in Sources */,
+				8302EAA52B4E24A300A8ECF8 /* LogView.swift in Sources */,
+				8302EAAA2B4E24A300A8ECF8 /* ShowItem.swift in Sources */,
+				8302EAA62B4E24A300A8ECF8 /* DateExt.swift in Sources */,
+				8302EAA82B4E24A300A8ECF8 /* AppData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8317E62D2AFCC2B7003543CB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				83E0BB6C2B2ADF7300F1396E /* LogView.swift in Sources */,
 				83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */,
-				83BCD6DF2B0746E6004FCBE1 /* ContentView.swift in Sources */,
 				83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */,
 				83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */,
 				83BCD6DD2B07369D004FCBE1 /* AppData.swift in Sources */,
@@ -237,9 +436,96 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		83F410DC2B4CF5F8008F004A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83F410F82B4CF62C008F004A /* NewBankItem.swift in Sources */,
+				83F410FB2B4CF62C008F004A /* LogView.swift in Sources */,
+				83F410F22B4CF62C008F004A /* CircularButtonStyle.swift in Sources */,
+				83F410E32B4CF5F8008F004A /* TimeBankWatchApp.swift in Sources */,
+				83F410FA2B4CF62C008F004A /* BankItem.swift in Sources */,
+				83F410F52B4CF62C008F004A /* ListView.swift in Sources */,
+				83A51E872B4D39FE00595836 /* WatchHome.swift in Sources */,
+				83F410F42B4CF62C008F004A /* DateExt.swift in Sources */,
+				83F410F12B4CF62C008F004A /* ShowItem.swift in Sources */,
+				83F410F92B4CF62C008F004A /* ItemLog.swift in Sources */,
+				83F410F32B4CF62C008F004A /* AppData.swift in Sources */,
+				83F410F62B4CF62C008F004A /* Home.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		83F410EC2B4CF5F9008F004A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 83F410DF2B4CF5F8008F004A /* TimeBankWatch Watch App */;
+			targetProxy = 83F410EB2B4CF5F9008F004A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		8302EA9E2B4E22F500A8ECF8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TimeBankVision/TimeBankVision.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TimeBankVision/Preview Content\"";
+				DEVELOPMENT_TEAM = M84W4U7RV7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBankVision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+		8302EA9F2B4E22F500A8ECF8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TimeBankVision/TimeBankVision.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TimeBankVision/Preview Content\"";
+				DEVELOPMENT_TEAM = M84W4U7RV7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBankVision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				VALIDATE_PRODUCT = YES;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
 		8317E6572AFCC2B9003543CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -442,9 +728,81 @@
 			};
 			name = Release;
 		};
+		83F410EF2B4CF5F9008F004A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "TimeBankWatch Watch App/TimeBankWatch Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TimeBankWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = M84W4U7RV7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.muyuntage.TimeBank;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
+				PRODUCT_NAME = TimeBank;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		83F410F02B4CF5F9008F004A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "TimeBankWatch Watch App/TimeBankWatch Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TimeBankWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = M84W4U7RV7;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.muyuntage.TimeBank;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
+				PRODUCT_NAME = TimeBank;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8302EAA02B4E22F500A8ECF8 /* Build configuration list for PBXNativeTarget "TimeBankVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8302EA9E2B4E22F500A8ECF8 /* Debug */,
+				8302EA9F2B4E22F500A8ECF8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8317E62C2AFCC2B7003543CB /* Build configuration list for PBXProject "TimeBank" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -463,7 +821,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		83F410EE2B4CF5F9008F004A /* Build configuration list for PBXNativeTarget "TimeBankWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83F410EF2B4CF5F9008F004A /* Debug */,
+				83F410F02B4CF5F9008F004A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8302EA922B4E22F400A8ECF8 /* RealityKitContent */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RealityKitContent;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8317E6292AFCC2B7003543CB /* Project object */;
 }

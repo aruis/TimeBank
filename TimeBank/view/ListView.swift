@@ -100,6 +100,10 @@ struct ListView: View {
     
     var body: some View {
         
+//#if os(watchOS)
+//            .tabViewStyle(.verticalPage)
+//#endif
+
         ScrollView{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 165),spacing: 12),],spacing: 12) {
                 ForEach(items) { item in
@@ -148,11 +152,4 @@ struct ListView: View {
         
         
     }
-}
-
-#Preview {
-    ContentView()
-        .environment(AppData())
-        .modelContainer(for: BankItem.self, inMemory: true)
-    
 }

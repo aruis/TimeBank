@@ -1,16 +1,15 @@
 //
-//  TimeBankApp.swift
-//  TimeBank
+//  TimeBankWatchApp.swift
+//  TimeBankWatch Watch App
 //
-//  Created by 牧云踏歌 on 2023/11/9.
+//  Created by 牧云踏歌 on 2024/1/9.
 //
 
 import SwiftUI
 import SwiftData
 
 @main
-struct TimeBankApp: App {
-    
+struct TimeBankWatch_Watch_AppApp: App {
     @State var appData = AppData()
     
     var sharedModelContainer: ModelContainer = {
@@ -18,23 +17,22 @@ struct TimeBankApp: App {
             BankItem.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        
         do {
             return try ModelContainer(for: schema,  configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
     var body: some Scene {
         WindowGroup {
-            Home()
-            #if os(macOS)
-                .frame(minWidth: 380,minHeight: 480)
-            #endif
+                WatchHome()                        
         }
         .environment(appData)
-//        .modelContainer(for: BankItem.self, isAutosaveEnabled: true ,isUndoEnabled: true)
+        //        .modelContainer(for: BankItem.self, isAutosaveEnabled: true ,isUndoEnabled: true)
         .modelContainer(sharedModelContainer)
     }
 }
+
+

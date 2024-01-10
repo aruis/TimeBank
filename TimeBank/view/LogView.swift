@@ -45,7 +45,7 @@ struct LogView: View {
                         Image(systemName: "trash")
                     }
 
-                })
+                })                
                 .contextMenu{
                     Button(role:.destructive){
                         modelContext.delete(item)

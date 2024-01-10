@@ -67,7 +67,9 @@ struct NewBankItem: View {
                     Text("Save")
                         .padding()
                 }
+                #if !os(visionOS)
                 .buttonStyle(MyButtonStyle(color: mainColor))
+                #endif
 //                .scaleEffect(isShaking ? 1.12 : 1.0)
                 .rotation3DEffect(Angle(degrees: isShaking ? 10 : 0), axis: (x:0,y:1,z:0))
 //                .rotationEffect(Angle(degrees: isShaking ? 1 : 0), anchor: .center)
@@ -78,7 +80,7 @@ struct NewBankItem: View {
             #endif
             .padding(.horizontal,20)
             .navigationTitle(bankItem.name.isEmpty ?  "Add Item" :"Edit Item")
-            #if os(macOS)
+            #if os(macOS) || os(visionOS)
             .toolbar(content: {
                 ToolbarItem(placement: .cancellationAction, content: {
                     Button{

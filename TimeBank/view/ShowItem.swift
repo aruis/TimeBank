@@ -57,22 +57,22 @@ struct ShowItem: View {
                                 .blur(radius: 4)
                                 .opacity(0.85)
                                 .clipShape(RoundedRectangle(cornerRadius: 15))
-                                                        
+                            
                         )
                         .padding(.bottom,40)
                 }
             }
             .navigationTitle(bankItem.name)
             .ignoresSafeArea(edges:.bottom)
-            #if os(iOS)
+#if os(iOS)
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
                 if let start {
                     let backgroundDuration = Date().timeIntervalSince(start)
                     timeRemaining = Int(backgroundDuration)
                 }
             }
-            #endif
-            #if os(macOS)
+#endif
+#if os(macOS)
             .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
                 if let start {
                     let backgroundDuration = Date().timeIntervalSince(start)
@@ -80,16 +80,24 @@ struct ShowItem: View {
                 }
             }
             .frame(width: 450,height: 650)
+#endif
+#if os(macOS) || os(visionOS)
             .toolbar(content: {
+                
                 ToolbarItem(placement: .cancellationAction, content: {
-                    Button{
-                        dismiss()
-                    }label: {
-                        Text("Close")
-                    }
+
+                        Button{
+                            dismiss()
+                        }label: {
+                            Text("Close")
+                        }
+                        .opacity(isTimerRunning ? 0 : 1)
                 })
+                
+                
+                
             })
-            #endif
+#endif
             
             
         }
@@ -150,7 +158,7 @@ struct ShowItem: View {
     
     @ViewBuilder
     func logView() -> some View{
-        List{            
+        List{
             ForEach(sortedLog){ item in
                 HStack{
                     Text("\(item.saveMin) MIN")
@@ -218,9 +226,9 @@ struct ShowItem: View {
     
     private func startTimer() {
         
-        #if os(iOS)
+#if os(iOS)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        #endif
+#endif
         
         withAnimation{
             isTimerRunning = true
@@ -258,9 +266,9 @@ struct ShowItem: View {
             if start.elapsedMin(now) < 1 {
                 print("时间不足1分钟")
                 
-                #if os(iOS)
+#if os(iOS)
                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-                #endif
+#endif
                 
                 withAnimation{
                     showTip = true
@@ -271,13 +279,13 @@ struct ShowItem: View {
                         showTip = false
                     }
                 })
-
+                
                 return
             }
             
-            #if os(iOS)
+#if os(iOS)
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            #endif
+#endif
             
             bankItem.lastTouch = now
             let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)

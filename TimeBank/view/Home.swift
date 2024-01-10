@@ -181,9 +181,3 @@ struct Home: View {
     
 }
 
-enum PageType{
-    case home
-    case save
-    case kill
-}
-

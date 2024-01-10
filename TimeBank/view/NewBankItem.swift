@@ -29,7 +29,9 @@ struct NewBankItem: View {
                 Spacer()
                     .frame(height: 30)
                 TextField("", text: $name)
+                #if !os(watchOS)
                     .font(.system(size: 80))
+                #endif
                     .autocorrectionDisabled()
                     .padding()
                     .focused($nameFocused)
@@ -39,8 +41,13 @@ struct NewBankItem: View {
                     .multilineTextAlignment(.center)
                     #endif
 //                    .background(Color.red)
+                
                 Spacer()
+                #if os(watchOS)
+                    .frame(height: 10)
+                #else
                     .frame(height: 30)
+                #endif
                 Button{
                     if name.isEmpty {
                         withAnimation(Animation.easeIn(duration: 0.12).repeatCount(3, autoreverses: true), {
@@ -78,7 +85,11 @@ struct NewBankItem: View {
             #if os(macOS)
             .frame(width: 400,height: 300)
             #endif
+            #if os(watchOS)
+            .padding(.horizontal,5)
+            #else
             .padding(.horizontal,20)
+            #endif
             .navigationTitle(bankItem.name.isEmpty ?  "Add Item" :"Edit Item")
             #if os(macOS) || os(visionOS)
             .toolbar(content: {
@@ -130,7 +141,11 @@ struct MyButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
+        #if os(watchOS)
+            .font(.callout)
+        #else
             .font(.title2)
+        #endif
             .fontWeight(.bold)
             .background(color.gradient.opacity(0.75))
             .foregroundStyle(.white)

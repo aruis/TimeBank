@@ -28,7 +28,7 @@ struct TimeBankWatch_Watch_AppApp: App {
     var body: some Scene {
         WindowGroup {
                 WatchHome()                        
-        }
+        }        
         .environment(appData)
         //        .modelContainer(for: BankItem.self, isAutosaveEnabled: true ,isUndoEnabled: true)
         .modelContainer(sharedModelContainer)

@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct ShowItem: View {
+struct ShowItemWatch: View {
     @Environment(\.scenePhase) private var scenePhase
+    
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     
@@ -27,26 +28,13 @@ struct ShowItem: View {
     var body: some View {
         NavigationStack{
             
-            GeometryReader{
-                let size  = $0.size
-                let isLarge = size.height > 600
-                VStack(alignment: .center,spacing: 0){
-                    
-                    circleView()
-                    #if os(iOS)
-                    Spacer()
-                        .frame(height: isLarge ? 25 : 130 )
-                    #endif
-                    
-                    logView()
-                        .transition(.opacity)
-                    
-                }
-#if os(macOS)
-                .padding(.top,30)
-#endif
-                .frame(maxWidth: .infinity)
+            TabView{
+                circleView()
+                    .padding(-15)
+                logView()
+                    .transition(.opacity)
             }
+            .tabViewStyle(.verticalPage)
             .overlay(alignment: .bottom){
                 if showTip {
                     Text("Execute in less than 1 minute, no record will be made.")
@@ -68,7 +56,7 @@ struct ShowItem: View {
             .ignoresSafeArea(edges:.bottom)
             .onChange(of: scenePhase, {
                 switch scenePhase {
-                case .active:
+                case .active:                    
                     if let start {
                         let backgroundDuration = Date().timeIntervalSince(start)
                         timeRemaining = Int(backgroundDuration)
@@ -77,8 +65,17 @@ struct ShowItem: View {
                     break
                 }
             })
-#if os(macOS) || os(visionOS)
-            .frame(width: 450,height: 550)
+//            .onChange(of: scenePhase) { newScenePhase in
+                             
+//                          }
+//            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+//                if let start {
+//                    let backgroundDuration = Date().timeIntervalSince(start)
+//                    timeRemaining = Int(backgroundDuration)
+//                }
+//            }
+
+
             .toolbar(content: {
                 ToolbarItem(placement: .cancellationAction, content: {
 
@@ -89,8 +86,9 @@ struct ShowItem: View {
                         }
                         .opacity(isTimerRunning ? 0 : 1)
                 })
+                
             })
-#endif
+
             
             
         }
@@ -100,19 +98,19 @@ struct ShowItem: View {
     @ViewBuilder
     func circleView() -> some View{
         Circle()
-            .frame(width: 200 ,height: 200)
+            .frame(maxWidth: .infinity,maxHeight: .infinity)
             .foregroundColor(mainColor.opacity(0.85))
             .overlay(content: {
                 if isTimerRunning {
                     Text("\(formatTime(seconds: timeRemaining))")
-                        .font(.largeTitle.monospacedDigit())
+                        .font(.title.monospacedDigit())
                         .fontWeight(.regular)
                         .foregroundStyle(Color.white)
                         .transition(.moveAndFadeTop)
                 } else {
                     Text( "\(bankItem.saveMin) MIN")
                         .foregroundStyle(Color.white)
-                        .font(.largeTitle)
+                        .font(.title)
                         .fontWeight(.regular)
                         .shadow(radius: 3)
                     //                                    .opacity(inTimer ? 0 : 1)
@@ -122,28 +120,23 @@ struct ShowItem: View {
                     
                 }
             })
-            .overlay{
-                if !isTimerRunning {
-                    Button(action:startTimer) {
-                        Image(systemName:  "play.fill")
-                            .foregroundStyle(Color.white)
-                            .font(.largeTitle)
-                            .shadow(radius: 3)
+            .toolbar{
+                ToolbarItem(placement: .bottomBar){
+                    if !isTimerRunning {
+                        Button(action:startTimer) {
+                            Image(systemName:  "play.fill")
+                        }
+                        .controlSize(.large)
                     }
-                    .padding(.top,120)
-                }
-                
-            }
-        
-            .overlay{
-                if isTimerRunning {
-                    Button(action:resetTimer) {
-                        Image(systemName: "stop.fill" )
-                            .foregroundStyle(Color.white)
-                            .font(.largeTitle)
-                            .shadow(radius: 3)
+                    
+                    if isTimerRunning {
+                        Button(action:resetTimer) {
+                            Image(systemName: "stop.fill" )
+                        }
+                        .controlSize(.large)
                     }
-                    .padding(.top,120)
+
+
                 }
             }
         
@@ -155,23 +148,19 @@ struct ShowItem: View {
             ForEach(sortedLog){ item in
                 HStack{
                     Text("\(item.saveMin) MIN")
-                        .font(.title3)
+                        .font(.callout)
                         .fontWeight(.medium)
                     
                     Spacer()
                     
                     VStack(alignment: .trailing){
                         Text(item.begin.dayString())
-                            .opacity(0.9)
-                        HStack(spacing:1){
-                            Text(item.begin.timeString())
-                            Text("~")
-                            Text(item.end.timeString())
-                        }
-                        .opacity(0.9)
+                        Text(item.begin.timeString())
+                        Text(item.end.timeString())
                         
                     }
-                    .font(.caption.monospacedDigit())
+                    .opacity(0.9)
+                    .font(.caption2.monospacedDigit())
                     
                 }
                 .id(item.id)
@@ -185,15 +174,6 @@ struct ShowItem: View {
                     }
                     
                 })
-                .contextMenu{
-                    Button(role:.destructive){
-                        bankItem.logs?.removeAll(where:{ $0 == item})
-                        modelContext.delete(item)
-                    }label: {
-                        Label("Delete", systemImage:  "trash")
-                    }
-                }
-                
                 
             }
         }
@@ -218,11 +198,6 @@ struct ShowItem: View {
     }
     
     private func startTimer() {
-        
-#if os(iOS)
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-#endif
-        
         withAnimation{
             isTimerRunning = true
         }
@@ -257,11 +232,6 @@ struct ShowItem: View {
             let now = Date()
             
             if start.elapsedMin(now) < 1 {
-                print("时间不足1分钟")
-                
-#if os(iOS)
-                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-#endif
                 
                 withAnimation{
                     showTip = true
@@ -276,9 +246,6 @@ struct ShowItem: View {
                 return
             }
             
-#if os(iOS)
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-#endif
             
             bankItem.lastTouch = now
             let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)
@@ -302,7 +269,7 @@ struct ShowItem: View {
 }
 
 #Preview {
-    ShowItem(bankItem: .constant(BankItem(name: "test")))
+    ShowItemWatch(bankItem: .constant(BankItem(name: "test")))
 }
 
 extension AnyTransition {

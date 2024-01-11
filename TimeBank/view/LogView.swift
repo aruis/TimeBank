@@ -45,7 +45,8 @@ struct LogView: View {
                         Image(systemName: "trash")
                     }
 
-                })                
+                })      
+                #if !os(watchOS)
                 .contextMenu{
                     Button(role:.destructive){
                         modelContext.delete(item)
@@ -53,6 +54,7 @@ struct LogView: View {
                         Label("Delete", systemImage:  "trash")
                     }
                 }
+                #endif
                 .transition(.slide)
                 
             }

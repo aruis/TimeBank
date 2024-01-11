@@ -14,7 +14,7 @@ struct WatchHome: View {
     @State private var pageType = PageType.home
     @State private var isShowNew = false
     
-    @Query private var items: [BankItem]
+    @Query(sort: \BankItem.lastTouch ,order: .reverse) private var items: [BankItem]
     
     @State private var isShow = false
     @State private var isShowEditSheet = false
@@ -46,9 +46,22 @@ struct WatchHome: View {
                     case .home:
                         Text("TimeBank").monospaced().bold()
                     case .save:
-                        Text("SaveTime \(saveMin)").monospaced().bold()
+                        VStack{
+                            Text("SaveTime")
+                                .font(.footnote.monospaced())
+//                                .monospaced().bold()
+                            Text("\(saveMin)")
+                                .font(.caption.bold())
+                        }
+//                        Text("SaveTime \(saveMin)").monospaced().bold()
                     case .kill:
-                        Text("KillTime \(killMin)").monospaced().bold()
+                        VStack{
+                            Text("KillTime")
+                                .font(.footnote.monospaced())
+                            Text("\(killMin)")
+                                .font(.caption.bold())
+                        }
+//                        Text("KillTime \(killMin)").monospaced().bold()
                     }
                     
                 })
@@ -77,6 +90,7 @@ struct WatchHome: View {
             
             Text(title)
                 .font(.subheadline)
+                .monospaced()
         }
     }
     

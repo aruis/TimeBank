@@ -66,14 +66,14 @@ struct Home: View {
             TabView(selection: $pageType) {
                 ListView(pageType: .save)
                     .tag(PageType.save)
-#if os(macOS)
-                    .tabItem {Label("SaveTime", systemImage: "tray.and.arrow.down.fill")}
+#if os(macOS) || os(visionOS)
+                    .tabItem {Label("SaveTime", systemImage: "tray.and.arrow.down.fill").font(.title.monospaced())}
 #endif
                 
                 ListView(pageType: .kill)
                     .tag(PageType.kill)
-#if os(macOS)
-                    .tabItem {Label("KillTime", systemImage: "tray.and.arrow.down.fill")}
+#if os(macOS) || os(visionOS)
+                    .tabItem {Label("KillTime", systemImage: "tray.and.arrow.up.fill").font(.title.monospaced())}
 #endif
             }
             .ignoresSafeArea()

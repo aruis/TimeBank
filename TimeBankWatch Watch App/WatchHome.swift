@@ -48,7 +48,7 @@ struct WatchHome: View {
                     case .save:
                         VStack{
                             Text("SaveTime")
-                                .font(.footnote.monospaced())
+                                .font(.caption2.monospaced())
 //                                .monospaced().bold()
                             Text("\(saveMin)")
                                 .font(.caption.bold())
@@ -57,7 +57,7 @@ struct WatchHome: View {
                     case .kill:
                         VStack{
                             Text("KillTime")
-                                .font(.footnote.monospaced())
+                                .font(.caption2.monospaced())
                             Text("\(killMin)")
                                 .font(.caption.bold())
                         }
@@ -103,8 +103,8 @@ struct WatchHome: View {
                     Text(item.name)
                         .font(.title)
                     Text("\(item.saveMin) MIN")
-                        .font(.callout)
-                    VStack{
+                        .font(.body)
+                    Group{
                         Text("Last Execute:")
                         if let lastTouch = item.lastTouch {
                             Text(lastTouch,style: .date)
@@ -112,7 +112,8 @@ struct WatchHome: View {
                             Text("-")
                         }
                     }
-                    .font(.caption2)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
                 }
                 .toolbar{
                     ToolbarItem(placement: .topBarTrailing){

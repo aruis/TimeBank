@@ -75,6 +75,16 @@
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		83ABB0F52B57AC2000860AAB /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +107,8 @@
 		836DD00C2B30392000B3F0FB /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		83A51E852B4D2E8200595836 /* TimeBankWatch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TimeBankWatch Watch App.entitlements"; sourceTree = "<group>"; };
 		83A51E862B4D39FE00595836 /* WatchHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHome.swift; sourceTree = "<group>"; };
+		83ABB0E62B57AC1E00860AAB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		83ABB0E82B57AC1E00860AAB /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		83BCD6DA2B0734EA004FCBE1 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		83BCD6DC2B07369D004FCBE1 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		83BCD6E02B07474E004FCBE1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -182,6 +194,7 @@
 				83F410E12B4CF5F8008F004A /* TimeBankWatch Watch App */,
 				8302EA8F2B4E22F400A8ECF8 /* TimeBankVision */,
 				8302EA902B4E22F400A8ECF8 /* Packages */,
+				83ABB0E52B57AC1E00860AAB /* Frameworks */,
 				8317E6322AFCC2B7003543CB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -242,6 +255,15 @@
 				83BCD6DC2B07369D004FCBE1 /* AppData.swift */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		83ABB0E52B57AC1E00860AAB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				83ABB0E62B57AC1E00860AAB /* WidgetKit.framework */,
+				83ABB0E82B57AC1E00860AAB /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		83E0BB6D2B2AEE0900F1396E /* ext */ = {
@@ -331,6 +353,7 @@
 				83F410DC2B4CF5F8008F004A /* Sources */,
 				83F410DD2B4CF5F8008F004A /* Frameworks */,
 				83F410DE2B4CF5F8008F004A /* Resources */,
+				83ABB0F52B57AC2000860AAB /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -751,6 +774,7 @@
 		83F410EF2B4CF5F9008F004A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -783,6 +807,7 @@
 		83F410F02B4CF5F9008F004A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;

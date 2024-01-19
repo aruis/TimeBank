@@ -55,11 +55,7 @@ struct ShowItem: View {
                         .padding(.horizontal,15)
                         .padding(.vertical,8)
                         .background(
-                            Color.orange
-                                .blur(radius: 4)
-                                .opacity(0.85)
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                            
+                            Material.ultraThin,in: RoundedRectangle(cornerRadius:  14)
                         )
                         .padding(.bottom,40)
                 }

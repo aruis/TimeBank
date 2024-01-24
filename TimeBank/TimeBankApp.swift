@@ -28,7 +28,10 @@ struct TimeBankApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Home()
+            NavigationStack{
+                Home()
+            }
+            
             #if os(macOS)
                 .frame(minWidth: 380,minHeight: 480)
             #endif

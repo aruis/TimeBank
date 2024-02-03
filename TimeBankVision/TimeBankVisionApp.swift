@@ -28,12 +28,9 @@ struct TimeBankVisionApp: App {
     var body: some Scene {
         WindowGroup {
             Home()
-            #if os(macOS)
-                .frame(minWidth: 380,minHeight: 480)
-            #endif
+                .frame(minWidth: 380,minHeight: 480)        
         }
         .environment(appData)
-//        .modelContainer(for: BankItem.self, isAutosaveEnabled: true ,isUndoEnabled: true)
         .modelContainer(sharedModelContainer)
     }
 }

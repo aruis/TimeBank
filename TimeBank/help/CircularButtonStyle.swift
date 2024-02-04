@@ -24,8 +24,9 @@ struct CircularButtonStyle: ButtonStyle {
             .shadow(radius: 5,x: 3,y: 3)
             .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
             .contentShape(.circle)
+            #if os(visionOS)
             .hoverEffect(.highlight)
-            
+            #endif
         
     }
 }

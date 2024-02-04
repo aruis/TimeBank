@@ -23,7 +23,10 @@ struct RectButtonStyle: ButtonStyle {
             .clipShape(.rect(cornerSize: CGSize(width: 25, height: 25)))
             .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
             .contentShape(.rect(cornerSize: CGSize(width: 25, height: 25)))
-            .hoverEffect(.highlight)        
+            #if os(visionOS)
+            .hoverEffect(.highlight)
+            #endif
+
         
     }
 }

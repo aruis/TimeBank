@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct TimeBankVisionApp: App {
-    @State var appData = AppData()
+    @StateObject var appSetting = AppSetting()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -27,10 +27,16 @@ struct TimeBankVisionApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Home()
-                .frame(minWidth: 380,minHeight: 480)        
+            NavigationStack{
+                Home()
+            }
+            
+            
+            .frame(minWidth: 380,minHeight: 480)
+            
         }
-        .environment(appData)
+        .environmentObject(appSetting)
+//        .modelContainer(for: BankItem.self, isAutosaveEnabled: true ,isUndoEnabled: true)
         .modelContainer(sharedModelContainer)
     }
 }

@@ -20,6 +20,7 @@ struct WatchHome: View {
     @State private var isShowEditSheet = false
     @State private var isEdit = false
     @State private var isDelete = false
+    @State private var isShowSetting = false
     @State private var selectItem:BankItem = BankItem()
 
     
@@ -39,6 +40,11 @@ struct WatchHome: View {
                         isShowNew = false
                     })
             }
+            .sheet(isPresented: $isShowSetting, content: {
+                SettingView()
+                    .presentationDetents([.medium])
+            })
+
             .animation(.default, value: pageType)
             .toolbar{
                 ToolbarItem(placement: .topBarLeading, content: {
@@ -65,6 +71,14 @@ struct WatchHome: View {
                     }
                     
                 })
+                
+                ToolbarItem(placement: .topBarTrailing){
+                    Button("Edit", systemImage: "ellipsis"){
+                        isShowSetting = true
+                    }
+                    
+                }
+
             }
 
         }                    

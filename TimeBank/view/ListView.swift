@@ -11,8 +11,7 @@ import SwiftData
 struct ListView: View {
     
     var pageType:PageType
-    
-    @Environment(AppData.self) private var appData: AppData
+        
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [BankItem]
     

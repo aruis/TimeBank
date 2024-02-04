@@ -13,10 +13,19 @@
     "%lld" : {
 
     },
+    "%lld Min" : {
+
+    },
     "%lld MIN" : {
 
     },
     "~" : {
+
+    },
+    "0" : {
+
+    },
+    "60" : {
 
     },
     "Add Item" : {
@@ -79,6 +88,9 @@
         }
       }
     },
+    "Enable Timer" : {
+
+    },
     "Execute in less than 1 minute, no record will be made." : {
       "localizations" : {
         "zh-Hans" : {
@@ -135,6 +147,9 @@
 
     },
     "test" : {
+
+    },
+    "Timer Duration" : {
 
     },
     "Your Balance" : {

@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct TimeBankWatch_Watch_AppApp: App {
-    @State var appData = AppData()
+    @StateObject var appSetting = AppSetting()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -29,7 +29,7 @@ struct TimeBankWatch_Watch_AppApp: App {
         WindowGroup {
                 WatchHome()                        
         }        
-        .environment(appData)
+        .environmentObject(appSetting)
         //        .modelContainer(for: BankItem.self, isAutosaveEnabled: true ,isUndoEnabled: true)
         .modelContainer(sharedModelContainer)
     }

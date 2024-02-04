@@ -10,13 +10,13 @@ import SwiftData
 import OSLog
 
 struct Home: View {
-    
-    @Environment(AppData.self) private var appData: AppData
+        
     @Environment(\.modelContext) private var modelContext
     
     @State private var pageType = PageType.save
-    @State var isShowAdd = false
-    @State var isShowBalanceTitle = false
+    @State private var isShowAdd = false
+    @State private var isShowSetting = false
+    @State private var isShowBalanceTitle = false
     
     @Query private var items: [BankItem]
     
@@ -39,21 +39,18 @@ struct Home: View {
                 .tabItem {Label("KillTime", systemImage: "tray.and.arrow.up.fill")}
 #endif
         }
-        #if os(macOS) || os(visionOS)
+        #if os(macOS)
         .padding(.top,60)
         .overlay(alignment: .top, content: {
             HStack{
                 title()
                 Spacer()
-                #if os(macOS)
                 balance()
-                #endif
             }
             .padding()
 //            .padding(.top,20)
         })
-        #endif
-        #if !os(macOS)
+        #else
         .ignoresSafeArea()
         .toolbar{
             ToolbarItem(placement: .topBarLeading){
@@ -61,7 +58,10 @@ struct Home: View {
             }
             
             ToolbarItem(placement: .topBarTrailing){
-//                balance()
+                Button("Edit", systemImage: "ellipsis"){
+                    isShowSetting = true
+                }
+                
             }
             ToolbarItem(placement: .bottomBar){
                 HStack{
@@ -95,27 +95,32 @@ struct Home: View {
             }
         }
         #endif
-#if os(iOS)
+        #if os(iOS)
         .tabViewStyle(.page)
-#endif
+        #endif
         .background(
             Rectangle()
                 .fill(.black.opacity(0.05))
                 .ignoresSafeArea()
             
         )
-#if os(macOS)
+        #if os(macOS)
         .overlay(alignment: .bottomTrailing, content: {
             addButton()
         })
-#endif
+        #endif
+        #if os(iOS) 
+        .sensoryFeedback(.decrease, trigger: pageType)
+        #endif
         .sheet(isPresented: $isShowAdd, content: {
             NewBankItem(pageType:$pageType,bankItem: .constant(BankItem()))
                 .presentationDetents([.medium])
         })
-        #if os(iOS)
-        .sensoryFeedback(.decrease, trigger: pageType)
-        #endif
+        .sheet(isPresented: $isShowSetting, content: {
+            SettingView()
+                .presentationDetents([.medium])
+        })
+
     }
     
     @ViewBuilder

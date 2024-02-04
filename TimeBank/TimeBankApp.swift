@@ -11,7 +11,7 @@ import SwiftData
 @main
 struct TimeBankApp: App {
     
-    @State var appData = AppData()
+    @StateObject var appSetting = AppSetting()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -36,7 +36,7 @@ struct TimeBankApp: App {
                 .frame(minWidth: 380,minHeight: 480)
             #endif
         }
-        .environment(appData)
+        .environmentObject(appSetting)
 //        .modelContainer(for: BankItem.self, isAutosaveEnabled: true ,isUndoEnabled: true)
         .modelContainer(sharedModelContainer)
     }

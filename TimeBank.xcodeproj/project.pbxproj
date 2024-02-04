@@ -18,7 +18,7 @@
 		8302EAA52B4E24A300A8ECF8 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6B2B2ADF7300F1396E /* LogView.swift */; };
 		8302EAA62B4E24A300A8ECF8 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6E2B2AEE8400F1396E /* DateExt.swift */; };
 		8302EAA72B4E24A300A8ECF8 /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
-		8302EAA82B4E24A300A8ECF8 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppData.swift */; };
+		8302EAA82B4E24A300A8ECF8 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */; };
 		8302EAA92B4E24A300A8ECF8 /* BankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6382AFCC2B8003543CB /* BankItem.swift */; };
 		8302EAAA2B4E24A300A8ECF8 /* ShowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB672B2AA3B000F1396E /* ShowItem.swift */; };
 		83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */; };
@@ -30,11 +30,12 @@
 		836DD00D2B30392000B3F0FB /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 836DD00C2B30392000B3F0FB /* Localizable.xcstrings */; };
 		836DE9E22B6F60620026316A /* RectButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836DE9E12B6F60620026316A /* RectButtonStyle.swift */; };
 		836DE9E32B6F617D0026316A /* RectButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836DE9E12B6F60620026316A /* RectButtonStyle.swift */; };
+		836DE9E42B6F8B290026316A /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836ED07D2B61CA8B00097211 /* SettingView.swift */; };
 		836ED07E2B61CA8B00097211 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836ED07D2B61CA8B00097211 /* SettingView.swift */; };
 		836ED07F2B61CA8B00097211 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836ED07D2B61CA8B00097211 /* SettingView.swift */; };
 		83A51E872B4D39FE00595836 /* WatchHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A51E862B4D39FE00595836 /* WatchHome.swift */; };
 		83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DA2B0734EA004FCBE1 /* ListView.swift */; };
-		83BCD6DD2B07369D004FCBE1 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppData.swift */; };
+		83BCD6DD2B07369D004FCBE1 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */; };
 		83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6E02B07474E004FCBE1 /* Home.swift */; };
 		83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB672B2AA3B000F1396E /* ShowItem.swift */; };
 		83E0BB6A2B2AD87B00F1396E /* ItemLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB692B2AD87B00F1396E /* ItemLog.swift */; };
@@ -48,7 +49,7 @@
 		83F410E72B4CF5F9008F004A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83F410E62B4CF5F9008F004A /* Assets.xcassets */; };
 		83F410EA2B4CF5F9008F004A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83F410E92B4CF5F9008F004A /* Preview Assets.xcassets */; };
 		83F410ED2B4CF5F9008F004A /* TimeBank.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 83F410E02B4CF5F8008F004A /* TimeBank.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		83F410F32B4CF62C008F004A /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppData.swift */; };
+		83F410F32B4CF62C008F004A /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */; };
 		83F410F42B4CF62C008F004A /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6E2B2AEE8400F1396E /* DateExt.swift */; };
 		83F410F82B4CF62C008F004A /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
 		83F410F92B4CF62C008F004A /* ItemLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB692B2AD87B00F1396E /* ItemLog.swift */; };
@@ -115,7 +116,7 @@
 		83ABB0E62B57AC1E00860AAB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		83ABB0E82B57AC1E00860AAB /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		83BCD6DA2B0734EA004FCBE1 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
-		83BCD6DC2B07369D004FCBE1 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		83BCD6E02B07474E004FCBE1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		83E0BB672B2AA3B000F1396E /* ShowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowItem.swift; sourceTree = "<group>"; };
 		83E0BB692B2AD87B00F1396E /* ItemLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLog.swift; sourceTree = "<group>"; };
@@ -259,7 +260,7 @@
 			children = (
 				8317E6382AFCC2B8003543CB /* BankItem.swift */,
 				83E0BB692B2AD87B00F1396E /* ItemLog.swift */,
-				83BCD6DC2B07369D004FCBE1 /* AppData.swift */,
+				83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -462,7 +463,7 @@
 				83F227722B4E8C4D00D26488 /* PageType.swift in Sources */,
 				8302EAAA2B4E24A300A8ECF8 /* ShowItem.swift in Sources */,
 				8302EAA62B4E24A300A8ECF8 /* DateExt.swift in Sources */,
-				8302EAA82B4E24A300A8ECF8 /* AppData.swift in Sources */,
+				8302EAA82B4E24A300A8ECF8 /* AppSetting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +475,7 @@
 				83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */,
 				83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */,
 				83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */,
-				83BCD6DD2B07369D004FCBE1 /* AppData.swift in Sources */,
+				83BCD6DD2B07369D004FCBE1 /* AppSetting.swift in Sources */,
 				83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */,
 				83E0BB6F2B2AEE8400F1396E /* DateExt.swift in Sources */,
 				835B8B7C2AFCDAB5001A144D /* NewBankItem.swift in Sources */,
@@ -500,7 +501,8 @@
 				83F410F42B4CF62C008F004A /* DateExt.swift in Sources */,
 				83F410F92B4CF62C008F004A /* ItemLog.swift in Sources */,
 				83F227712B4E8C4D00D26488 /* PageType.swift in Sources */,
-				83F410F32B4CF62C008F004A /* AppData.swift in Sources */,
+				83F410F32B4CF62C008F004A /* AppSetting.swift in Sources */,
+				836DE9E42B6F8B290026316A /* SettingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

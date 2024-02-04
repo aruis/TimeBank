@@ -82,9 +82,11 @@ struct Home: View {
                     .onTapGesture {
                         isShowBalanceTitle.toggle()
                     }
-                    .onHover(perform: { hovering in
-                        isShowBalanceTitle.toggle()
-                    })
+                    #if os(visionOS)
+                    .padding()
+                    #endif
+                    .contentShape(.capsule)
+                    .hoverEffect(.highlight)
                     
                     Spacer()
                     addButton()
@@ -169,12 +171,11 @@ struct Home: View {
                 .font(.title)
         }
         .buttonStyle(CircularButtonStyle(color:mainColor.opacity(0.85)))
-        .shadow(radius: 5,x: 3,y: 3)
         .animation(.default, value: pageType)
-        .ignoresSafeArea()
+        #if os(macOS)
         .padding(.trailing,25)
+        #endif
         .padding(.bottom,25)
-        .controlSize(.extraLarge)
     }
     
     var mainColor:Color{

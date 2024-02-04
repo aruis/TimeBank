@@ -103,6 +103,7 @@ struct NewBankItem: View {
             })
             #endif
         }
+//        .defaultFocus($nameFocused,true)
         .onAppear{
             nameFocused = true
             self.name = bankItem.name

@@ -57,20 +57,13 @@ struct ListView: View {
                 
             }
             .padding()
-            .frame(maxWidth:.infinity,minHeight:  195)
-            .background(
-                mainColor
-                    .gradient.opacity(0.15)
-                    .shadow(.drop(radius: 5, y: 5))
-                //                .shadow(.drop(radius: 15))
-            )
-            .clipShape(
-                RoundedRectangle(cornerSize: CGSize(width: 20, height: 20))
-            )
-            
+            .frame(maxWidth:.infinity,minHeight:  195)            
             
         })
-        .buttonStyle(.plain)
+        .buttonStyle(RectButtonStyle(color:mainColor))
+        
+        
+        
         
         
         //        .shadow(radius: 1)

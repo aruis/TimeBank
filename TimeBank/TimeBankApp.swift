@@ -12,6 +12,7 @@ import SwiftData
 struct TimeBankApp: App {
     
     @StateObject var appSetting = AppSetting()
+    @State private var isShowSetting = false
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -35,9 +36,23 @@ struct TimeBankApp: App {
             #if os(macOS)
                 .frame(minWidth: 380,minHeight: 480)
             #endif
+                .sheet(isPresented: $isShowSetting, content: {
+                    SettingView()
+                        .presentationDetents([.medium])
+                })
+
         }
+        .commands{
+            CommandGroup(replacing: .appSettings, addition: {
+                Button("Setting"){
+                    isShowSetting = true
+                }.keyboardShortcut(",", modifiers: [.command])
+            })
+        }
+        
         .environmentObject(appSetting)
 //        .modelContainer(for: BankItem.self, isAutosaveEnabled: true ,isUndoEnabled: true)
         .modelContainer(sharedModelContainer)
+        
     }
 }

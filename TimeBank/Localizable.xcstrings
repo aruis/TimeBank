@@ -14,10 +14,24 @@
 
     },
     "%lld Min" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 分"
+          }
+        }
+      }
     },
     "%lld MIN" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Min"
+          }
+        }
+      }
     },
     "~" : {
 
@@ -88,8 +102,15 @@
         }
       }
     },
-    "Enable Timer" : {
-
+    "Enable Timer Notification" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开启到时提醒"
+          }
+        }
+      }
     },
     "Execute in less than 1 minute, no record will be made." : {
       "localizations" : {
@@ -127,6 +148,9 @@
         }
       }
     },
+    "OK" : {
+
+    },
     "Save" : {
       "localizations" : {
         "zh-Hans" : {
@@ -150,7 +174,24 @@
 
     },
     "Timer Duration" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "时长"
+          }
+        }
+      }
+    },
+    "You need to manually enable notification permissions" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您需要前往“设置”-“通知”，打开相应权限"
+          }
+        }
+      }
     },
     "Your Balance" : {
       "localizations" : {

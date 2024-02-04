@@ -91,8 +91,8 @@ struct NewBankItem: View {
             .padding(.horizontal,20)
             #endif
             .navigationTitle(bankItem.name.isEmpty ?  "Add Item" :"Edit Item")
-            #if os(macOS) || os(visionOS)
             .toolbar(content: {
+                #if os(macOS)
                 ToolbarItem(placement: .cancellationAction, content: {
                     Button{
                         dismiss()
@@ -100,8 +100,17 @@ struct NewBankItem: View {
                         Text("Cancel")
                     }
                 })
+                #else
+                ToolbarItem(placement: .topBarTrailing, content: {
+                    Button{
+                        dismiss()
+                    }label: {
+                        Text("Cancel")
+                    }
+                })
+                #endif
+
             })
-            #endif
         }
 //        .defaultFocus($nameFocused,true)
         .onAppear{

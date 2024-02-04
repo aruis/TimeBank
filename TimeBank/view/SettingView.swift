@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import UserNotifications
 
 struct SettingView: View {
     
@@ -15,6 +15,7 @@ struct SettingView: View {
     @EnvironmentObject var settings: AppSetting
     
     @State var text:String = ""
+    @State var showingAlert = false
     
     @FocusState private var sliderFocused: Bool
     
@@ -24,7 +25,28 @@ struct SettingView: View {
         NavigationStack {
             Form {
                 Toggle(isOn: $settings.isTimerEnabled) {
-                    Text("Enable Timer")
+                    Text("Enable Timer Notification")
+                }
+                .onChange(of: settings.isTimerEnabled){
+                    if settings.isTimerEnabled{
+                        
+                        Task {
+                            let result = await settings.requestNotificationPermission()
+                            switch result {
+                            case .success(let granted):
+                                if !granted {
+                                    // 用户拒绝授权，可以在这里更新 UI 或状态
+                                    showingAlert = true
+                                }
+                            case .failure(let error):
+                                // 处理错误
+                                print(error)
+                                showingAlert = true
+                            }
+                        }
+                        
+                    }
+                    
                 }
                 
                 if settings.isTimerEnabled {
@@ -34,7 +56,7 @@ struct SettingView: View {
                         Spacer()
                         Text("\(Int( settings.timerDuration)) Min")
                             .fontWeight(.bold)
-
+                        
                     }
                     
                     Slider(
@@ -42,7 +64,7 @@ struct SettingView: View {
                         in: 0...60,
                         step: 5
                     ) {
-                        Text("Timer Duration")
+                        
                     } minimumValueLabel: {
                         Text("0")
                     } maximumValueLabel: {
@@ -52,29 +74,48 @@ struct SettingView: View {
                     .contentShape(.capsule)
                     .overlay{
                         RoundedRectangle(cornerRadius: 5) // 你可以根据需要调整圆角大小
-                               .stroke(sliderFocused ? Color.green : Color.clear, lineWidth: 2)
+                            .stroke(sliderFocused ? Color.green : Color.clear, lineWidth: 2)
                     }
-                    
-                    
-                    
-
                     
                 }
                 
                 
             }
-            #if !os(watchOS)
+            .alert("You need to manually enable notification permissions", isPresented: $showingAlert) {
+                Button("OK", role: .cancel) { 
+                    
+                }
+            }
+#if os(macOS)
+            .padding()
+            .frame(minWidth: 300)
+#endif
             .toolbar{
-                ToolbarItem(placement: .topBarTrailing){
-                    Button("Close"){
+#if os(macOS)
+                ToolbarItem(placement: .cancellationAction, content: {
+                    Button{
                         dismiss()
+                    }label: {
+                        Text("Close")
                     }
-                }
+                })
+#elseif !os(watchOS)
+                ToolbarItem(placement: .topBarTrailing, content: {
+                    Button{
+                        dismiss()
+                    }label: {
+                        Text("Close")
+                    }
+                })
+#endif
             }
-            #endif
-            
             .navigationTitle("Setting")
+#if os(iOS)
+            .sensoryFeedback(.decrease, trigger: settings.timerDuration)
+#endif
+            
         }
+        
     }
 }
 

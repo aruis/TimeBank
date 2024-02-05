@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct ShowItem: View {
     @EnvironmentObject var settings: AppSetting
@@ -75,9 +76,11 @@ struct ShowItem: View {
                     break
                 }
             })
-#if os(macOS) || os(visionOS)
-            .frame(width: 450,height: 550)
+            #if os(macOS) || os(visionOS)
+            .frame(minWidth: 420,minHeight:  350)
+            #endif
             .toolbar(content: {
+                #if os(macOS) || os(visionOS)
                 ToolbarItem(placement: .cancellationAction, content: {
 
                         Button{
@@ -87,8 +90,20 @@ struct ShowItem: View {
                         }
                         .opacity(isTimerRunning ? 0 : 1)
                 })
+                #endif
+                ToolbarItem(placement: .destructiveAction, content: {
+
+                    Button("Pin", systemImage: bankItem.isPin ? "pin.circle.fill" :  "pin.circle"){
+                        bankItem.isPin.toggle()
+                    }
+                    .labelStyle(.iconOnly)
+                    .contentShape(.circle)
+                    .buttonStyle(.borderless)
+                    .controlSize(.large)
+                    .padding(10)
+                       
+                })
             })
-#endif
             #if os(iOS)
             .sensoryFeedback(.decrease, trigger: isTimerRunning)
             #endif

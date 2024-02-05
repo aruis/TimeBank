@@ -44,6 +44,7 @@ struct Home: View {
         .overlay(alignment: .top, content: {
             HStack{
                 title()
+                    .focusable(false)
                 Spacer()
                 balance()
             }

@@ -20,6 +20,7 @@ class BankItem {
     
     var lastTouch:Date?
     var createTime:Date = Date()
+    var isPin:Bool = false
     
     @Relationship(deleteRule: .cascade, inverse: \ItemLog.bankItem)
     var logs:[ItemLog]?
@@ -32,6 +33,7 @@ class BankItem {
         self.isSave = isSave
         self.createTime = Date()
         self.logs = []
+        self.isPin = false
     }
     
     var saveMin:Int {

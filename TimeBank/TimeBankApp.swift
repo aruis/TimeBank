@@ -14,7 +14,9 @@ struct TimeBankApp: App {
     @StateObject var appSetting = AppSetting()
     @State private var isShowSetting = false
     
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate       
+    #if !os(macOS)
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    #endif
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([

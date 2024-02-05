@@ -139,6 +139,13 @@ struct WatchHome: View {
                         .sheet(isPresented: $isShowEditSheet, content: {
                             VStack(spacing: 10){
                                 Button{
+                                    item.isPin.toggle()
+                                    isShowEditSheet = false
+                                }label:{
+                                    Label("Pin",systemImage: item.isPin ? "pin.circle.fill" : "pin.circle")
+                                }
+                                
+                                Button{
                                     selectItem = item
                                     isShowEditSheet = false
                                     isEdit = true
@@ -195,7 +202,30 @@ struct WatchHome: View {
     func list(type:PageType) -> [BankItem]{
         return items.filter{
             $0.isSave == (type == .save )
-        }
+        }.sorted(by: { item1,item2 in
+            // 首先根据 isPin 状态进行排序
+                if item1.isPin && !item2.isPin {
+                    return true
+                } else if !item1.isPin && item2.isPin {
+                    return false
+                } else {
+                    // 如果 isPin 状态相同，再根据 lastTouch 和 createTime 进行排序
+                    // 如果 lastTouch 都不为 nil，按照 lastTouch 降序排序
+                    if let lastTouch1 = item1.lastTouch, let lastTouch2 = item2.lastTouch {
+                        return lastTouch1 > lastTouch2
+                    } else if item1.lastTouch != nil {
+                        // 如果 item1 的 lastTouch 不为 nil，而 item2 的为 nil
+                        return true
+                    } else if item2.lastTouch != nil {
+                        // 如果 item2 的 lastTouch 不为 nil，而 item1 的为 nil
+                        return false
+                    } else {
+                        // 如果 lastTouch 都为 nil，按照 createTime 降序排序
+                        return item1.createTime > item2.createTime
+                    }
+                }
+        })
+
     }
     
     

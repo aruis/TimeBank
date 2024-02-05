@@ -5,6 +5,7 @@
 //  Created by 牧云踏歌 on 2024/2/4.
 //
 
+#if !os(macOS)
 import UIKit
 import UserNotifications
 
@@ -25,3 +26,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         completionHandler([.banner, .sound,])
     }
 }
+#endif

@@ -25,7 +25,7 @@ struct SettingView: View {
         NavigationStack {
             Form {
                 Toggle(isOn: $settings.isTimerEnabled) {
-                    Text("Enable Timer Notification")
+                    Text("Enable Timer Notification🍅")
                 }
                 .onChange(of: settings.isTimerEnabled){
                     if settings.isTimerEnabled{
@@ -62,7 +62,7 @@ struct SettingView: View {
                     Slider(
                         value: $settings.timerDuration,
                         in: 0...60,
-                        step: 1
+                        step: 5
                     ) {
                         
                     } minimumValueLabel: {

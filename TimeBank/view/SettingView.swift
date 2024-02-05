@@ -62,7 +62,7 @@ struct SettingView: View {
                     Slider(
                         value: $settings.timerDuration,
                         in: 0...60,
-                        step: 5
+                        step: 1
                     ) {
                         
                     } minimumValueLabel: {

@@ -122,11 +122,38 @@
         }
       }
     },
+    "Invested" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invested"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "投入"
+          }
+        }
+      }
+    },
     "KillTime" : {
 
     },
     "KILLTIME" : {
 
+    },
+    "KillTime Complete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "KillTime 已完成"
+          }
+        }
+      }
     },
     "Last Execute:" : {
       "localizations" : {
@@ -167,8 +194,42 @@
     "SAVETIME" : {
 
     },
+    "SaveTime Complete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SaveTime 已达成"
+          }
+        }
+      }
+    },
     "Setting" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置"
+          }
+        }
+      }
+    },
+    "Spent" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "spent"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "花费"
+          }
+        }
+      }
     },
     "test" : {
 
@@ -189,6 +250,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您需要前往“设置”-“通知”，打开相应权限"
+          }
+        }
+      }
+    },
+    "YouHaveJustInvested" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have just %3$@ %1$@ minutes on %2$@.\n"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "您刚刚在%2$@%3$@了%1$@分钟。"
           }
         }
       }

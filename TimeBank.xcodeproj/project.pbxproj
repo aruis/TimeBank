@@ -33,6 +33,8 @@
 		836DE9E42B6F8B290026316A /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836ED07D2B61CA8B00097211 /* SettingView.swift */; };
 		836ED07E2B61CA8B00097211 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836ED07D2B61CA8B00097211 /* SettingView.swift */; };
 		836ED07F2B61CA8B00097211 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836ED07D2B61CA8B00097211 /* SettingView.swift */; };
+		839E09A22B6FD6C800CE6408 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E09A12B6FD6C800CE6408 /* AppDelegate.swift */; };
+		839E09A32B6FD6C800CE6408 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E09A12B6FD6C800CE6408 /* AppDelegate.swift */; };
 		83A51E872B4D39FE00595836 /* WatchHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A51E862B4D39FE00595836 /* WatchHome.swift */; };
 		83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DA2B0734EA004FCBE1 /* ListView.swift */; };
 		83BCD6DD2B07369D004FCBE1 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */; };
@@ -111,6 +113,7 @@
 		836DD00C2B30392000B3F0FB /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		836DE9E12B6F60620026316A /* RectButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectButtonStyle.swift; sourceTree = "<group>"; };
 		836ED07D2B61CA8B00097211 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		839E09A12B6FD6C800CE6408 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		83A51E852B4D2E8200595836 /* TimeBankWatch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TimeBankWatch Watch App.entitlements"; sourceTree = "<group>"; };
 		83A51E862B4D39FE00595836 /* WatchHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHome.swift; sourceTree = "<group>"; };
 		83ABB0E62B57AC1E00860AAB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -190,6 +193,7 @@
 			children = (
 				83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */,
 				836DE9E12B6F60620026316A /* RectButtonStyle.swift */,
+				839E09A12B6FD6C800CE6408 /* AppDelegate.swift */,
 			);
 			path = help;
 			sourceTree = "<group>";
@@ -453,6 +457,7 @@
 				8302EAA72B4E24A300A8ECF8 /* NewBankItem.swift in Sources */,
 				8302EAA32B4E24A300A8ECF8 /* CircularButtonStyle.swift in Sources */,
 				8302EAA22B4E24A300A8ECF8 /* ListView.swift in Sources */,
+				839E09A32B6FD6C800CE6408 /* AppDelegate.swift in Sources */,
 				8302EAA92B4E24A300A8ECF8 /* BankItem.swift in Sources */,
 				8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */,
 				8302EAA42B4E24A300A8ECF8 /* Home.swift in Sources */,
@@ -474,6 +479,7 @@
 				83E0BB6C2B2ADF7300F1396E /* LogView.swift in Sources */,
 				83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */,
 				83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */,
+				839E09A22B6FD6C800CE6408 /* AppDelegate.swift in Sources */,
 				83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */,
 				83BCD6DD2B07369D004FCBE1 /* AppSetting.swift in Sources */,
 				83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */,

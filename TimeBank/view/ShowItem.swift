@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ShowItem: View {
+    @EnvironmentObject var settings: AppSetting
+    
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
@@ -87,7 +89,10 @@ struct ShowItem: View {
                 })
             })
 #endif
-            
+            #if os(iOS)
+            .sensoryFeedback(.decrease, trigger: isTimerRunning)
+            #endif
+
             
         }
         .interactiveDismissDisabled(isTimerRunning)
@@ -105,6 +110,8 @@ struct ShowItem: View {
                         .fontWeight(.regular)
                         .foregroundStyle(Color.white)
                         .transition(.moveAndFadeTop)
+                        .contentTransition(.numericText(value: Double( timeRemaining)))
+//                        .﻿contentTransition(.numericText(value:timeRemaining))
                 } else {
                     Text( "\(bankItem.saveMin) MIN")
                         .foregroundStyle(Color.white)
@@ -214,17 +221,15 @@ struct ShowItem: View {
     }
     
     private func startTimer() {
-        
-#if os(iOS)
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-#endif
-        
         withAnimation{
             isTimerRunning = true
         }
         
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            self.timeRemaining += 1
+            withAnimation(.default, {
+                self.timeRemaining += 1
+            })
+            
         }
         
         
@@ -233,6 +238,29 @@ struct ShowItem: View {
         }
         
         start = Date()
+        
+        if settings.isTimerEnabled && settings.timerDuration > 0 {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                if granted {
+                    
+                    let content = UNMutableNotificationContent()
+                    content.title = bankItem.isSave ? NSLocalizedString("SaveTime Complete", comment: ""):NSLocalizedString("KillTime Complete", comment: "")
+//                    content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), arguments: [String(Int( settings.timerDuration)), bankItem.name])
+                    
+                    
+                    let actionWordKey = bankItem.isSave ? "Invested" : "Spent"
+                    let actionWord = NSLocalizedString(actionWordKey, comment: "Action word based on bank item saving or spending")
+                    content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), String(Int(settings.timerDuration)), "[\(bankItem.name)]", actionWord)
+                    content.sound = UNNotificationSound.default
+                    
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: settings.timerDuration * 60, repeats: false)
+                    
+                    let request = UNNotificationRequest(identifier: "meetingReminder", content: content, trigger: trigger)
+
+                    UNUserNotificationCenter.current().add(request)
+                }
+            }
+        }
     }
     
     private func pauseTimer() {
@@ -241,6 +269,8 @@ struct ShowItem: View {
     }
     
     private func resetTimer() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        
         withAnimation{
             isTimerRunning = false
         }
@@ -271,10 +301,6 @@ struct ShowItem: View {
                 
                 return
             }
-            
-#if os(iOS)
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-#endif
             
             bankItem.lastTouch = now
             let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)

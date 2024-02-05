@@ -14,6 +14,8 @@ struct TimeBankApp: App {
     @StateObject var appSetting = AppSetting()
     @State private var isShowSetting = false
     
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate       
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             BankItem.self,

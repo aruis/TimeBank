@@ -104,7 +104,7 @@ struct ShowItem: View {
                        
                 })
             })
-            #if os(iOS)
+            #if !os(visionOS)
             .sensoryFeedback(.decrease, trigger: isTimerRunning)
             #endif
 

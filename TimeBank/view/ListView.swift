@@ -74,7 +74,10 @@ struct ListView: View {
             
         })
         .buttonStyle(RectButtonStyle(color:mainColor))
-        
+        #if !os(visionOS)
+        .sensoryFeedback(.selection, trigger: item.isPin)
+        #endif
+
         
         
         

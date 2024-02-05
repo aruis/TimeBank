@@ -110,7 +110,7 @@ struct Home: View {
             addButton()
         })
         #endif
-        #if os(iOS) 
+        #if !os(visionOS) 
         .sensoryFeedback(.decrease, trigger: pageType)
         #endif
         .sheet(isPresented: $isShowAdd, content: {

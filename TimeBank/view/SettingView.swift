@@ -110,9 +110,9 @@ struct SettingView: View {
 #endif
             }
             .navigationTitle("Setting")
-#if os(iOS)
+            #if !os(visionOS)
             .sensoryFeedback(.decrease, trigger: settings.timerDuration)
-#endif
+            #endif
             
         }
         

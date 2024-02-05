@@ -74,9 +74,7 @@ struct NewBankItem: View {
                     Text("Save")
                         .padding()
                 }
-                #if !os(visionOS)
                 .buttonStyle(MyButtonStyle(color: mainColor))
-                #endif
 //                .scaleEffect(isShaking ? 1.12 : 1.0)
                 .rotation3DEffect(Angle(degrees: isShaking ? 10 : 0), axis: (x:0,y:1,z:0))
 //                .rotationEffect(Angle(degrees: isShaking ? 1 : 0), anchor: .center)
@@ -100,7 +98,7 @@ struct NewBankItem: View {
                         Text("Cancel")
                     }
                 })
-                #else
+                #elseif !os(watchOS)
                 ToolbarItem(placement: .topBarTrailing, content: {
                     Button{
                         dismiss()
@@ -157,10 +155,15 @@ struct MyButtonStyle: ButtonStyle {
             .font(.title2)
         #endif
             .fontWeight(.bold)
-            .background(color.gradient.opacity(0.75))
+            .background(color.gradient.opacity(0.85))
             .foregroundStyle(.white)
-            .clipShape(Circle())
-            .shadow(radius: 3)            
+            .clipShape(.circle)
+            .shadow(radius: 3)
+            .contentShape(.circle)
+            #if os(visionOS)
+            .hoverEffect(.highlight)
+            #endif
+
     }
 }
 

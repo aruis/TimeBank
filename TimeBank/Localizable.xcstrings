@@ -107,7 +107,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "开启到时提醒🍅"
+            "value" : "开启计时提醒🍅"
           }
         }
       }
@@ -210,6 +210,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SaveTime 已达成"
+          }
+        }
+      }
+    },
+    "Scheduled Reminder" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "计时提醒"
           }
         }
       }

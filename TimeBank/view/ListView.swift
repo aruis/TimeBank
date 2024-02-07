@@ -52,7 +52,7 @@ struct ListView: View {
                         Text("-")
                     }
                 }
-                .font(.caption)
+                .font(.caption)                
                 
             }
             .padding()

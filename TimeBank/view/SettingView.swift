@@ -24,65 +24,68 @@ struct SettingView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Toggle(isOn: $settings.isTimerEnabled) {
-                    Text("Enable Timer Notification🍅")
-                }
-                .onChange(of: settings.isTimerEnabled){
-                    if settings.isTimerEnabled{
-                        
-                        Task {
-                            let result = await settings.requestNotificationPermission()
-                            switch result {
-                            case .success(let granted):
-                                if !granted {
-                                    // 用户拒绝授权，可以在这里更新 UI 或状态
+                Section ("Scheduled Reminder"){
+                    Toggle(isOn: $settings.isTimerEnabled) {
+                        Text("Enable Timer Notification🍅")
+                    }
+                    .onChange(of: settings.isTimerEnabled){
+                        if settings.isTimerEnabled{
+                            
+                            Task {
+                                let result = await settings.requestNotificationPermission()
+                                switch result {
+                                case .success(let granted):
+                                    if !granted {
+                                        // 用户拒绝授权，可以在这里更新 UI 或状态
+                                        showingAlert = true
+                                    }
+                                case .failure(let error):
+                                    // 处理错误
+                                    print(error)
                                     showingAlert = true
                                 }
-                            case .failure(let error):
-                                // 处理错误
-                                print(error)
-                                showingAlert = true
                             }
+                            
                         }
                         
                     }
                     
-                }
-                
-                if settings.isTimerEnabled {
-                    
-                    HStack{
-                        Text("Timer Duration")
-                        Spacer()
-                        Text("\(Int( settings.timerDuration)) Min")
-                            .fontWeight(.bold)
+                    if settings.isTimerEnabled {
+                        
+                        HStack{
+                            Text("Timer Duration")
+                            Spacer()
+                            Text("\(Int( settings.timerDuration)) Min")
+                                .fontWeight(.bold)
+                            
+                        }
+                        
+                        Slider(
+                            value: $settings.timerDuration,
+                            in: 0...60,
+                            step: 5
+                        ) {
+                            
+                        } minimumValueLabel: {
+                            Text("0")
+                        } maximumValueLabel: {
+                            Text("60")
+                        }
+                        .focused($sliderFocused)
+                        .contentShape(.capsule)
+                        .overlay{
+                            RoundedRectangle(cornerRadius: 5) // 你可以根据需要调整圆角大小
+                                .stroke(sliderFocused ? Color.green : Color.clear, lineWidth: 2)
+                        }
                         
                     }
                     
-                    Slider(
-                        value: $settings.timerDuration,
-                        in: 0...60,
-                        step: 5
-                    ) {
-                        
-                    } minimumValueLabel: {
-                        Text("0")
-                    } maximumValueLabel: {
-                        Text("60")
-                    }
-                    .focused($sliderFocused)
-                    .contentShape(.capsule)
-                    .overlay{
-                        RoundedRectangle(cornerRadius: 5) // 你可以根据需要调整圆角大小
-                            .stroke(sliderFocused ? Color.green : Color.clear, lineWidth: 2)
-                    }
                     
                 }
-                
-                
+        
             }
             .alert("You need to manually enable notification permissions", isPresented: $showingAlert) {
-                Button("OK", role: .cancel) { 
+                Button("OK", role: .cancel) {
                     
                 }
             }
@@ -112,7 +115,7 @@ struct SettingView: View {
             .navigationTitle("Setting")
             #if !os(visionOS)
             .sensoryFeedback(.decrease, trigger: settings.timerDuration)
-            #endif
+#endif
             
         }
         

@@ -36,6 +36,8 @@
 		839E09A22B6FD6C800CE6408 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E09A12B6FD6C800CE6408 /* AppDelegate.swift */; };
 		839E09A32B6FD6C800CE6408 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E09A12B6FD6C800CE6408 /* AppDelegate.swift */; };
 		83A51E872B4D39FE00595836 /* WatchHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A51E862B4D39FE00595836 /* WatchHome.swift */; };
+		83A8BF252B735A69002A1CBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8317E63A2AFCC2B9003543CB /* Assets.xcassets */; };
+		83A8BF262B735A7F002A1CBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8317E63A2AFCC2B9003543CB /* Assets.xcassets */; };
 		83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DA2B0734EA004FCBE1 /* ListView.swift */; };
 		83BCD6DD2B07369D004FCBE1 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */; };
 		83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6E02B07474E004FCBE1 /* Home.swift */; };
@@ -424,6 +426,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8302EA9C2B4E22F500A8ECF8 /* Preview Assets.xcassets in Resources */,
+				83A8BF252B735A69002A1CBA /* Assets.xcassets in Resources */,
 				8302EA992B4E22F500A8ECF8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,6 +446,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				83F410EA2B4CF5F9008F004A /* Preview Assets.xcassets in Resources */,
+				83A8BF262B735A7F002A1CBA /* Assets.xcassets in Resources */,
 				83F410E72B4CF5F9008F004A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

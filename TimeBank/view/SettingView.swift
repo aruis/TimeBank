@@ -59,7 +59,7 @@ struct SettingView: View {
                                 .fontWeight(.bold)
                             
                         }
-                        
+
                         Slider(
                             value: $settings.timerDuration,
                             in: 0...60,
@@ -80,24 +80,21 @@ struct SettingView: View {
                         
                     }
                     
-                    
+                    #if os(watchOS)
+                    Text("苏ICP备2024057896号-3A")
+                        .font(.footnote)
+                    #endif
                 }
+
             }
             .alert("You need to manually enable notification permissions", isPresented: $showingAlert) {
                 Button("OK", role: .cancel) {
                     
                 }
             }
-            .overlay(alignment: .bottom, content: {
-                Text("苏ICP备2024057896号-3A")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-
-            })
-
 #if os(macOS)
+            .frame(width: 300,height:  160,alignment: .topLeading)
             .padding()
-            .frame(minWidth: 300)
 #endif
             .toolbar{
 #if os(macOS)
@@ -118,6 +115,15 @@ struct SettingView: View {
                 })
 #endif
             }
+#if !os(watchOS)
+            .overlay(alignment: .bottom, content: {
+                Text("苏ICP备2024057896号-3A")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom,10)
+
+            })
+#endif
             .navigationTitle("Setting")
             #if !os(visionOS)
             .sensoryFeedback(.decrease, trigger: settings.timerDuration)

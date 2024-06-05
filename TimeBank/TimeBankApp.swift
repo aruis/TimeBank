@@ -38,7 +38,7 @@ struct TimeBankApp: App {
             }
             
             #if os(macOS)
-                .frame(minWidth: 380,minHeight: 480)
+                .frame(minWidth: 480,minHeight: 480)
             #endif
                 .sheet(isPresented: $isShowSetting, content: {
                     SettingView()

@@ -82,13 +82,19 @@ struct SettingView: View {
                     
                     
                 }
-        
             }
             .alert("You need to manually enable notification permissions", isPresented: $showingAlert) {
                 Button("OK", role: .cancel) {
                     
                 }
             }
+            .overlay(alignment: .bottom, content: {
+                Text("苏ICP备2024057896号-3A")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+
+            })
+
 #if os(macOS)
             .padding()
             .frame(minWidth: 300)

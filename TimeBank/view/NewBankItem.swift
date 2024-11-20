@@ -153,8 +153,9 @@ struct NewBankItem: View {
                 nameFocused = true
             }
         }
+#if !os(visionOS)
         .sensoryFeedback(.selection, trigger: rate)
-        
+#endif
     }
     
     var mainColor:Color{

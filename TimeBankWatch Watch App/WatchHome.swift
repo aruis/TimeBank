@@ -10,10 +10,11 @@ import SwiftData
 
 struct WatchHome: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var settings: AppSetting
     
     @State private var pageType = PageType.home
     @State private var isShowNew = false
-    
+        
     @Query(sort: \BankItem.lastTouch ,order: .reverse) private var items: [BankItem]
     
     @State private var isShow = false
@@ -56,7 +57,7 @@ struct WatchHome: View {
                             Text("SaveTime")
                                 .font(.caption2.monospaced())
 //                                .monospaced().bold()
-                            Text("\(saveMin)")
+                            Text(saveMinString)
                                 .font(.caption.bold())
                         }
 //                        Text("SaveTime \(saveMin)").monospaced().bold()
@@ -64,7 +65,7 @@ struct WatchHome: View {
                         VStack{
                             Text("KillTime")
                                 .font(.caption2.monospaced())
-                            Text("\(killMin)")
+                            Text(killMinString)
                                 .font(.caption.bold())
                         }
 //                        Text("KillTime \(killMin)").monospaced().bold()
@@ -88,9 +89,9 @@ struct WatchHome: View {
     @ViewBuilder
     func homeView() -> some View{
         TabView{
-            numberView(title: "Your Balance",value: "\(saveMin-killMin)")
-            numberView(title: "SaveTime",value: "\(saveMin)")
-            numberView(title: "KillTime",value: "\(killMin)")
+            numberView(title: String(localized: "Your Balance"),value: balanceString)
+            numberView(title: "SaveTime",value: saveMinString)
+            numberView(title: "KillTime",value: killMinString)
         }
         .tabViewStyle(.verticalPage)
     }
@@ -116,7 +117,7 @@ struct WatchHome: View {
                 VStack{
                     Text(item.name)
                         .font(.title)
-                    Text("\(item.saveMin) MIN")
+                    Text(settings.isEnableRate ? "$ \(item.exchangeString)" : "\(item.saveMin) MIN")
                         .font(.body)
                     Group{
                         Text("Last Execute:")
@@ -229,24 +230,49 @@ struct WatchHome: View {
     }
     
     
-    var saveMin:Int{
+    var saveMin:Float{
         return items.reduce(0) { sum, item in
             if (item.isSave){
-              return  sum + item.saveMin
+                return sum + (settings.isEnableRate ? item.exchange : Float(item.saveMin))
             } else {
                 return sum
             }
         }
     }
     
-    var killMin:Int{
+    var killMin:Float{
         return items.reduce(0) { sum, item in
             if (!item.isSave){
-               return sum + item.saveMin
+                return sum + (settings.isEnableRate ? item.exchange : Float(item.saveMin))
             } else {
                 return sum
             }
         }
+    }
+    
+    var saveMinString:String{
+        if settings.isEnableRate {
+            return String(format: "%.2f",self.saveMin)
+        }else{
+            return String(format: "%.0f",self.saveMin)
+        }
+    }
+    
+    var killMinString:String{
+        if settings.isEnableRate {
+            return String(format: "%.2f",self.killMin)
+        }else{
+            return String(format: "%.0f",self.killMin)
+        }
+    }
+    
+    var balanceString:String{
+        if settings.isEnableRate {
+            return String(format: "%.2f",self.saveMin - self.killMin)
+        }else{
+            return String(format: "%.0f",self.saveMin - self.killMin)
+        }
+        
     }
     
 }

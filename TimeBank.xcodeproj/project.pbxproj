@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8302EA932B4E22F400A8ECF8 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 8302EA922B4E22F400A8ECF8 /* RealityKitContent */; };
+		5718C96F2CEE0FAE00C94915 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 836DD00C2B30392000B3F0FB /* Localizable.xcstrings */; };
+		5718C9752CEE1AB600C94915 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 836DD00C2B30392000B3F0FB /* Localizable.xcstrings */; };
 		8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */; };
 		8302EA992B4E22F500A8ECF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA982B4E22F500A8ECF8 /* Assets.xcassets */; };
 		8302EA9C2B4E22F500A8ECF8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA9B2B4E22F500A8ECF8 /* Preview Assets.xcassets */; };
@@ -15,7 +16,6 @@
 		8302EAA22B4E24A300A8ECF8 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DA2B0734EA004FCBE1 /* ListView.swift */; };
 		8302EAA32B4E24A300A8ECF8 /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */; };
 		8302EAA42B4E24A300A8ECF8 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6E02B07474E004FCBE1 /* Home.swift */; };
-		8302EAA52B4E24A300A8ECF8 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6B2B2ADF7300F1396E /* LogView.swift */; };
 		8302EAA62B4E24A300A8ECF8 /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6E2B2AEE8400F1396E /* DateExt.swift */; };
 		8302EAA72B4E24A300A8ECF8 /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
 		8302EAA82B4E24A300A8ECF8 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */; };
@@ -43,7 +43,6 @@
 		83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6E02B07474E004FCBE1 /* Home.swift */; };
 		83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB672B2AA3B000F1396E /* ShowItem.swift */; };
 		83E0BB6A2B2AD87B00F1396E /* ItemLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB692B2AD87B00F1396E /* ItemLog.swift */; };
-		83E0BB6C2B2ADF7300F1396E /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6B2B2ADF7300F1396E /* LogView.swift */; };
 		83E0BB6F2B2AEE8400F1396E /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6E2B2AEE8400F1396E /* DateExt.swift */; };
 		83F2276E2B4E8BC400D26488 /* ShowItemWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F2276D2B4E8BC400D26488 /* ShowItemWatch.swift */; };
 		83F227702B4E8C4D00D26488 /* PageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F2276F2B4E8C4D00D26488 /* PageType.swift */; };
@@ -58,7 +57,6 @@
 		83F410F82B4CF62C008F004A /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
 		83F410F92B4CF62C008F004A /* ItemLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB692B2AD87B00F1396E /* ItemLog.swift */; };
 		83F410FA2B4CF62C008F004A /* BankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6382AFCC2B8003543CB /* BankItem.swift */; };
-		83F410FB2B4CF62C008F004A /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6B2B2ADF7300F1396E /* LogView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +94,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5718C9702CEE186F00C94915 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = Platforms/XROS.platform/Developer/SDKs/XROS2.1.sdk/System/Library/Frameworks/RealityKit.framework; sourceTree = DEVELOPER_DIR; };
 		8302EA8E2B4E22F400A8ECF8 /* TimeBankVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBankVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8302EA912B4E22F400A8ECF8 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankVisionApp.swift; sourceTree = "<group>"; };
@@ -125,7 +124,6 @@
 		83BCD6E02B07474E004FCBE1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		83E0BB672B2AA3B000F1396E /* ShowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowItem.swift; sourceTree = "<group>"; };
 		83E0BB692B2AD87B00F1396E /* ItemLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemLog.swift; sourceTree = "<group>"; };
-		83E0BB6B2B2ADF7300F1396E /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
 		83E0BB6E2B2AEE8400F1396E /* DateExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
 		83F2276D2B4E8BC400D26488 /* ShowItemWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowItemWatch.swift; sourceTree = "<group>"; };
 		83F2276F2B4E8C4D00D26488 /* PageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageType.swift; sourceTree = "<group>"; };
@@ -141,7 +139,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8302EA932B4E22F400A8ECF8 /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,7 +252,6 @@
 				83BCD6DA2B0734EA004FCBE1 /* ListView.swift */,
 				83BCD6E02B07474E004FCBE1 /* Home.swift */,
 				83E0BB672B2AA3B000F1396E /* ShowItem.swift */,
-				83E0BB6B2B2ADF7300F1396E /* LogView.swift */,
 				836ED07D2B61CA8B00097211 /* SettingView.swift */,
 			);
 			path = view;
@@ -274,6 +270,7 @@
 		83ABB0E52B57AC1E00860AAB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5718C9702CEE186F00C94915 /* RealityKit.framework */,
 				83ABB0E62B57AC1E00860AAB /* WidgetKit.framework */,
 				83ABB0E82B57AC1E00860AAB /* SwiftUI.framework */,
 			);
@@ -335,7 +332,6 @@
 			);
 			name = TimeBankVision;
 			packageProductDependencies = (
-				8302EA922B4E22F400A8ECF8 /* RealityKitContent */,
 			);
 			productName = TimeBankVision;
 			productReference = 8302EA8E2B4E22F400A8ECF8 /* TimeBankVision.app */;
@@ -427,6 +423,7 @@
 			files = (
 				8302EA9C2B4E22F500A8ECF8 /* Preview Assets.xcassets in Resources */,
 				83A8BF252B735A69002A1CBA /* Assets.xcassets in Resources */,
+				5718C9752CEE1AB600C94915 /* Localizable.xcstrings in Resources */,
 				8302EA992B4E22F500A8ECF8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -447,6 +444,7 @@
 			files = (
 				83F410EA2B4CF5F9008F004A /* Preview Assets.xcassets in Resources */,
 				83A8BF262B735A7F002A1CBA /* Assets.xcassets in Resources */,
+				5718C96F2CEE0FAE00C94915 /* Localizable.xcstrings in Resources */,
 				83F410E72B4CF5F9008F004A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -466,7 +464,6 @@
 				8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */,
 				8302EAA42B4E24A300A8ECF8 /* Home.swift in Sources */,
 				8302EAA12B4E24A300A8ECF8 /* ItemLog.swift in Sources */,
-				8302EAA52B4E24A300A8ECF8 /* LogView.swift in Sources */,
 				836ED07F2B61CA8B00097211 /* SettingView.swift in Sources */,
 				836DE9E32B6F617D0026316A /* RectButtonStyle.swift in Sources */,
 				83F227722B4E8C4D00D26488 /* PageType.swift in Sources */,
@@ -480,7 +477,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83E0BB6C2B2ADF7300F1396E /* LogView.swift in Sources */,
 				83E0BB682B2AA3B000F1396E /* ShowItem.swift in Sources */,
 				83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */,
 				839E09A22B6FD6C800CE6408 /* AppDelegate.swift in Sources */,
@@ -503,7 +499,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				83F410F82B4CF62C008F004A /* NewBankItem.swift in Sources */,
-				83F410FB2B4CF62C008F004A /* LogView.swift in Sources */,
 				83F410E32B4CF5F8008F004A /* TimeBankWatchApp.swift in Sources */,
 				83F410FA2B4CF62C008F004A /* BankItem.swift in Sources */,
 				83F2276E2B4E8BC400D26488 /* ShowItemWatch.swift in Sources */,
@@ -896,13 +891,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		8302EA922B4E22F400A8ECF8 /* RealityKitContent */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = RealityKitContent;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8317E6292AFCC2B7003543CB /* Project object */;
 }

@@ -57,6 +57,17 @@
         }
       }
     },
+    "%lld MIN\n$%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld MIN\n$%2$@"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
     "%lld MIN / $%@" : {
       "localizations" : {
         "en" : {
@@ -145,12 +156,22 @@
         }
       }
     },
+    "Add" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增"
+          }
+        }
+      }
+    },
     "Add Item" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "增加"
+            "value" : "新增"
           }
         }
       }
@@ -181,6 +202,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "删除"
+          }
+        }
+      }
+    },
+    "edit" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑"
           }
         }
       }
@@ -322,6 +353,16 @@
         }
       }
     },
+    "Play" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "进行"
+          }
+        }
+      }
+    },
     "Rate Mode" : {
       "localizations" : {
         "zh-Hans" : {
@@ -419,6 +460,9 @@
         }
       }
     },
+    "TimeBank" : {
+      "shouldTranslate" : false
+    },
     "Timer Duration" : {
       "localizations" : {
         "zh-Hans" : {
@@ -467,9 +511,15 @@
     },
     "苏ICP备2024057896号-3A" : {
       "localizations" : {
-        "zh-Hans" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : " "
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "苏ICP备2024057896号-3A"
           }
         }

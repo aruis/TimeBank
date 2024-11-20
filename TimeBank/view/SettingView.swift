@@ -88,7 +88,7 @@ struct SettingView: View {
                 }
                 
                 Text("苏ICP备2024057896号-3A")
-                    .font(.footnote)
+                    .font(.callout)
             }
             .alert("You need to manually enable notification permissions", isPresented: $showingAlert) {
                 Button("OK", role: .cancel) {

@@ -33,12 +33,12 @@ struct ShowItem: View {
             GeometryReader{
                 let size  = $0.size
                 let isLarge = size.height > 600
-                VStack(alignment: .center,spacing: 0){
+                VStack(alignment: .center,spacing: 10){
                     
                     circleView()
                     #if os(iOS)
                     Spacer()
-                        .frame(height: isLarge ? 25 : 130 )
+                        .frame(height: isLarge ? 15 : 110 )
                     #endif
                     
                     logView()
@@ -168,7 +168,6 @@ struct ShowItem: View {
         List{
             ForEach(sortedLog){ item in
                 HStack{
-//                    Text("\(item.saveMin) MIN")
                     Text(settings.isEnableRate ? "\(item.saveMin) MIN / $\(item.exchangeString)" : "\(item.saveMin) MIN")
                         .font(.title3)
                         .fontWeight(.medium)

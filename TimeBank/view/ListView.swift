@@ -41,13 +41,9 @@ struct ListView: View {
                 Spacer()
                     .frame(height: 10)
                 
-                if settings.isEnableRate {
-                    Text("$ \(item.exchangeString)")
-                        .font(.callout)
-                } else {
-                    Text("\(item.saveMin) MIN")
-                        .font(.callout)
-                }
+                
+                Text(settings.isEnableRate ? "$ \(item.exchangeString)" : "\(item.saveMin) MIN")
+                    .font(.callout)
                                                 
                 Spacer()
                 

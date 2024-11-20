@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ShowItemWatch: View {
     @Environment(\.scenePhase) private var scenePhase
-    
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
+    
+    @EnvironmentObject var settings: AppSetting
     
     @Binding var bankItem:BankItem
     
@@ -104,7 +105,7 @@ struct ShowItemWatch: View {
                         .foregroundStyle(Color.white)
                         .transition(.moveAndFadeTop)
                 } else {
-                    Text( "\(bankItem.saveMin) MIN")
+                    Text(settings.isEnableRate ? "$ \(bankItem.exchangeString)" : "\(bankItem.saveMin) MIN")
                         .foregroundStyle(Color.white)
                         .font(.title)
                         .fontWeight(.regular)
@@ -142,8 +143,8 @@ struct ShowItemWatch: View {
     func logView() -> some View{
         List{
             ForEach(sortedLog){ item in
-                HStack{
-                    Text("\(item.saveMin) MIN")
+                HStack{                    
+                    Text(settings.isEnableRate ? "\(item.saveMin) MIN\n$\(item.exchangeString)" : "\(item.saveMin) MIN")
                         .font(.callout)
                         .fontWeight(.medium)
                     

@@ -27,5 +27,11 @@ class ItemLog {
         self.saveMin = begin.elapsedMin(end)
     }
     
+    var exchange:Float {
+        return Float(self.saveMin) * self.bankItem!.rate;
+    }
     
+    var exchangeString:String{
+        return String(format: "%.2f",self.exchange)
+    }
 }

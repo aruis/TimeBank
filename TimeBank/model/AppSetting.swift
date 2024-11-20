@@ -35,6 +35,15 @@ class AppSetting :ObservableObject {
         }
     }
     
+    @Published var isEnableRate: Bool = false {
+        didSet {
+            store.set(isEnableRate, forKey: "isEnableRate")
+            DispatchQueue.main.async {
+                self.store.synchronize()
+            }
+        }
+    }
+    
     init() {
         loadSettings()
         
@@ -56,6 +65,7 @@ class AppSetting :ObservableObject {
         //        let store = NSUbiquitousKeyValueStore.default
         
         isTimerEnabled = store.bool(forKey: "isTimerEnabled")
+        isEnableRate = store.bool(forKey: "isEnableRate")
         timerDuration = store.object(forKey: "timerDuration") as? Double ?? 0.0
     }
     

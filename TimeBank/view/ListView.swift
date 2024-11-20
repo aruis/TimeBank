@@ -11,8 +11,10 @@ import SwiftData
 struct ListView: View {
     
     var pageType:PageType
-        
+
+    @EnvironmentObject var settings: AppSetting
     @Environment(\.modelContext) private var modelContext
+    
     @Query(sort: \BankItem.lastTouch ,order: .reverse) private var items: [BankItem]
     
     @State private var isShow = false
@@ -39,9 +41,14 @@ struct ListView: View {
                 Spacer()
                     .frame(height: 10)
                 
-                Text("\(item.saveMin) MIN")
-                    .font(.callout)
-                
+                if settings.isEnableRate {
+                    Text("$ \(item.exchangeString)")
+                        .font(.callout)
+                } else {
+                    Text("\(item.saveMin) MIN")
+                        .font(.callout)
+                }
+                                                
                 Spacer()
                 
                 VStack{
@@ -59,7 +66,7 @@ struct ListView: View {
             .frame(maxWidth:.infinity,minHeight:  195)
             .overlay(alignment: .topTrailing, content: {
                 if (item.isPin){
-                    Button("Pin", systemImage: "pin.circle"){
+                    Button("Pin", systemImage: "mappin.circle"){
                         item.isPin.toggle()
                     }
                     .labelStyle(.iconOnly)

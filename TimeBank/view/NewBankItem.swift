@@ -10,15 +10,18 @@ import SwiftUI
 struct NewBankItem: View {
     
     @Environment(\.modelContext) private var modelContext
-    
     @Environment(\.dismiss) var dismiss
+    
+    @EnvironmentObject var settings: AppSetting
     
     @Binding var pageType:PageType
         
     @State var name:String = ""
+    @State var rate:Float = 1
     
     @State var isShaking = false
     @FocusState private var nameFocused: Bool
+    @FocusState private var sliderFocused: Bool
     
     @Binding var bankItem:BankItem
     
@@ -48,6 +51,33 @@ struct NewBankItem: View {
                 #else
                     .frame(height: 30)
                 #endif
+                
+                if(settings.isEnableRate){
+                    Text("RATE: \(String(format:"%.1f",rate))")
+                        .font(.title3)
+                    
+                    Slider(
+                        value: $rate,
+                        in: 0.1...2,
+                        step: 0.1
+                    ) {
+                        
+                    } minimumValueLabel: {
+                        Text("0.1")
+                    } maximumValueLabel: {
+                        Text("2")
+                    }
+                    .focused($sliderFocused)
+                    .contentShape(.capsule)
+                    .overlay{
+                        RoundedRectangle(cornerRadius: 5) // 你可以根据需要调整圆角大小
+                            .stroke(sliderFocused ? Color.green : Color.clear, lineWidth: 2)
+                    }
+                    
+                }
+                
+                Spacer()
+                
                 Button{
                     if name.isEmpty {
                         withAnimation(Animation.easeIn(duration: 0.12).repeatCount(3, autoreverses: true), {
@@ -60,9 +90,12 @@ struct NewBankItem: View {
                     } else {
                         if !bankItem.name.isEmpty{
                             bankItem.name = name
+                            bankItem.isSave = pageType == .save
+                            bankItem.rate = rate
                         } else {
                             let newItem = BankItem(name:name,sort: 0)                            
                             newItem.isSave = pageType == .save
+                            newItem.rate = rate
                             modelContext.insert(newItem)
                         }
                         #if os(iOS)
@@ -80,8 +113,9 @@ struct NewBankItem: View {
 //                .rotationEffect(Angle(degrees: isShaking ? 1 : 0), anchor: .center)
                 Spacer()
             }
+            
             #if os(macOS)
-            .frame(width: 400,height: 300)
+            .frame(width: 400,height: settings.isEnableRate ? 350 : 300)
             #endif
             #if os(watchOS)
             .padding(.horizontal,5)
@@ -112,11 +146,14 @@ struct NewBankItem: View {
         }
 //        .defaultFocus($nameFocused,true)
         .onAppear{
-            nameFocused = true
             self.name = bankItem.name
+            self.rate = bankItem.rate
+            
+            if self.name.isEmpty {
+                nameFocused = true
+            }
         }
-        
-        
+        .sensoryFeedback(.selection, trigger: rate)
         
     }
     

@@ -93,7 +93,7 @@ struct ShowItem: View {
                 #endif
                 ToolbarItem(placement: .destructiveAction, content: {
 
-                    Button("Pin", systemImage: bankItem.isPin ? "pin.circle.fill" :  "pin.circle"){
+                    Button("Pin", systemImage: bankItem.isPin ? "mappin.slash.circle" :  "mappin.circle"){
                         bankItem.isPin.toggle()
                     }
                     .labelStyle(.iconOnly)
@@ -128,16 +128,12 @@ struct ShowItem: View {
                         .contentTransition(.numericText(value: Double( timeRemaining)))
 //                        .﻿contentTransition(.numericText(value:timeRemaining))
                 } else {
-                    Text( "\(bankItem.saveMin) MIN")
-                        .foregroundStyle(Color.white)
-                        .font(.largeTitle)
-                        .fontWeight(.regular)
-                        .shadow(radius: 3)
-                    //                                    .opacity(inTimer ? 0 : 1)
-                        .transition(.moveAndFadeBottom)
-                    //                                    .transition(.move(edge: .bottom))
-                    //                                    .animation(.easeInOut, value: inTimer)
-                    
+                    Text(settings.isEnableRate ? "$ \(bankItem.exchangeString)" : "\(bankItem.saveMin) MIN")
+                            .foregroundStyle(Color.white)
+                            .font(.largeTitle)
+                            .fontWeight(.regular)
+                            .shadow(radius: 3)
+                            .transition(.moveAndFadeBottom)
                 }
             })
             .overlay{
@@ -172,7 +168,8 @@ struct ShowItem: View {
         List{
             ForEach(sortedLog){ item in
                 HStack{
-                    Text("\(item.saveMin) MIN")
+//                    Text("\(item.saveMin) MIN")
+                    Text(settings.isEnableRate ? "\(item.saveMin) MIN / $\(item.exchangeString)" : "\(item.saveMin) MIN")
                         .font(.title3)
                         .fontWeight(.medium)
                     

@@ -80,12 +80,15 @@ struct SettingView: View {
                         
                     }
                     
-                    #if os(watchOS)
-                    Text("苏ICP备2024057896号-3A")
-                        .font(.footnote)
-                    #endif
                 }
-
+                Section ("Rate Mode"){
+                    Toggle(isOn: $settings.isEnableRate) {
+                        Text("Enabling the Rate Mode will convert time based on the specified ratio.")
+                    }
+                }
+                
+                Text("苏ICP备2024057896号-3A")
+                    .font(.footnote)
             }
             .alert("You need to manually enable notification permissions", isPresented: $showingAlert) {
                 Button("OK", role: .cancel) {
@@ -115,18 +118,9 @@ struct SettingView: View {
                 })
 #endif
             }
-#if !os(watchOS)
-            .overlay(alignment: .bottom, content: {
-                Text("苏ICP备2024057896号-3A")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                    .padding(.bottom,10)
-
-            })
-#endif
             .navigationTitle("Setting")
             #if !os(visionOS)
-            .sensoryFeedback(.decrease, trigger: settings.timerDuration)
+            .sensoryFeedback(.selection, trigger: settings.timerDuration)
 #endif
             
         }

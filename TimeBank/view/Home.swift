@@ -12,6 +12,7 @@ import OSLog
 struct Home: View {
         
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var settings: AppSetting
     
     @State private var pageType = PageType.save
     @State private var isShowAdd = false
@@ -20,9 +21,7 @@ struct Home: View {
     
     @Query private var items: [BankItem]
     
-    let logger:Logger = Logger.init()
-    
-    
+    let logger:Logger = Logger.init()        
     
     var body: some View {
         
@@ -71,12 +70,12 @@ struct Home: View {
                             Text("Your Balance")
                                 .font(.title3)
                         }else{
-                            Image(systemName: "clock")
+                            Image(systemName: settings.isEnableRate ? "banknote" : "clock")
                                 .fontWeight(.medium)
                                 .font(.caption)
                         }
                                               
-                        Text("\(saveMin-killMin)")
+                        Text("\(balanceString)")
                             .font(.title3)
                     }
                     .animation(.default,value:isShowBalanceTitle)
@@ -135,7 +134,7 @@ struct Home: View {
                 Text(pageType == PageType.save ? "SAVETIME":"KILLTIME")
                     .font(.title.monospaced())
                 
-                Text(pageType == PageType.save ? "\(saveMin)":"\(killMin)")
+                Text(pageType == PageType.save ? "\(saveMinString)":"\(killMinString)")
                     .font(.subheadline)
                 
             }
@@ -153,10 +152,10 @@ struct Home: View {
                 .font(.caption)
             
             HStack(spacing: 3){
-                Image(systemName: "clock")
+                Image(systemName: settings.isEnableRate ? "banknote" : "clock")
                     .fontWeight(.medium)
                     .font(.caption)
-                Text("\(saveMin-killMin)")
+                Text("\(balanceString)")
                     .font(.title3)
             }
             
@@ -192,24 +191,49 @@ struct Home: View {
         }
     }
     
-    var saveMin:Int{
+    var saveMin:Float{
         return items.reduce(0) { sum, item in
             if (item.isSave){
-                return  sum + item.saveMin
+                return sum + (settings.isEnableRate ? item.exchange : Float(item.saveMin))
             } else {
                 return sum
             }
         }
     }
     
-    var killMin:Int{
+    var killMin:Float{
         return items.reduce(0) { sum, item in
             if (!item.isSave){
-                return sum + item.saveMin
+                return sum + (settings.isEnableRate ? item.exchange : Float(item.saveMin))
             } else {
                 return sum
             }
         }
+    }
+    
+    var saveMinString:String{
+        if settings.isEnableRate {
+            return String(format: "%.2f",self.saveMin)
+        }else{
+            return String(format: "%.0f",self.saveMin)
+        }
+    }
+    
+    var killMinString:String{
+        if settings.isEnableRate {
+            return String(format: "%.2f",self.killMin)
+        }else{
+            return String(format: "%.0f",self.killMin)
+        }
+    }
+    
+    var balanceString:String{
+        if settings.isEnableRate {
+            return String(format: "%.2f",self.saveMin - self.killMin)
+        }else{
+            return String(format: "%.0f",self.saveMin - self.killMin)
+        }
+        
     }
     
 }

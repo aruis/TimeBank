@@ -2,16 +2,40 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
-
+      "shouldTranslate" : false
     },
     "-" : {
-
+      "shouldTranslate" : false
     },
     "%@" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
+    },
+    "%f" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%f"
+          }
+        }
+      }
     },
     "%lld" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
     },
     "%lld Min" : {
       "localizations" : {
@@ -33,14 +57,93 @@
         }
       }
     },
+    "%lld MIN / $%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld MIN / $%2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld MIN / ¥%2$@"
+          }
+        }
+      }
+    },
+    "%lld MIN / $%f" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld MIN / $%2$f"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld MIN / ¥%2$f"
+          }
+        }
+      }
+    },
     "~" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "~"
+          }
+        }
+      }
+    },
+    "$ %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¥ %@"
+          }
+        }
+      }
+    },
+    "$ %f" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¥ %f"
+          }
+        }
+      }
     },
     "0" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0"
+          }
+        }
+      }
+    },
+    "0.1" : {
+      "shouldTranslate" : false
+    },
+    "2" : {
+      "shouldTranslate" : false
     },
     "60" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "60"
+          }
+        }
+      }
     },
     "Add Item" : {
       "localizations" : {
@@ -112,6 +215,16 @@
         }
       }
     },
+    "Enabling the Rate Mode will convert time based on the specified ratio." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开启汇率模式，就会把时间按设定比例进行折算"
+          }
+        }
+      }
+    },
     "Execute in less than 1 minute, no record will be made." : {
       "localizations" : {
         "zh-Hans" : {
@@ -133,17 +246,31 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "投入"
           }
         }
       }
     },
     "KillTime" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "KillTime"
+          }
+        }
+      }
     },
     "KILLTIME" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "KILLTIME"
+          }
+        }
+      }
     },
     "KillTime Complete" : {
       "localizations" : {
@@ -176,7 +303,14 @@
       }
     },
     "OK" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
     },
     "Pin" : {
       "localizations" : {
@@ -184,6 +318,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "固定"
+          }
+        }
+      }
+    },
+    "Rate Mode" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "汇率模式"
+          }
+        }
+      }
+    },
+    "RATE: %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "费率：%@"
           }
         }
       }
@@ -199,10 +353,24 @@
       }
     },
     "SaveTime" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SaveTime"
+          }
+        }
+      }
     },
     "SAVETIME" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SAVETIME"
+          }
+        }
+      }
     },
     "SaveTime Complete" : {
       "localizations" : {
@@ -245,14 +413,11 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "花费"
           }
         }
       }
-    },
-    "test" : {
-
     },
     "Timer Duration" : {
       "localizations" : {
@@ -284,7 +449,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "您刚刚在%2$@%3$@了%1$@分钟。"
           }
         }
@@ -301,7 +466,14 @@
       }
     },
     "苏ICP备2024057896号-3A" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "苏ICP备2024057896号-3A"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

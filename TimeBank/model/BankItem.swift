@@ -21,16 +21,18 @@ class BankItem {
     var lastTouch:Date?
     var createTime:Date = Date()
     var isPin:Bool = false
+    var rate:Float = 1.0
     
     @Relationship(deleteRule: .cascade, inverse: \ItemLog.bankItem)
     var logs:[ItemLog]?
     
-    init(name: String = "", sort: Int = 0, parent: BankItem? = nil,  isSave: Bool = true) {
+    init(name: String = "", sort: Int = 0, parent: BankItem? = nil,  isSave: Bool = true, rate:Float = 1) {
         self.id = UUID()
         self.name = name
         self.sort = sort
 //        self.parent = parent
         self.isSave = isSave
+        self.rate = rate
         self.createTime = Date()
         self.logs = []
         self.isPin = false
@@ -45,5 +47,13 @@ class BankItem {
             return 0
         }
 
+    }
+    
+    var exchange:Float {
+        return Float(self.saveMin) * self.rate;
+    }
+    
+    var exchangeString:String{
+        return String(format: "%.2f",self.exchange)
     }
 }

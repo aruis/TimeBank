@@ -10,40 +10,45 @@ import UserNotifications
 
 struct ShowItem: View {
     @EnvironmentObject var settings: AppSetting
-    
+
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-    
+
     @Binding var bankItem:BankItem
-    
+
     @State private var timeRemaining = 0
     @State private var timer: Timer?
     @State private var isTimerRunning = false
     @State private var lastBackgroundTime: Date?
-    
+
     @State private var start:Date?
-    
+
+    @State private var selectedLog: ItemLog?
+    @State private var itemToDelete: ItemLog?
+
+    @State private var showConfirmDelete = false
     @State private var showTip = false
-    
-    
+    @State private var showEdit = false
+
+
     var body: some View {
         NavigationStack{
-            
+
             GeometryReader{
                 let size  = $0.size
                 let isLarge = size.height > 600
                 VStack(alignment: .center,spacing: 10){
-                    
+
                     circleView()
-                    #if os(iOS)
+#if os(iOS)
                     Spacer()
                         .frame(height: isLarge ? 15 : 110 )
-                    #endif
-                    
+#endif
+
                     logView()
                         .transition(.opacity)
-                    
+
                 }
 #if os(macOS)
                 .padding(.top,30)
@@ -76,21 +81,21 @@ struct ShowItem: View {
                     break
                 }
             })
-            #if os(macOS) || os(visionOS)
+#if os(macOS) || os(visionOS)
             .frame(minWidth: 420,minHeight:  350)
-            #endif
+#endif
             .toolbar(content: {
-                #if os(macOS) || os(visionOS)
+#if os(macOS) || os(visionOS)
                 ToolbarItem(placement: .cancellationAction, content: {
 
-                        Button{
-                            dismiss()
-                        }label: {
-                            Text("Close")
-                        }
-                        .opacity(isTimerRunning ? 0 : 1)
+                    Button{
+                        dismiss()
+                    }label: {
+                        Text("Close")
+                    }
+                    .opacity(isTimerRunning ? 0 : 1)
                 })
-                #endif
+#endif
                 ToolbarItem(placement: .destructiveAction, content: {
 
                     Button("Pin", systemImage: bankItem.isPin ? "mappin.slash.circle" :  "mappin.circle"){
@@ -101,18 +106,18 @@ struct ShowItem: View {
                     .buttonStyle(.borderless)
                     .controlSize(.large)
                     .padding(10)
-                       
+
                 })
             })
-            #if !os(visionOS)
+#if !os(visionOS)
             .sensoryFeedback(.decrease, trigger: isTimerRunning)
-            #endif
+#endif
 
-            
+
         }
         .interactiveDismissDisabled(isTimerRunning)
     }
-    
+
     @ViewBuilder
     func circleView() -> some View{
         Circle()
@@ -126,14 +131,14 @@ struct ShowItem: View {
                         .foregroundStyle(Color.white)
                         .transition(.moveAndFadeTop)
                         .contentTransition(.numericText(value: Double( timeRemaining)))
-//                        .﻿contentTransition(.numericText(value:timeRemaining))
+                    //                        .﻿contentTransition(.numericText(value:timeRemaining))
                 } else {
                     Text(settings.isEnableRate ? "$ \(bankItem.exchangeString)" : "\(bankItem.saveMin) MIN")
-                            .foregroundStyle(Color.white)
-                            .font(.largeTitle)
-                            .fontWeight(.regular)
-                            .shadow(radius: 3)
-                            .transition(.moveAndFadeBottom)
+                        .foregroundStyle(Color.white)
+                        .font(.largeTitle)
+                        .fontWeight(.regular)
+                        .shadow(radius: 3)
+                        .transition(.moveAndFadeBottom)
                 }
             })
             .overlay{
@@ -146,9 +151,9 @@ struct ShowItem: View {
                     }
                     .padding(.top,120)
                 }
-                
+
             }
-        
+
             .overlay{
                 if isTimerRunning {
                     Button(action:resetTimer) {
@@ -160,9 +165,9 @@ struct ShowItem: View {
                     .padding(.top,120)
                 }
             }
-        
+
     }
-    
+
     @ViewBuilder
     func logView() -> some View{
         List{
@@ -171,9 +176,9 @@ struct ShowItem: View {
                     Text(settings.isEnableRate ? "\(item.saveMin) MIN / $\(item.exchangeString)" : "\(item.saveMin) MIN")
                         .font(.title3)
                         .fontWeight(.medium)
-                    
+
                     Spacer()
-                    
+
                     VStack(alignment: .trailing){
                         Text(item.begin.dayString())
                             .opacity(0.9)
@@ -183,38 +188,72 @@ struct ShowItem: View {
                             Text(item.end.timeString())
                         }
                         .opacity(0.9)
-                        
+
                     }
                     .font(.caption.monospacedDigit())
-                    
+
                 }
                 .id(item.id)
                 .transition(.slide)
-                .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
+                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive, action: {
-                        bankItem.logs?.removeAll(where:{ $0 == item})
-                        modelContext.delete(item)
-                    })  {
+                        confirmDelete(item: item)
+                    }) {
                         Image(systemName: "trash")
                     }
-                    
-                })
+                }
+                .swipeActions(edge: .leading){
+                    Button(action: {
+                        selectedLog = item
+                        showEdit = true
+                    }) {
+                        Image(systemName:"clock.arrow.trianglehead.counterclockwise.rotate.90")
+                    }
+                    .tint(.blue)
+
+                }
+                .alert(isPresented: $showConfirmDelete) {
+                    Alert(
+                        title: Text("Delete Item"),
+                        message: Text("Are you sure you want to delete this item?"),
+                        primaryButton: .destructive(Text("Delete")) {
+                            if let itemToDelete = itemToDelete {
+                                bankItem.logs?.removeAll(where: { $0 == itemToDelete })
+                                modelContext.delete(itemToDelete)
+                            }
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
                 .contextMenu{
+                    Button(){
+                        selectedLog = item
+                        showEdit = true
+                    }label: {
+                        Label("Edit", systemImage:  "clock.arrow.trianglehead.counterclockwise.rotate.90")
+                    }
                     Button(role:.destructive){
-                        bankItem.logs?.removeAll(where:{ $0 == item})
-                        modelContext.delete(item)
+                        confirmDelete(item: item)
                     }label: {
                         Label("Delete", systemImage:  "trash")
                     }
                 }
-                
-                
+
             }
         }
         .animation(.default,value: bankItem.logs)
-        
+        .sheet(isPresented: $showEdit) {
+            if let log = selectedLog {
+                EditLogItem(log: log)
+                    .presentationDetents([.medium, .large])
+            } else {
+                Text("No item selected.")
+                    .font(.headline)
+            }
+        }
+
     }
-    
+
     var sortedLog : [ItemLog] {
         if let  logs = bankItem.logs{
             return logs.sorted{ $0.begin > $1.begin }
@@ -222,7 +261,7 @@ struct ShowItem: View {
             return []
         }
     }
-    
+
     var mainColor:Color{
         if bankItem.isSave {
             return Color.red
@@ -230,42 +269,42 @@ struct ShowItem: View {
             return Color.green
         }
     }
-    
+
     private func startTimer() {
         withAnimation{
             isTimerRunning = true
         }
-        
+
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             withAnimation(.default, {
                 self.timeRemaining += 1
             })
-            
+
         }
-        
-        
+
+
         if bankItem.logs == nil{
             bankItem.logs = []
         }
-        
+
         start = Date()
-        
+
         if settings.isTimerEnabled && settings.timerDuration > 0 {
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
                 if granted {
-                    
+
                     let content = UNMutableNotificationContent()
                     content.title = bankItem.isSave ? NSLocalizedString("SaveTime Complete", comment: ""):NSLocalizedString("KillTime Complete", comment: "")
-//                    content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), arguments: [String(Int( settings.timerDuration)), bankItem.name])
-                    
-                    
+                    //                    content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), arguments: [String(Int( settings.timerDuration)), bankItem.name])
+
+
                     let actionWordKey = bankItem.isSave ? "Invested" : "Spent"
                     let actionWord = NSLocalizedString(actionWordKey, comment: "Action word based on bank item saving or spending")
                     content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), String(Int(settings.timerDuration)), "[\(bankItem.name)]", actionWord)
                     content.sound = UNNotificationSound.default
-                    
+
                     let trigger = UNTimeIntervalNotificationTrigger(timeInterval: settings.timerDuration * 60, repeats: false)
-                    
+
                     let request = UNNotificationRequest(identifier: "meetingReminder", content: content, trigger: trigger)
 
                     UNUserNotificationCenter.current().add(request)
@@ -273,65 +312,68 @@ struct ShowItem: View {
             }
         }
     }
-    
+
     private func pauseTimer() {
         isTimerRunning = false
         timer?.invalidate()
     }
-    
+
     private func resetTimer() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        
+
         withAnimation{
             isTimerRunning = false
         }
-        
+
         timer?.invalidate()
         timeRemaining = 0
         lastBackgroundTime = nil
-        
+
         if let start {
             let now = Date()
-            
+
             if start.elapsedMin(now) < 1 {
                 print("时间不足1分钟")
-                
+
 #if os(iOS)
                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 #endif
-                
+
                 withAnimation{
                     showTip = true
                 }
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                     withAnimation{
                         showTip = false
                     }
                 })
-                
+
                 return
             }
-            
+
             bankItem.lastTouch = now
             let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)
-            
+
             if var logs = bankItem.logs{
                 logs.append(thisLog)
             }
         }
-        
+
     }
-    
+
     private func formatTime(seconds: Int) -> String {
         let hours = seconds / 3600
         let minutes = (seconds % 3600) / 60
         let seconds = seconds % 60
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
-    
-    
-    
+
+    private func confirmDelete(item: ItemLog) {
+        itemToDelete = item
+        showConfirmDelete = true
+    }
+
 }
 
 #Preview {
@@ -345,7 +387,7 @@ extension AnyTransition {
             removal:  .move(edge: .bottom).combined(with: .opacity)
         )
     }
-    
+
     static var moveAndFadeBottom: AnyTransition {
         .asymmetric(
             insertion: .move(edge: .bottom).combined(with: .opacity),

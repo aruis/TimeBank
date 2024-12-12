@@ -147,7 +147,7 @@ struct ShowItemWatch: View {
                     Text(settings.isEnableRate ? "\(item.saveMin) MIN\n$\(item.exchangeString)" : "\(item.saveMin) MIN")
                         .font(.callout)
                         .fontWeight(.medium)
-                    
+
                     Spacer()
                     
                     VStack(alignment: .trailing){

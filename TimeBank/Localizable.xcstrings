@@ -176,6 +176,26 @@
         }
       }
     },
+    "Are you sure you want to delete this item?" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定要删除该条目吗？"
+          }
+        }
+      }
+    },
+    "Begin" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "zh-Hans" : {
@@ -197,6 +217,16 @@
       }
     },
     "Delete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除"
+          }
+        }
+      }
+    },
+    "Delete Item" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -236,6 +266,16 @@
         }
       }
     },
+    "Edit Time" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑时间"
+          }
+        }
+      }
+    },
     "Enable Timer Notification🍅" : {
       "localizations" : {
         "zh-Hans" : {
@@ -252,6 +292,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "开启汇率模式，就会把时间按设定比例进行折算"
+          }
+        }
+      }
+    },
+    "End" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "结束"
           }
         }
       }
@@ -329,6 +379,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "尚无数据"
+          }
+        }
+      }
+    },
+    "No item selected." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未选择项目"
           }
         }
       }
@@ -460,6 +520,16 @@
         }
       }
     },
+    "Time Range" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "时间区间"
+          }
+        }
+      }
+    },
     "TimeBank" : {
       "shouldTranslate" : false
     },
@@ -519,7 +589,7 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "苏ICP备2024057896号-3A"
           }
         }

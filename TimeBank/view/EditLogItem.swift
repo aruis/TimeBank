@@ -38,7 +38,9 @@ struct EditLogItem: View {
                 }
             }
             .navigationTitle("Edit Time")
+            #if !os(macOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar(content: {
                 ToolbarItem(placement: .confirmationAction, content: {
                     Button{
@@ -52,6 +54,16 @@ struct EditLogItem: View {
                     }
                     .disabled(begin == log.begin && end == log.end)
                 })
+#if os(macOS) || os(visionOS)
+                ToolbarItem(placement: .cancellationAction, content: {
+
+                    Button{
+                        dismiss()
+                    }label: {
+                        Text("Close")
+                    }
+                })
+#endif
             })
         }
 

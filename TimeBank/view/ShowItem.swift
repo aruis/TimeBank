@@ -29,7 +29,6 @@ struct ShowItem: View {
 
     @State private var showConfirmDelete = false
     @State private var showTip = false
-    @State private var showEdit = false
 
 
     var body: some View {
@@ -204,8 +203,7 @@ struct ShowItem: View {
                 }
                 .swipeActions(edge: .leading){
                     Button(action: {
-                        selectedLog = item
-                        showEdit = true
+                        selectedLog = item                        
                     }) {
                         Image(systemName:"clock.arrow.trianglehead.counterclockwise.rotate.90")
                     }
@@ -228,7 +226,6 @@ struct ShowItem: View {
                 .contextMenu{
                     Button(){
                         selectedLog = item
-                        showEdit = true
                     }label: {
                         Label("Edit", systemImage:  "clock.arrow.trianglehead.counterclockwise.rotate.90")
                     }
@@ -242,14 +239,9 @@ struct ShowItem: View {
             }
         }
         .animation(.default,value: bankItem.logs)
-        .sheet(isPresented: $showEdit) {
-            if let log = selectedLog {
-                EditLogItem(log: log)
-                    .presentationDetents([.medium, .large])
-            } else {
-                Text("No item selected.")
-                    .font(.headline)
-            }
+        .sheet(item: $selectedLog) {log in
+            EditLogItem(log: log)
+                .presentationDetents([.medium, .large])
         }
 
     }

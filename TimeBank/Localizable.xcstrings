@@ -384,6 +384,7 @@
       }
     },
     "No item selected." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {

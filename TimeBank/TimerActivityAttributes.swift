@@ -5,6 +5,7 @@
 //  Created by Rui Liu on 2024/12/12.
 //
 
+#if canImport(ActivityKit)
 import ActivityKit
 import Foundation
 
@@ -17,4 +18,4 @@ struct TimerActivityAttributes:ActivityAttributes{
     var name: String
 
 }
-
+#endif

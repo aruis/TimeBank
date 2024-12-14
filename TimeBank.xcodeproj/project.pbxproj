@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		571361A52CFAED3100BED020 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83ABB0E62B57AC1E00860AAB /* WidgetKit.framework */; platformFilters = (ios, macos, ); };
 		571361A62CFAED3100BED020 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83ABB0E82B57AC1E00860AAB /* SwiftUI.framework */; };
-		571361B22CFAED3200BED020 /* TimeBankWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 571361A42CFAED3100BED020 /* TimeBankWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		571361B22CFAED3200BED020 /* TimeBankWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 571361A42CFAED3100BED020 /* TimeBankWidgetExtension.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5718C96F2CEE0FAE00C94915 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 836DD00C2B30392000B3F0FB /* Localizable.xcstrings */; };
 		5718C9752CEE1AB600C94915 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 836DD00C2B30392000B3F0FB /* Localizable.xcstrings */; };
 		57754B982D0ACCBD00E3EB82 /* TimerActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57754B972D0ACCB200E3EB82 /* TimerActivityAttributes.swift */; };
@@ -617,6 +617,7 @@
 /* Begin PBXTargetDependency section */
 		571361B12CFAED3200BED020 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 571361A32CFAED3100BED020 /* TimeBankWidgetExtension */;
 			targetProxy = 571361B02CFAED3200BED020 /* PBXContainerItemProxy */;
 		};

@@ -11,6 +11,6 @@ import SwiftUI
 @main
 struct TimeBankWidgetBundle: WidgetBundle {
     var body: some Widget {
-        TimeBankWidget()
+        TimerActivityWidget()
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ActivityKit
 import UserNotifications
 
 struct ShowItem: View {
@@ -30,6 +31,7 @@ struct ShowItem: View {
     @State private var showConfirmDelete = false
     @State private var showTip = false
 
+    @State private var activity:Activity<TimerActivityAttributes>?
 
     var body: some View {
         NavigationStack{
@@ -281,6 +283,22 @@ struct ShowItem: View {
 
         start = Date()
 
+        // 启动 ActivityKit
+        let activityAttributes = TimerActivityAttributes(name: bankItem.name)
+        let initialContentState = TimerActivityAttributes.ContentState(start: start!)
+
+        do {
+            activity = try Activity.request(
+                attributes: activityAttributes,
+                content: .init(state: initialContentState, staleDate: nil),
+                pushType: nil
+            )
+
+            print("Live Activity started with ID: \(String(describing: activity?.id))")
+        } catch {
+            print("Failed to start Live Activity: \(error)")
+        }
+
         if settings.isTimerEnabled && settings.timerDuration > 0 {
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
                 if granted {
@@ -320,6 +338,12 @@ struct ShowItem: View {
         timer?.invalidate()
         timeRemaining = 0
         lastBackgroundTime = nil
+
+        Task {
+            if let activity{
+                await activity.end(nil,dismissalPolicy: .immediate)
+            }
+        }
 
         if let start {
             let now = Date()

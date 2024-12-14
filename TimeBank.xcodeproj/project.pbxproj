@@ -12,6 +12,8 @@
 		571361B22CFAED3200BED020 /* TimeBankWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 571361A42CFAED3100BED020 /* TimeBankWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5718C96F2CEE0FAE00C94915 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 836DD00C2B30392000B3F0FB /* Localizable.xcstrings */; };
 		5718C9752CEE1AB600C94915 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 836DD00C2B30392000B3F0FB /* Localizable.xcstrings */; };
+		57754B982D0ACCBD00E3EB82 /* TimerActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57754B972D0ACCB200E3EB82 /* TimerActivityAttributes.swift */; };
+		57754B9B2D0ACCCF00E3EB82 /* TimerActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57754B972D0ACCB200E3EB82 /* TimerActivityAttributes.swift */; };
 		577933D62D096D2700253432 /* EditLogItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577933D52D096D1300253432 /* EditLogItem.swift */; };
 		577933D72D096D2700253432 /* EditLogItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577933D52D096D1300253432 /* EditLogItem.swift */; };
 		8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */; };
@@ -119,6 +121,7 @@
 /* Begin PBXFileReference section */
 		571361A42CFAED3100BED020 /* TimeBankWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimeBankWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5718C9702CEE186F00C94915 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = Platforms/XROS.platform/Developer/SDKs/XROS2.1.sdk/System/Library/Frameworks/RealityKit.framework; sourceTree = DEVELOPER_DIR; };
+		57754B972D0ACCB200E3EB82 /* TimerActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerActivityAttributes.swift; sourceTree = "<group>"; };
 		577933D52D096D1300253432 /* EditLogItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogItem.swift; sourceTree = "<group>"; };
 		8302EA8E2B4E22F400A8ECF8 /* TimeBankVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBankVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8302EA912B4E22F400A8ECF8 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
@@ -272,6 +275,7 @@
 		8317E6332AFCC2B7003543CB /* TimeBank */ = {
 			isa = PBXGroup;
 			children = (
+				57754B972D0ACCB200E3EB82 /* TimerActivityAttributes.swift */,
 				836DD00C2B30392000B3F0FB /* Localizable.xcstrings */,
 				83F227732B4E8C6D00D26488 /* data */,
 				83E0BB6D2B2AEE0900F1396E /* ext */,
@@ -542,6 +546,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57754B9B2D0ACCCF00E3EB82 /* TimerActivityAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,6 +584,7 @@
 				83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */,
 				577933D62D096D2700253432 /* EditLogItem.swift in Sources */,
 				83E0BB6F2B2AEE8400F1396E /* DateExt.swift in Sources */,
+				57754B982D0ACCBD00E3EB82 /* TimerActivityAttributes.swift in Sources */,
 				835B8B7C2AFCDAB5001A144D /* NewBankItem.swift in Sources */,
 				836ED07E2B61CA8B00097211 /* SettingView.swift in Sources */,
 				836DE9E22B6F60620026316A /* RectButtonStyle.swift in Sources */,
@@ -712,7 +718,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = TimeBank;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -742,7 +747,6 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = TimeBank;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -895,6 +899,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeBank/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -937,6 +942,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeBank/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

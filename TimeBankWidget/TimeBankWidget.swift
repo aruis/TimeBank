@@ -113,3 +113,35 @@ struct TimerActivityWidget: Widget {
         }
     }
 }
+
+@available(iOSApplicationExtension 16.2, *)
+struct TimerActivityView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            TimerActivityAttributes(name: "Focus Timer")
+                .previewContext(
+                    TimerActivityAttributes.ContentState(start: Date()),
+                    viewKind: .content
+                )
+
+            TimerActivityAttributes(name: "Focus Timer")
+                .previewContext(
+                    TimerActivityAttributes.ContentState(start: Date()),
+                    viewKind: .dynamicIsland(.expanded)
+                )
+
+            TimerActivityAttributes(name: "Focus Timer")
+                .previewContext(
+                    TimerActivityAttributes.ContentState(start: Date()),
+                    viewKind: .dynamicIsland(.minimal)
+                )
+
+            TimerActivityAttributes(name: "Focus Timer")
+                .previewContext(
+                    TimerActivityAttributes.ContentState(start: Date()),
+                    viewKind: .dynamicIsland(.compact)
+                )
+        }
+    }
+}
+

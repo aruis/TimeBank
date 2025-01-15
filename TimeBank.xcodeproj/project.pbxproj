@@ -16,6 +16,10 @@
 		57754B9B2D0ACCCF00E3EB82 /* TimerActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57754B972D0ACCB200E3EB82 /* TimerActivityAttributes.swift */; };
 		577933D62D096D2700253432 /* EditLogItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577933D52D096D1300253432 /* EditLogItem.swift */; };
 		577933D72D096D2700253432 /* EditLogItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577933D52D096D1300253432 /* EditLogItem.swift */; };
+		5799CD722D37532300D153EA /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5799CD712D37531F00D153EA /* IntExt.swift */; };
+		5799CD732D37532300D153EA /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5799CD712D37531F00D153EA /* IntExt.swift */; };
+		5799CD742D37532300D153EA /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5799CD712D37531F00D153EA /* IntExt.swift */; };
+		5799CD752D37537600D153EA /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5799CD712D37531F00D153EA /* IntExt.swift */; };
 		8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */; };
 		8302EA992B4E22F500A8ECF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA982B4E22F500A8ECF8 /* Assets.xcassets */; };
 		8302EA9C2B4E22F500A8ECF8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA9B2B4E22F500A8ECF8 /* Preview Assets.xcassets */; };
@@ -123,6 +127,7 @@
 		5718C9702CEE186F00C94915 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = Platforms/XROS.platform/Developer/SDKs/XROS2.1.sdk/System/Library/Frameworks/RealityKit.framework; sourceTree = DEVELOPER_DIR; };
 		57754B972D0ACCB200E3EB82 /* TimerActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerActivityAttributes.swift; sourceTree = "<group>"; };
 		577933D52D096D1300253432 /* EditLogItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogItem.swift; sourceTree = "<group>"; };
+		5799CD712D37531F00D153EA /* IntExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExt.swift; sourceTree = "<group>"; };
 		8302EA8E2B4E22F400A8ECF8 /* TimeBankVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBankVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8302EA912B4E22F400A8ECF8 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankVisionApp.swift; sourceTree = "<group>"; };
@@ -335,6 +340,7 @@
 		83E0BB6D2B2AEE0900F1396E /* ext */ = {
 			isa = PBXGroup;
 			children = (
+				5799CD712D37531F00D153EA /* IntExt.swift */,
 				83E0BB6E2B2AEE8400F1396E /* DateExt.swift */,
 			);
 			path = ext;
@@ -547,6 +553,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57754B9B2D0ACCCF00E3EB82 /* TimerActivityAttributes.swift in Sources */,
+				5799CD752D37537600D153EA /* IntExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,6 +564,7 @@
 				8302EAA72B4E24A300A8ECF8 /* NewBankItem.swift in Sources */,
 				8302EAA32B4E24A300A8ECF8 /* CircularButtonStyle.swift in Sources */,
 				8302EAA22B4E24A300A8ECF8 /* ListView.swift in Sources */,
+				5799CD722D37532300D153EA /* IntExt.swift in Sources */,
 				839E09A32B6FD6C800CE6408 /* AppDelegate.swift in Sources */,
 				8302EAA92B4E24A300A8ECF8 /* BankItem.swift in Sources */,
 				8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */,
@@ -580,6 +588,7 @@
 				83BCD6DB2B0734EA004FCBE1 /* ListView.swift in Sources */,
 				839E09A22B6FD6C800CE6408 /* AppDelegate.swift in Sources */,
 				83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */,
+				5799CD742D37532300D153EA /* IntExt.swift in Sources */,
 				83BCD6DD2B07369D004FCBE1 /* AppSetting.swift in Sources */,
 				83BCD6E12B07474E004FCBE1 /* Home.swift in Sources */,
 				577933D62D096D2700253432 /* EditLogItem.swift in Sources */,
@@ -602,6 +611,7 @@
 				83F410F82B4CF62C008F004A /* NewBankItem.swift in Sources */,
 				83F410E32B4CF5F8008F004A /* TimeBankWatchApp.swift in Sources */,
 				83F410FA2B4CF62C008F004A /* BankItem.swift in Sources */,
+				5799CD732D37532300D153EA /* IntExt.swift in Sources */,
 				83F2276E2B4E8BC400D26488 /* ShowItemWatch.swift in Sources */,
 				83A51E872B4D39FE00595836 /* WatchHome.swift in Sources */,
 				83F410F42B4CF62C008F004A /* DateExt.swift in Sources */,

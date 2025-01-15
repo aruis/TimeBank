@@ -130,7 +130,7 @@ struct ShowItem: View {
             .foregroundColor(mainColor.opacity(0.85))
             .overlay(content: {
                 if isTimerRunning {
-                    Text("\(formatTime(seconds: timeRemaining))")
+                    Text(timeRemaining.formatTime())
                         .font(.largeTitle.monospacedDigit())
                         .fontWeight(.regular)
                         .foregroundStyle(Color.white)
@@ -276,6 +276,16 @@ struct ShowItem: View {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             withAnimation(.default, {
                 self.timeRemaining += 1
+
+#if canImport(ActivityKit)
+//                if let activity{
+//                    Task{
+//                        await activity.update(.init(state: TimerActivityAttributes.ContentState(timeRemaining: timeRemaining), staleDate: nil))
+//                    }
+//                }
+
+#endif
+
             })
 
         }
@@ -288,20 +298,27 @@ struct ShowItem: View {
         start = Date()
 
 #if canImport(ActivityKit)
-        // 启动 ActivityKit
-        let activityAttributes = TimerActivityAttributes(name: bankItem.name)
-        let initialContentState = TimerActivityAttributes.ContentState(start: start!)
+        Task {
+            // 启动新的之前关闭残留的
+            for activity in Activity<TimerActivityAttributes>.activities {
+                await activity.end(nil,dismissalPolicy: .immediate)
+            }
 
-        do {
-            activity = try Activity.request(
-                attributes: activityAttributes,
-                content: .init(state: initialContentState, staleDate: nil),
-                pushType: nil
-            )
+            // 启动 ActivityKit
+            let activityAttributes = TimerActivityAttributes(name: bankItem.name,start: start!)
+            let initialContentState = TimerActivityAttributes.ContentState(timeRemaining: timeRemaining)
 
-            print("Live Activity started with ID: \(String(describing: activity?.id))")
-        } catch {
-            print("Failed to start Live Activity: \(error)")
+            do {
+                activity = try Activity.request(
+                    attributes: activityAttributes,
+                    content: .init(state: initialContentState, staleDate: nil),
+                    pushType: nil
+                )
+
+                print("Live Activity started with ID: \(String(describing: activity?.id))")
+            } catch {
+                print("Failed to start Live Activity: \(error)")
+            }
         }
 #endif
         if settings.isTimerEnabled && settings.timerDuration > 0 {
@@ -383,13 +400,6 @@ struct ShowItem: View {
             }
         }
 
-    }
-
-    private func formatTime(seconds: Int) -> String {
-        let hours = seconds / 3600
-        let minutes = (seconds % 3600) / 60
-        let seconds = seconds % 60
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
 
     private func confirmDelete(item: ItemLog) {

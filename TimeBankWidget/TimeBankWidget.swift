@@ -11,39 +11,36 @@ import SwiftUI
 
 struct TimerActivityView: View {
     var context: ActivityViewContext<TimerActivityAttributes>
+    @State private var timeRemaining:Int = 0
 
     var body: some View {
-        VStack(spacing: 8) {
-            // Name Title
-            Text(context.attributes.name)
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color.blue.opacity(0.8))
-                .cornerRadius(8)
+        HStack(spacing: 0) {
+            VStack(alignment: .leading,spacing: 0){
+                HStack{
+                    Text("TimeBank")
+                       .font(.footnote)
+                }
+                Text(context.attributes.name)
+                    .font(.headline)
+                    .fixedSize()
+            }
 
-            // Timer Text
-            Text(context.state.start, style: .timer)
-                .font(.system(size: 36, weight: .bold, design: .rounded))
-                .foregroundColor(.white)
-                .padding(10)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color.green, Color.blue]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .cornerRadius(16)
+
+            Spacer().frame(maxWidth: .infinity)
+
+            Text(context.attributes.start,style: .timer)
+                .font(.largeTitle.monospacedDigit())
+                .fontWeight(.regular)
+                .multilineTextAlignment(.trailing)
+                .contentTransition(.numericText(value: Double( timeRemaining)))
+
+
         }
+        .frame(maxWidth: .infinity)
         .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color(.systemGray6))
-                .shadow(color: Color.black.opacity(0.2), radius: 4, x: 2, y: 2)
-        )
-        .padding()
+        .foregroundStyle(Color.white)
+        .activityBackgroundTint(.pig)
+
     }
 }
 
@@ -51,95 +48,88 @@ struct TimerActivityWidget: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: TimerActivityAttributes.self) { context in
             TimerActivityView(context: context)
+//                .tint(.pig)
+//                .activityBackgroundTint(.pig.opacity(0))
         } dynamicIsland: { context in
             DynamicIsland(
                 expanded: {
-                    DynamicIslandExpandedRegion(.bottom) {
-                        HStack(spacing: 8) {
-                            // App Logo
-                            Image("AppIcon")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 24, height: 24)
-                                .clipShape(Circle())
-
-                            // Expanded View Text
-                            VStack(alignment: .leading) {
-                                Text("Timer Active")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                Text("Elapsed time:")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
-
-                            Spacer()
-
-                            // Timer
-                            Text(context.state.start, style: .timer)
-                                .font(.system(size: 24, weight: .bold, design: .rounded))
-                                .foregroundColor(.green)
+                    DynamicIslandExpandedRegion(.leading) {
+                        VStack(alignment: .leading,spacing: 0){
+                            Text("TimeBank")
+                                .font(.caption2)
+                                .fixedSize()
+                            Text(context.attributes.name)
+                                .font(.title3)
+                                .fixedSize()
                         }
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color(.systemGray6))
-                        )
+                        .frame(maxHeight: .infinity)
+                    }
+
+                    DynamicIslandExpandedRegion(.trailing) {
+                        VStack(alignment: .center){
+                            Text(context.attributes.start,style: .timer)
+                                .font(.title.monospacedDigit())
+                                .fontWeight(.regular)
+                                .multilineTextAlignment(.trailing)
+                                .foregroundStyle(.pig)
+
+                        }
+                        .frame(maxHeight: .infinity,alignment: .trailing)
                     }
                 },
                 compactLeading: {
-                    // Compact Leading with Logo
-                    Image("AppIcon")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .clipShape(Circle())
-                },
+                    Text(context.attributes.name)                },
                 compactTrailing: {
-                    // Timer in Compact Trailing
-                    Text(context.state.start, style: .timer)
-                        .font(.caption2)
-                        .foregroundColor(.green)
+                    Text(context.attributes.start,style: .timer)
+                        .monospacedDigit()
+                        .multilineTextAlignment(.trailing)
+                        .foregroundStyle(.pig)
                 },
                 minimal: {
-                    // Minimal View with Logo
-                    Image("AppIcon")
+                    Image("icon")
                         .resizable()
-                        .scaledToFit()
-                        .frame(width: 16, height: 16)
-                        .clipShape(Circle())
+//                        .frame(width: 50, height: 50)
+                        .scaledToFill()
+//                        .scaledToFit()
+//                    Text(context.attributes.name.prefix(1))
+//                        .foregroundStyle(.pig)
                 }
             )
         }
+        .supportedFamilies([.accessoryRectangular])
+
+
     }
+
+
 }
 
 @available(iOSApplicationExtension 16.2, *)
 struct TimerActivityView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            TimerActivityAttributes(name: "Focus Timer")
+            TimerActivityAttributes(name: "Focus Timer",start: .now)
                 .previewContext(
-                    TimerActivityAttributes.ContentState(start: Date()),
+                    TimerActivityAttributes.ContentState(timeRemaining: 123),
                     viewKind: .content
                 )
 
-            TimerActivityAttributes(name: "Focus Timer")
+            TimerActivityAttributes(name: "Focus Timer",start: .now)
                 .previewContext(
-                    TimerActivityAttributes.ContentState(start: Date()),
+                    TimerActivityAttributes.ContentState(timeRemaining:123),
                     viewKind: .dynamicIsland(.expanded)
                 )
 
-            TimerActivityAttributes(name: "Focus Timer")
+            TimerActivityAttributes(name: "Focus Timer",start: .now)
                 .previewContext(
-                    TimerActivityAttributes.ContentState(start: Date()),
-                    viewKind: .dynamicIsland(.minimal)
+                    TimerActivityAttributes.ContentState(timeRemaining: 123),
+                    viewKind: .dynamicIsland(.compact)
                 )
 
-            TimerActivityAttributes(name: "Focus Timer")
+            TimerActivityAttributes(name: "Focus Timer",start: .now)
                 .previewContext(
-                    TimerActivityAttributes.ContentState(start: Date()),
-                    viewKind: .dynamicIsland(.compact)
+                    TimerActivityAttributes.ContentState(timeRemaining: 123),
+                    viewKind: .dynamicIsland(.minimal)
                 )
         }
     }

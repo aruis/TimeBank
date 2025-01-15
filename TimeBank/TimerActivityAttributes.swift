@@ -12,10 +12,11 @@ import Foundation
 struct TimerActivityAttributes:ActivityAttributes{
 
     struct ContentState: Codable, Hashable {
-        var start: Date
+        var timeRemaining: Int        
     }
 
     var name: String
+    var start: Date
 
 }
 #endif

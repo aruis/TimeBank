@@ -78,19 +78,32 @@ struct TimerActivityWidget: Widget {
                     }
                 },
                 compactLeading: {
-                    Text(context.attributes.name)                },
+//                    Text(context.attributes.name)
+                    Image("icon_a")
+                        .resizable()
+                        .scaledToFit()
+//                        .padding(.leading,4)
+                },
                 compactTrailing: {
+//                    Image("icon_a")
+//                        .resizable()
+//                        .scaledToFit()
                     Text(context.attributes.start,style: .timer)
                         .monospacedDigit()
                         .multilineTextAlignment(.trailing)
+                        .frame(width: 45)
                         .foregroundStyle(.pig)
+//                        .padding(.trailing,-1)
+//                        .background(Color.red)
                 },
                 minimal: {
-                    Image("icon")
+                    Image("icon_a")
                         .resizable()
 //                        .frame(width: 50, height: 50)
                         .scaledToFill()
+                        .padding(2)
 //                        .scaledToFit()
+
 //                    Text(context.attributes.name.prefix(1))
 //                        .foregroundStyle(.pig)
                 }
@@ -120,7 +133,7 @@ struct TimerActivityView_Previews: PreviewProvider {
                     viewKind: .dynamicIsland(.expanded)
                 )
 
-            TimerActivityAttributes(name: "Focus Timer",start: .now)
+            TimerActivityAttributes(name: "Focus Timer",start: .now.addingTimeInterval(-10000))
                 .previewContext(
                     TimerActivityAttributes.ContentState(timeRemaining: 123),
                     viewKind: .dynamicIsland(.compact)

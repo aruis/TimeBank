@@ -665,7 +665,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.25.1;
+				MARKETING_VERSION = 1.25.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.TimeBankWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -704,7 +704,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.25.1;
+				MARKETING_VERSION = 1.25.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.TimeBankWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -735,7 +735,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.25.1;
+				MARKETING_VERSION = 1.25.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -764,7 +764,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.25.1;
+				MARKETING_VERSION = 1.25.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -927,7 +927,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.25.1;
+				MARKETING_VERSION = 1.25.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -970,7 +970,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.25.1;
+				MARKETING_VERSION = 1.25.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1001,7 +1001,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.25.1;
+				MARKETING_VERSION = 1.25.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
 				PRODUCT_NAME = TimeBank;
 				SDKROOT = watchos;
@@ -1033,7 +1033,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.25.1;
+				MARKETING_VERSION = 1.25.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
 				PRODUCT_NAME = TimeBank;
 				SDKROOT = watchos;

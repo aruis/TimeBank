@@ -196,6 +196,9 @@
         }
       }
     },
+    "BookTime" : {
+      "shouldTranslate" : false
+    },
     "Cancel" : {
       "localizations" : {
         "zh-Hans" : {
@@ -373,23 +376,22 @@
         }
       }
     },
+    "My Apps" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的App"
+          }
+        }
+      }
+    },
     "No Data." : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "尚无数据"
-          }
-        }
-      }
-    },
-    "No item selected." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "未选择项目"
           }
         }
       }
@@ -440,6 +442,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "费率：%@"
+          }
+        }
+      }
+    },
+    "Reading timing buddy" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的阅读计时伴侣"
           }
         }
       }

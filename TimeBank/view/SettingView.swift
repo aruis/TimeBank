@@ -86,7 +86,31 @@ struct SettingView: View {
                         Text("Enabling the Rate Mode will convert time based on the specified ratio.")
                     }
                 }
-                
+
+                Section("My Apps"){
+                    HStack(spacing: 10){
+                        Image("booktime_icon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 50, height: 50)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                        VStack(alignment: .leading){
+                            Text("BookTime")
+                                .font(.title3)
+                            Text("Reading timing buddy")
+                                .font(.caption)
+                        }
+
+                        Spacer()
+
+                        Link(destination: URL(string: "https://apps.apple.com/us/app/booktime-%E6%82%A8%E7%9A%84%E9%98%85%E8%AF%BB%E8%AE%A1%E6%97%B6%E4%BC%B4%E4%BE%A3/id1600654269")!,label: {
+                            Image(systemName: "arrow.right.circle.fill")
+                        })
+
+                    }
+                }
+
                 Text("苏ICP备2024057896号-3A")
                     .font(.callout)
             }
@@ -96,7 +120,7 @@ struct SettingView: View {
                 }
             }
 #if os(macOS)
-            .frame(width: 300,height:  160,alignment: .topLeading)
+            .frame(width: 420,height:  260,alignment: .topLeading)
             .padding()
 #endif
             .toolbar{

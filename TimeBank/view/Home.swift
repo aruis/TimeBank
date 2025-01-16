@@ -118,7 +118,6 @@ struct Home: View {
         })
         .sheet(isPresented: $isShowSetting, content: {
             SettingView()
-                .presentationDetents([.medium,.large])
         })
 
     }

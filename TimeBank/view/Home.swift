@@ -56,7 +56,7 @@ struct Home: View {
         })
         #elseif os(iOS)
         .ignoresSafeArea(edges: .bottom)
-        .safeAreaInset(edge: .top) {
+        .safeAreaInset(edge: .top, spacing: 0) {
             HStack {
                 title()
                 Spacer()
@@ -64,6 +64,7 @@ struct Home: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, 8)
+            .padding(.bottom, 10)
         }
         #else
         .ignoresSafeArea()

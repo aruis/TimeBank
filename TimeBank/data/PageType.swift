@@ -7,9 +7,8 @@
 
 import Foundation
 
-enum PageType{
+enum PageType: Hashable {
     case home
     case save
     case kill
 }
-

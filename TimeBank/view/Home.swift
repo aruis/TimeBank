@@ -15,6 +15,7 @@ struct Home: View {
     @EnvironmentObject var settings: AppSetting
     
     @State private var pageType = PageType.save
+    @State private var tabRefreshToken = UUID()
     @State private var isShowAdd = false
     @State private var isShowSetting = false
     @State private var isShowBalanceTitle = false
@@ -25,19 +26,7 @@ struct Home: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView(selection: $pageType) {
-                ListView(pageType: .save)
-                    .tag(PageType.save)
-#if os(macOS) || os(visionOS)
-                    .tabItem {Label("SaveTime", systemImage: "tray.and.arrow.down.fill")}
-#endif
-                
-                ListView(pageType: .kill)
-                    .tag(PageType.kill)
-#if os(macOS) || os(visionOS)
-                    .tabItem {Label("KillTime", systemImage: "tray.and.arrow.up.fill")}
-#endif
-            }
+            pageContent()
             #if os(iOS)
             bottomFloatingBar()
             #endif
@@ -111,9 +100,6 @@ struct Home: View {
             }
         }
         #endif
-        #if os(iOS)
-        .tabViewStyle(.page)
-        #endif
         .background(
             Rectangle()
                 .fill(.black.opacity(0.05))
@@ -137,6 +123,28 @@ struct Home: View {
         })
 
     }
+
+    @ViewBuilder
+    func pageContent() -> some View {
+        TabView(selection: $pageType) {
+            ListView(pageType: .save)
+                .tag(PageType.save)
+#if os(macOS) || os(visionOS)
+                .tabItem {Label("SaveTime", systemImage: "tray.and.arrow.down.fill")}
+#endif
+            
+            ListView(pageType: .kill)
+                .tag(PageType.kill)
+#if os(macOS) || os(visionOS)
+                .tabItem {Label("KillTime", systemImage: "tray.and.arrow.up.fill")}
+#endif
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+#if os(iOS)
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .id(tabRefreshToken)
+#endif
+    }
     
     @ViewBuilder
     func title() -> some View{
@@ -144,6 +152,11 @@ struct Home: View {
             withAnimation(.easeInOut, {
                 pageType = (pageType == .save ? .kill : .save)
             })
+#if os(iOS)
+            DispatchQueue.main.async {
+                tabRefreshToken = UUID()
+            }
+#endif
         }, label: {
             HStack(alignment: .firstTextBaseline,spacing: 4){
                 Text(pageType == PageType.save ? "SAVETIME":"KILLTIME")
@@ -155,7 +168,11 @@ struct Home: View {
             }
             //                    .background(.thinMaterial)
         })
+#if os(iOS)
+        .buttonStyle(.plain)
+#else
         .buttonStyle(.borderless)
+#endif
         .foregroundStyle(mainColor)
         .animation(.default, value: pageType)
     }

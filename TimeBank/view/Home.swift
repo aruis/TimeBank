@@ -24,19 +24,23 @@ struct Home: View {
     let logger:Logger = Logger.init()        
     
     var body: some View {
-        
-        TabView(selection: $pageType) {
-            ListView(pageType: .save)
-                .tag(PageType.save)
+        ZStack(alignment: .bottom) {
+            TabView(selection: $pageType) {
+                ListView(pageType: .save)
+                    .tag(PageType.save)
 #if os(macOS) || os(visionOS)
-                .tabItem {Label("SaveTime", systemImage: "tray.and.arrow.down.fill")}
+                    .tabItem {Label("SaveTime", systemImage: "tray.and.arrow.down.fill")}
 #endif
-            
-            ListView(pageType: .kill)
-                .tag(PageType.kill)
+                
+                ListView(pageType: .kill)
+                    .tag(PageType.kill)
 #if os(macOS) || os(visionOS)
-                .tabItem {Label("KillTime", systemImage: "tray.and.arrow.up.fill")}
+                    .tabItem {Label("KillTime", systemImage: "tray.and.arrow.up.fill")}
 #endif
+            }
+            #if os(iOS)
+            bottomFloatingBar()
+            #endif
         }
         #if os(macOS)
         .padding(.top,60)
@@ -50,6 +54,17 @@ struct Home: View {
             .padding()
 //            .padding(.top,20)
         })
+        #elseif os(iOS)
+        .ignoresSafeArea(edges: .bottom)
+        .safeAreaInset(edge: .top) {
+            HStack {
+                title()
+                Spacer()
+                settingsButton()
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+        }
         #else
         .ignoresSafeArea()
         .toolbar{
@@ -109,8 +124,8 @@ struct Home: View {
             addButton()
         })
         #endif
-        #if !os(visionOS) 
-        .sensoryFeedback(.decrease, trigger: pageType)
+        #if !os(visionOS)
+        .sensoryFeedback(.selection, trigger: pageType)
         #endif
         .sheet(isPresented: $isShowAdd, content: {
             NewBankItem(pageType:$pageType,bankItem: .constant(BankItem()))
@@ -164,9 +179,7 @@ struct Home: View {
     @ViewBuilder
     func addButton() -> some View{
         Button{
-#if os(iOS)
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-#endif
+            HapticFeedback.tap()
             withAnimation(.default){
                 isShowAdd = true
             }
@@ -178,8 +191,78 @@ struct Home: View {
         .animation(.default, value: pageType)
         #if os(macOS)
         .padding(.trailing,25)
-        #endif
         .padding(.bottom,25)
+        #elseif os(iOS)
+        // iPhone uses a custom safe-area bar instead of the system toolbar.
+        #else
+        .padding(.bottom,25)
+        #endif
+    }
+
+    @ViewBuilder
+    func settingsButton() -> some View {
+        Button {
+            HapticFeedback.tap()
+            isShowSetting = true
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.body.weight(.semibold))
+                .frame(width: 44, height: 44)
+                .background(.regularMaterial, in: Circle())
+                .overlay {
+                    Circle()
+                        .stroke(.white.opacity(0.35), lineWidth: 0.8)
+                }
+                .shadow(color: .black.opacity(0.08), radius: 10, y: 4)
+        }
+        .buttonStyle(.plain)
+        .frame(width: 52, height: 52)
+        .contentShape(Rectangle())
+    }
+
+    @ViewBuilder
+    func balanceBadge() -> some View {
+        HStack(spacing: 3){
+            if(isShowBalanceTitle){
+                Text("Your Balance")
+                    .font(.title3)
+            }else{
+                Image(systemName: settings.isEnableRate ? "banknote" : "clock")
+                    .font(.subheadline.weight(.medium))
+            }
+
+            Text(balanceBadgeString)
+                .font(.title3)
+        }
+        .animation(.default,value:isShowBalanceTitle)
+        .onTapGesture {
+            isShowBalanceTitle.toggle()
+        }
+        .contentShape(.capsule)
+    }
+
+    @ViewBuilder
+    func bottomFloatingBar() -> some View {
+        HStack {
+            balanceBadge()
+            Spacer()
+            addButton()
+                .padding(.bottom, 0)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background {
+            Capsule(style: .continuous)
+                .fill(.ultraThinMaterial)
+                .overlay {
+                    Capsule(style: .continuous)
+                        .stroke(.white.opacity(0.28), lineWidth: 0.8)
+                }
+                .shadow(color: .black.opacity(0.08), radius: 16, y: 6)
+        }
+        .padding(.horizontal, 12)
+        .padding(.bottom, 12)
+        .ignoresSafeArea(edges: .bottom)
     }
     
     var mainColor:Color{
@@ -234,6 +317,13 @@ struct Home: View {
         }
         
     }
+
+    var balanceBadgeString:String{
+        if settings.isEnableRate {
+            return "$ \(String(format: "%.0f", self.saveMin - self.killMin))"
+        } else {
+            return String(format: "%.0f", self.saveMin - self.killMin)
+        }
+    }
     
 }
-

@@ -27,9 +27,7 @@ struct ListView: View {
         Button( action: {
             selectItem = item
             isShow = true
-            #if os(iOS)
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            #endif
+            HapticFeedback.selection()
         }, label: {
             VStack(spacing:0){
                 Spacer()
@@ -171,6 +169,9 @@ struct ListView: View {
             .animation(.default,value: items)
             .padding(.top,10)
             .padding(.horizontal,15)
+            #if os(iOS)
+            .padding(.bottom, 110)
+            #endif
         }
         .overlay(content: {
             if items.count == 0 {

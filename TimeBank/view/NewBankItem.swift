@@ -71,9 +71,7 @@ struct NewBankItem: View {
                             withAnimation(Animation.easeIn(duration: 0.12).repeatCount(3, autoreverses: true), {
                                 isShaking = true
                             })
-#if os(iOS)
-                            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-#endif
+                            HapticFeedback.warning()
                             isShaking = false
                         } else {
                             if !bankItem.name.isEmpty{
@@ -86,9 +84,7 @@ struct NewBankItem: View {
                                 newItem.rate = rate
                                 modelContext.insert(newItem)
                             }
-#if os(iOS)
-                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-#endif
+                            HapticFeedback.success()
                             dismiss()
                         }
                     }label: {

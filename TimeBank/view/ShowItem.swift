@@ -114,11 +114,6 @@ struct ShowItem: View {
 
                 })
             })
-#if !os(visionOS)
-            .sensoryFeedback(.decrease, trigger: isTimerRunning)
-#endif
-
-
         }
         .interactiveDismissDisabled(isTimerRunning)
     }
@@ -269,6 +264,8 @@ struct ShowItem: View {
     }
 
     private func startTimer() {
+        HapticFeedback.tap()
+
         withAnimation{
             isTimerRunning = true
         }
@@ -374,10 +371,7 @@ struct ShowItem: View {
 
             if start.elapsedMin(now) < 1 {
                 print("时间不足1分钟")
-
-#if os(iOS)
-                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-#endif
+                HapticFeedback.warning()
 
                 withAnimation{
                     showTip = true
@@ -394,6 +388,7 @@ struct ShowItem: View {
 
             bankItem.lastTouch = now
             let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)
+            HapticFeedback.success()
 
             if var logs = bankItem.logs{
                 logs.append(thisLog)

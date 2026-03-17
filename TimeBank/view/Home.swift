@@ -11,7 +11,6 @@ import OSLog
 
 struct Home: View {
         
-    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var settings: AppSetting
     
     @State private var pageType = PageType.save
@@ -22,14 +21,12 @@ struct Home: View {
     
     @Query private var items: [BankItem]
     
-    let logger:Logger = Logger.init()        
+    private let floatingButtonDiameter: CGFloat = 58
+    private let balanceBadgeHeight: CGFloat = 42
     
     var body: some View {
         ZStack(alignment: .bottom) {
             pageContent()
-            #if os(iOS)
-            bottomFloatingBar()
-            #endif
         }
         #if os(macOS)
         .padding(.top,60)
@@ -51,6 +48,17 @@ struct Home: View {
                 Spacer()
                 settingsButton()
             }
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 10)
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            HStack(alignment: .center) {
+                balanceBadge()
+                Spacer()
+                addButton()
+            }
+            .frame(minHeight: floatingButtonDiameter, alignment: .center)
             .padding(.horizontal, 16)
             .padding(.top, 8)
             .padding(.bottom, 10)
@@ -203,9 +211,9 @@ struct Home: View {
             }
         }label: {
             Image(systemName: "plus")
-                .font(.title)
+                .font(.title.weight(.bold))
         }
-        .buttonStyle(CircularButtonStyle(color:mainColor.opacity(0.85)))
+        .buttonStyle(CircularButtonStyle(color:mainColor.opacity(0.9), diameter: floatingButtonDiameter))
         .animation(.default, value: pageType)
         #if os(macOS)
         .padding(.trailing,25)
@@ -240,55 +248,38 @@ struct Home: View {
 
     @ViewBuilder
     func balanceBadge() -> some View {
-        HStack(spacing: 3){
+        HStack(spacing: 6){
             if(isShowBalanceTitle){
                 Text("Your Balance")
-                    .font(.title3)
+                    .font(.subheadline.weight(.medium))
             }else{
                 Image(systemName: settings.isEnableRate ? "banknote" : "clock")
                     .font(.subheadline.weight(.medium))
             }
 
             Text(balanceBadgeString)
-                .font(.title3)
+                .font(.title3.monospacedDigit())
         }
         .animation(.default,value:isShowBalanceTitle)
         .onTapGesture {
             isShowBalanceTitle.toggle()
         }
-        .contentShape(.capsule)
+        .foregroundStyle(.primary)
+        .padding(.horizontal, 12)
+        .frame(height: balanceBadgeHeight, alignment: .center)
+        .background {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(.regularMaterial)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(.white.opacity(0.22), lineWidth: 0.8)
+                }
+        }
+        .contentShape(Rectangle())
     }
 
-    @ViewBuilder
-    func bottomFloatingBar() -> some View {
-        HStack {
-            balanceBadge()
-            Spacer()
-            addButton()
-                .padding(.bottom, 0)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background {
-            Capsule(style: .continuous)
-                .fill(.ultraThinMaterial)
-                .overlay {
-                    Capsule(style: .continuous)
-                        .stroke(.white.opacity(0.28), lineWidth: 0.8)
-                }
-                .shadow(color: .black.opacity(0.08), radius: 16, y: 6)
-        }
-        .padding(.horizontal, 12)
-        .padding(.bottom, 12)
-        .ignoresSafeArea(edges: .bottom)
-    }
-    
     var mainColor:Color{
-        if pageType == .save {
-            return Color.red
-        }else{
-            return Color.green
-        }
+        settings.themeColor(isSave: pageType == .save)
     }
     
     var saveMin:Float{

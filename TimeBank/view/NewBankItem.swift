@@ -143,21 +143,9 @@ struct NewBankItem: View {
     }
     
     var mainColor:Color{
-        if pageType == .save {
-            return Color.red
-        }else{
-            return Color.green
-        }
+        settings.themeColor(isSave: pageType == .save)
     }
     
-}
-
-struct MyTextFieldStyle: TextFieldStyle {
-    func _body(configuration: TextField<Self._Label>) -> some View {
-        configuration
-            .padding(10)
-            .background(RoundedRectangle(cornerRadius: 5).stroke(Color.red, lineWidth: 2))
-    }
 }
 
 struct MyButtonStyle: ButtonStyle {

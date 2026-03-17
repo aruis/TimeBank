@@ -256,11 +256,7 @@ struct ShowItem: View {
     }
 
     var mainColor:Color{
-        if bankItem.isSave {
-            return Color.red
-        }else{
-            return Color.green
-        }
+        settings.themeColor(isSave: bankItem.isSave)
     }
 
     private func startTimer() {

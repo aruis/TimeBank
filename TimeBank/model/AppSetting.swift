@@ -43,6 +43,15 @@ class AppSetting :ObservableObject {
             }
         }
     }
+
+    @Published var swapThemeColors: Bool = false {
+        didSet {
+            store.set(swapThemeColors, forKey: "swapThemeColors")
+            DispatchQueue.main.async {
+                self.store.synchronize()
+            }
+        }
+    }
     
     init() {
         loadSettings()
@@ -66,6 +75,7 @@ class AppSetting :ObservableObject {
         
         isTimerEnabled = store.bool(forKey: "isTimerEnabled")
         isEnableRate = store.bool(forKey: "isEnableRate")
+        swapThemeColors = store.bool(forKey: "swapThemeColors")
         timerDuration = store.object(forKey: "timerDuration") as? Double ?? 0.0
     }
     
@@ -107,6 +117,12 @@ class AppSetting :ObservableObject {
         }
     }
     #endif
+
+    func themeColor(isSave: Bool) -> Color {
+        let defaultColor = isSave ? Color.red : Color.green
+        let swappedColor = isSave ? Color.green : Color.red
+        return swapThemeColors ? swappedColor : defaultColor
+    }
 }
 
 enum NotificationPermissionError: Error {

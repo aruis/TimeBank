@@ -87,6 +87,12 @@ struct SettingView: View {
                     }
                 }
 
+                Section("Appearance") {
+                    Toggle(isOn: $settings.swapThemeColors) {
+                        Text("Swap SaveTime and KillTime theme colors")
+                    }
+                }
+
                 Section("My Apps"){
                     HStack(spacing: 10){
                         Image("booktime_icon")

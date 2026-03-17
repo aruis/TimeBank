@@ -131,11 +131,7 @@ struct ListView: View {
     
     
     var mainColor:Color{
-        if pageType == .save {
-            return Color.red
-        }else{
-            return Color.green
-        }
+        settings.themeColor(isSave: pageType == .save)
     }
     
     

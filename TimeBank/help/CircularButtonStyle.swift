@@ -10,18 +10,21 @@ import SwiftUI
 struct CircularButtonStyle: ButtonStyle {
     
     var color = Color.blue
+    var diameter: CGFloat = 52
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding(20)
-            .background(color)
+            .frame(width: diameter, height: diameter)
+            .background(
+                Circle()
+                    .fill(color)
+            )
             .foregroundColor(.white)
-            .clipShape(Circle())
             .overlay(
                 Circle()
-                    .stroke(color, lineWidth: 2)
+                    .stroke(.white.opacity(0.26), lineWidth: 0.8)
             )
-            .shadow(radius: 5,x: 3,y: 3)
+            .shadow(color: .black.opacity(0.12), radius: 10, y: 4)
             .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
             .contentShape(.circle)
             #if os(visionOS)

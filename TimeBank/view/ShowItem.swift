@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-#if canImport(ActivityKit)
+#if canImport(ActivityKit) && !os(macOS)
 import ActivityKit
 #endif
 import UserNotifications
@@ -33,7 +33,7 @@ struct ShowItem: View {
     @State private var showConfirmDelete = false
     @State private var showTip = false
 
-#if canImport(ActivityKit)
+#if canImport(ActivityKit) && !os(macOS)
     @State private var activity:Activity<TimerActivityAttributes>?
 #endif
 
@@ -270,7 +270,7 @@ struct ShowItem: View {
             withAnimation(.default, {
                 self.timeRemaining += 1
 
-#if canImport(ActivityKit)
+#if canImport(ActivityKit) && !os(macOS)
 //                if let activity{
 //                    Task{
 //                        await activity.update(.init(state: TimerActivityAttributes.ContentState(timeRemaining: timeRemaining), staleDate: nil))
@@ -290,7 +290,7 @@ struct ShowItem: View {
 
         start = Date()
 
-#if canImport(ActivityKit)
+#if canImport(ActivityKit) && !os(macOS)
         Task {
             // 启动新的之前关闭残留的
             for activity in Activity<TimerActivityAttributes>.activities {
@@ -354,7 +354,7 @@ struct ShowItem: View {
         timeRemaining = 0
         lastBackgroundTime = nil
 
-#if canImport(ActivityKit)
+#if canImport(ActivityKit) && !os(macOS)
         Task {
             if let activity{
                 await activity.end(nil,dismissalPolicy: .immediate)

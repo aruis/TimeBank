@@ -142,7 +142,7 @@ struct SettingView: View {
                 }
             }
 #if os(macOS)
-            .frame(width: 420,height:  260,alignment: .topLeading)
+            .frame(width: 450,height:  360,alignment: .topLeading)
             .padding()
 #endif
             .toolbar{

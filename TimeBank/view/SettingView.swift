@@ -87,10 +87,26 @@ struct SettingView: View {
                     }
                 }
 
-                Section("Appearance") {
-                    Toggle(isOn: $settings.swapThemeColors) {
-                        Text("Swap SaveTime and KillTime theme colors")
+                Section("SaveTime / KillTime 颜色") {
+                    HStack(spacing: 12) {
+                        colorThemeOption(
+                            saveColor: .red,
+                            killColor: .green,
+                            isSelected: !settings.swapThemeColors
+                        ) {
+                            settings.swapThemeColors = false
+                        }
+
+                        colorThemeOption(
+                            saveColor: .green,
+                            killColor: .red,
+                            isSelected: settings.swapThemeColors
+                        ) {
+                            settings.swapThemeColors = true
+                        }
                     }
+                    .padding(.vertical, 4)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                 }
 
                 Section("My Apps"){
@@ -155,6 +171,43 @@ struct SettingView: View {
             
         }
         
+    }
+
+    @ViewBuilder
+    func colorThemeOption(
+        saveColor: Color,
+        killColor: Color,
+        isSelected: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                RoundedRectangle(cornerRadius: 7, style: .continuous)
+                    .fill(saveColor.gradient)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 20)
+
+                RoundedRectangle(cornerRadius: 7, style: .continuous)
+                    .fill(killColor.gradient)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 20)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 12)
+            .background {
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(.regularMaterial)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .stroke(.white.opacity(0.12), lineWidth: 0.8)
+                    }
+            }
+            .saturation(isSelected ? 1 : 0.35)
+            .opacity(isSelected ? 1 : 0.72)
+        }
+        .buttonStyle(.plain)
+        .contentShape(Rectangle())
     }
 }
 

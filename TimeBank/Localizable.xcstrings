@@ -176,9 +176,6 @@
         }
       }
     },
-    "Appearance" : {
-
-    },
     "Are you sure you want to delete this item?" : {
       "localizations" : {
         "zh-Hans" : {
@@ -536,7 +533,7 @@
         }
       }
     },
-    "Swap SaveTime and KillTime theme colors" : {
+    "SaveTime / KillTime 颜色" : {
 
     },
     "Time Range" : {

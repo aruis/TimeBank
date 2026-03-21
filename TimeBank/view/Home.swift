@@ -41,7 +41,6 @@ struct Home: View {
 //            .padding(.top,20)
         })
         #elseif os(iOS)
-        .ignoresSafeArea(edges: .bottom)
         .safeAreaInset(edge: .top, spacing: 0) {
             HStack {
                 title()
@@ -147,7 +146,7 @@ struct Home: View {
                 .tabItem {Label("KillTime", systemImage: "tray.and.arrow.up.fill")}
 #endif
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .ignoresSafeArea(edges: .bottom)
 #if os(iOS)
         .tabViewStyle(.page(indexDisplayMode: .never))
         .id(tabRefreshToken)

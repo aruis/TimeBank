@@ -163,11 +163,7 @@ struct ListView: View {
 
             }
             .animation(.default,value: items)
-            #if os(iOS)
-            .padding(.top, 24)
-            #else
             .padding(.top,10)
-            #endif
             .padding(.horizontal,15)
             #if os(iOS)
             .padding(.bottom, 110)

@@ -360,7 +360,9 @@ struct ShowItem: View {
         if let start {
             let now = Date()
 
-            if start.elapsedMin(now) < 1 {
+            let stopResult = bankItem.stopTimer(start: start, end: now)
+
+            if !stopResult.shouldRecord {
                 print("时间不足1分钟")
                 HapticFeedback.warning()
 
@@ -379,11 +381,7 @@ struct ShowItem: View {
                 return
             }
 
-            bankItem.lastTouch = now
-            let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)
             HapticFeedback.success()
-
-            bankItem.logs?.append(thisLog)
         }
 
         self.start = nil

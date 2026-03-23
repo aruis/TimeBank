@@ -224,7 +224,9 @@ struct ShowItemWatch: View {
         if let start {
             let now = Date()
             
-            if start.elapsedMin(now) < 1 {
+            let stopResult = bankItem.stopTimer(start: start, end: now)
+
+            if !stopResult.shouldRecord {
                 
                 withAnimation{
                     showTip = true
@@ -240,12 +242,6 @@ struct ShowItemWatch: View {
                 
                 return
             }
-            
-            
-            bankItem.lastTouch = now
-            let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)
-            
-            bankItem.logs?.append(thisLog)
         }
 
         self.start = nil

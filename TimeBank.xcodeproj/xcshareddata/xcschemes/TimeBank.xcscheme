@@ -34,7 +34,7 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8317E6442AFCC2B9003543CB"
+               BlueprintIdentifier = "A10000062D7A000000000001"
                BuildableName = "TimeBankTests.xctest"
                BlueprintName = "TimeBankTests"
                ReferencedContainer = "container:TimeBank.xcodeproj">

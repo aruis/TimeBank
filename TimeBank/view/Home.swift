@@ -14,7 +14,6 @@ struct Home: View {
     @EnvironmentObject var settings: AppSetting
     
     @State private var pageType = PageType.save
-    @State private var tabRefreshToken = UUID()
     @State private var isShowAdd = false
     @State private var isShowSetting = false
     @State private var isShowBalanceTitle = false
@@ -149,7 +148,6 @@ struct Home: View {
         .ignoresSafeArea(edges: .bottom)
 #if os(iOS)
         .tabViewStyle(.page(indexDisplayMode: .never))
-        .id(tabRefreshToken)
 #endif
     }
     
@@ -159,11 +157,6 @@ struct Home: View {
             withAnimation(.easeInOut, {
                 pageType = (pageType == .save ? .kill : .save)
             })
-#if os(iOS)
-            DispatchQueue.main.async {
-                tabRefreshToken = UUID()
-            }
-#endif
         }, label: {
             HStack(alignment: .firstTextBaseline,spacing: 4){
                 Text(pageType == PageType.save ? "SAVETIME":"KILLTIME")
@@ -282,23 +275,11 @@ struct Home: View {
     }
     
     var saveMin:Float{
-        return items.reduce(0) { sum, item in
-            if (item.isSave){
-                return sum + (settings.isEnableRate ? item.exchange : Float(item.saveMin))
-            } else {
-                return sum
-            }
-        }
+        items.totalValue(isSave: true, useRate: settings.isEnableRate)
     }
     
     var killMin:Float{
-        return items.reduce(0) { sum, item in
-            if (!item.isSave){
-                return sum + (settings.isEnableRate ? item.exchange : Float(item.saveMin))
-            } else {
-                return sum
-            }
-        }
+        items.totalValue(isSave: false, useRate: settings.isEnableRate)
     }
     
     var saveMinString:String{
@@ -319,18 +300,18 @@ struct Home: View {
     
     var balanceString:String{
         if settings.isEnableRate {
-            return String(format: "%.2f",self.saveMin - self.killMin)
+            return String(format: "%.2f", items.balanceValue(useRate: true))
         }else{
-            return String(format: "%.0f",self.saveMin - self.killMin)
+            return String(format: "%.0f", items.balanceValue(useRate: false))
         }
         
     }
 
     var balanceBadgeString:String{
         if settings.isEnableRate {
-            return "$ \(String(format: "%.0f", self.saveMin - self.killMin))"
+            return "$ \(String(format: "%.0f", items.balanceValue(useRate: true)))"
         } else {
-            return String(format: "%.0f", self.saveMin - self.killMin)
+            return String(format: "%.0f", items.balanceValue(useRate: false))
         }
     }
     

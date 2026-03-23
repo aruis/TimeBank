@@ -9,6 +9,20 @@ import SwiftUI
 import SwiftData
 
 struct WatchHome: View {
+    private enum ActiveSheet: Identifiable {
+        case play
+        case edit
+
+        var id: Int {
+            switch self {
+            case .play:
+                return 0
+            case .edit:
+                return 1
+            }
+        }
+    }
+
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var settings: AppSetting
     
@@ -17,12 +31,10 @@ struct WatchHome: View {
         
     @Query(sort: \BankItem.lastTouch ,order: .reverse) private var items: [BankItem]
     
-    @State private var isShow = false
-    @State private var isShowEditSheet = false
-    @State private var isEdit = false
-    @State private var isDelete = false
     @State private var isShowSetting = false
-    @State private var selectItem:BankItem = BankItem()
+    @State private var selectItem: BankItem?
+    @State private var activeSheet: ActiveSheet?
+    @State private var isShowingItemActions = false
 
     
     var body: some View {
@@ -45,34 +57,43 @@ struct WatchHome: View {
                 SettingView()
                     .presentationDetents([.medium])
             })
+            .confirmationDialog(
+                "Item Actions",
+                isPresented: $isShowingItemActions,
+                titleVisibility: .visible
+            ) {
+                if let selectItem {
+                    Button(selectItem.isPin ? "Unpin" : "Pin") {
+                        selectItem.isPin.toggle()
+                    }
 
+                    Button("Edit") {
+                        activeSheet = .edit
+                    }
+
+                    Button("Delete", role: .destructive) {
+                        modelContext.delete(selectItem)
+                        self.selectItem = nil
+                    }
+                }
+            }
+            .sheet(item: $activeSheet) { sheet in
+                switch sheet {
+                case .play:
+                    if let selectItem {
+                        ShowItemWatch(bankItem: binding(for: selectItem))
+                    }
+                case .edit:
+                    if let selectItem {
+                        NewBankItem(pageType: .constant(pageType), bankItem: binding(for: selectItem))
+                            .presentationDetents([.medium])
+                    }
+                }
+            }
+            .navigationTitle(navigationTitle)
+            .toolbarTitleDisplayMode(.inline)
             .animation(.default, value: pageType)
             .toolbar{
-                ToolbarItem(placement: .topBarLeading, content: {
-                    switch pageType {
-                    case .home:
-                        Text("TimeBank").monospaced().bold()
-                    case .save:
-                        VStack{
-                            Text("SaveTime")
-                                .font(.caption2.monospaced())
-//                                .monospaced().bold()
-                            Text(saveMinString)
-                                .font(.caption.bold())
-                        }
-//                        Text("SaveTime \(saveMin)").monospaced().bold()
-                    case .kill:
-                        VStack{
-                            Text("KillTime")
-                                .font(.caption2.monospaced())
-                            Text(killMinString)
-                                .font(.caption.bold())
-                        }
-//                        Text("KillTime \(killMin)").monospaced().bold()
-                    }
-                    
-                })
-                
                 ToolbarItem(placement: .topBarTrailing){
                     Button("Edit", systemImage: "ellipsis"){
                         isShowSetting = true
@@ -133,48 +154,17 @@ struct WatchHome: View {
                 .toolbar{
                     ToolbarItem(placement: .topBarTrailing){
                         Button{
-                            isShowEditSheet = true
+                            selectItem = item
+                            isShowingItemActions = true
                         }label: {
                             Label("edit",systemImage: "slider.horizontal.3")
                         }
-                        .sheet(isPresented: $isShowEditSheet, content: {
-                            VStack(spacing: 10){
-                                Button{
-                                    item.isPin.toggle()
-                                    isShowEditSheet = false
-                                }label:{
-                                    Label("Pin",systemImage: item.isPin ? "pin.circle.fill" : "pin.circle")
-                                }
-                                
-                                Button{
-                                    selectItem = item
-                                    isShowEditSheet = false
-                                    isEdit = true
-                                }label: {
-                                    Label("Edit",systemImage: "pencil.circle")
-                                }
-
-                                
-                                Button(role:.destructive){
-                                    modelContext.delete(item)
-                                    isShowEditSheet = false
-                                }label: {
-                                    Label("Delete", systemImage:  "trash")
-                                }
-                            }
-                        })
-                        .sheet(isPresented: $isEdit,content: {
-                            NewBankItem(pageType:.constant(pageType),bankItem: $selectItem)
-                                    .presentationDetents([.medium])
-                        })
-
-                        
                     }
                     
                     ToolbarItem(placement: .bottomBar, content: {
                         Button{
                             selectItem = item
-                            isShow = true
+                            activeSheet = .play
                         }label: {
                             Label("Play",systemImage: "play")
                         }
@@ -185,9 +175,6 @@ struct WatchHome: View {
 
                 
             }
-            .sheet(isPresented: $isShow,content: {
-                ShowItemWatch(bankItem: $selectItem)
-            })
 
             Button("Add", systemImage: "plus", action: {
                 isShowNew  = true
@@ -198,6 +185,13 @@ struct WatchHome: View {
         .tabViewStyle(.verticalPage)
         .containerBackground( type == .save ? Color.red.gradient : Color.green.gradient, for: .navigation)
 
+    }
+
+    private func binding(for item: BankItem) -> Binding<BankItem> {
+        Binding(
+            get: { item },
+            set: { _ in }
+        )
     }
     
     func list(type:PageType) -> [BankItem]{
@@ -226,7 +220,18 @@ struct WatchHome: View {
                     }
                 }
         })
+        
+    }
 
+    var navigationTitle: String {
+        switch pageType {
+        case .home:
+            return "TimeBank"
+        case .save:
+            return "Save"
+        case .kill:
+            return "Kill"
+        }
     }
     
     
@@ -279,4 +284,6 @@ struct WatchHome: View {
 
 #Preview {
     WatchHome()
+        .environmentObject(AppSetting())
+        .modelContainer(for: [BankItem.self, ItemLog.self], inMemory: true)
 }

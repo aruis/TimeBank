@@ -19,7 +19,6 @@ struct ShowItemWatch: View {
     @State private var timeRemaining = 0
     @State private var timer: Timer?
     @State private var isTimerRunning = false
-    @State private var lastBackgroundTime: Date?
     
     @State private var start:Date?
     
@@ -54,7 +53,7 @@ struct ShowItemWatch: View {
             .onChange(of: scenePhase, {
                 switch scenePhase {
                 case .active:                    
-                    if let start {
+                    if isTimerRunning, let start {
                         let backgroundDuration = Date().timeIntervalSince(start)
                         timeRemaining = Int(backgroundDuration)
                     }
@@ -75,13 +74,13 @@ struct ShowItemWatch: View {
 
             .toolbar(content: {
                 ToolbarItem(placement: .cancellationAction, content: {
-
-                        Button{
-                            dismiss()
-                        }label: {
-                            Text("Close")
-                        }
-                        .opacity(isTimerRunning ? 0 : 1)
+                    Button{
+                        dismiss()
+                    }label: {
+                        Text("Close")
+                    }
+                    .disabled(isTimerRunning)
+                    .accessibilityHidden(isTimerRunning)
                 })
                 
             })
@@ -198,6 +197,8 @@ struct ShowItemWatch: View {
         withAnimation{
             isTimerRunning = true
         }
+
+        timeRemaining = 0
         
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.timeRemaining += 1
@@ -211,19 +212,14 @@ struct ShowItemWatch: View {
         start = Date()
     }
     
-    private func pauseTimer() {
-        isTimerRunning = false
-        timer?.invalidate()
-    }
-    
     private func resetTimer() {
         withAnimation{
             isTimerRunning = false
         }
         
         timer?.invalidate()
+        timer = nil
         timeRemaining = 0
-        lastBackgroundTime = nil
         
         if let start {
             let now = Date()
@@ -239,6 +235,8 @@ struct ShowItemWatch: View {
                         showTip = false
                     }
                 })
+
+                self.start = nil
                 
                 return
             }
@@ -247,10 +245,10 @@ struct ShowItemWatch: View {
             bankItem.lastTouch = now
             let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)
             
-            if var logs = bankItem.logs{
-                logs.append(thisLog)
-            }
+            bankItem.logs?.append(thisLog)
         }
+
+        self.start = nil
         
     }
     
@@ -267,6 +265,8 @@ struct ShowItemWatch: View {
 
 #Preview {
     ShowItemWatch(bankItem: .constant(BankItem(name: "test")))
+        .environmentObject(AppSetting())
+        .modelContainer(for: [BankItem.self, ItemLog.self], inMemory: true)
 }
 
 extension AnyTransition {

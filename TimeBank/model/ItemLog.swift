@@ -28,7 +28,7 @@ class ItemLog {
     }
     
     var exchange:Float {
-        return Float(self.saveMin) * self.bankItem!.rate;
+        return Float(self.saveMin) * (self.bankItem?.rate ?? 0)
     }
     
     var exchangeString:String{

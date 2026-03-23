@@ -23,7 +23,6 @@ struct ShowItem: View {
     @State private var timeRemaining = 0
     @State private var timer: Timer?
     @State private var isTimerRunning = false
-    @State private var lastBackgroundTime: Date?
 
     @State private var start:Date?
 
@@ -78,7 +77,7 @@ struct ShowItem: View {
             .onChange(of: scenePhase, {
                 switch scenePhase {
                 case .active:
-                    if let start {
+                    if isTimerRunning, let start {
                         let backgroundDuration = Date().timeIntervalSince(start)
                         timeRemaining = Int(backgroundDuration)
                     }
@@ -211,19 +210,6 @@ struct ShowItem: View {
                     .tint(.blue)
 
                 }
-                .alert(isPresented: $showConfirmDelete) {
-                    Alert(
-                        title: Text("Delete Item"),
-                        message: Text("Are you sure you want to delete this item?"),
-                        primaryButton: .destructive(Text("Delete")) {
-                            if let itemToDelete = itemToDelete {
-                                bankItem.logs?.removeAll(where: { $0 == itemToDelete })
-                                modelContext.delete(itemToDelete)
-                            }
-                        },
-                        secondaryButton: .cancel()
-                    )
-                }
                 .contextMenu{
                     Button(){
                         selectedLog = item
@@ -243,6 +229,18 @@ struct ShowItem: View {
         .sheet(item: $selectedLog) {log in
             EditLogItem(log: log)
                 .presentationDetents([.medium, .large])
+        }
+        .alert("Delete Item", isPresented: $showConfirmDelete, presenting: itemToDelete) { item in
+            Button("Delete", role: .destructive) {
+                bankItem.logs?.removeAll(where: { $0 == item })
+                modelContext.delete(item)
+                itemToDelete = nil
+            }
+            Button("Cancel", role: .cancel) {
+                itemToDelete = nil
+            }
+        } message: { _ in
+            Text("Are you sure you want to delete this item?")
         }
 
     }
@@ -265,6 +263,8 @@ struct ShowItem: View {
         withAnimation{
             isTimerRunning = true
         }
+
+        timeRemaining = 0
 
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             withAnimation(.default, {
@@ -338,11 +338,6 @@ struct ShowItem: View {
         }
     }
 
-    private func pauseTimer() {
-        isTimerRunning = false
-        timer?.invalidate()
-    }
-
     private func resetTimer() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 
@@ -351,8 +346,8 @@ struct ShowItem: View {
         }
 
         timer?.invalidate()
+        timer = nil
         timeRemaining = 0
-        lastBackgroundTime = nil
 
 #if canImport(ActivityKit) && !os(macOS)
         Task {
@@ -379,6 +374,8 @@ struct ShowItem: View {
                     }
                 })
 
+                self.start = nil
+
                 return
             }
 
@@ -386,10 +383,10 @@ struct ShowItem: View {
             let thisLog = ItemLog(bankItem: bankItem, begin: start ,end: now)
             HapticFeedback.success()
 
-            if var logs = bankItem.logs{
-                logs.append(thisLog)
-            }
+            bankItem.logs?.append(thisLog)
         }
+
+        self.start = nil
 
     }
 
@@ -402,6 +399,8 @@ struct ShowItem: View {
 
 #Preview {
     ShowItem(bankItem: .constant(BankItem(name: "test")))
+        .environmentObject(AppSetting())
+        .modelContainer(for: [BankItem.self, ItemLog.self], inMemory: true)
 }
 
 extension AnyTransition {

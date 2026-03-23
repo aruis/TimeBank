@@ -21,6 +21,7 @@ struct TimeBankApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             BankItem.self,
+            ItemLog.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

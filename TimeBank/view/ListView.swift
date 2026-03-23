@@ -9,6 +9,19 @@ import SwiftUI
 import SwiftData
 
 struct ListView: View {
+    private enum ActiveSheet: Identifiable {
+        case show
+        case edit
+
+        var id: Int {
+            switch self {
+            case .show:
+                return 0
+            case .edit:
+                return 1
+            }
+        }
+    }
     
     var pageType:PageType
 
@@ -17,16 +30,15 @@ struct ListView: View {
     
     @Query(sort: \BankItem.lastTouch ,order: .reverse) private var items: [BankItem]
     
-    @State private var isShow = false
-    @State private var isEdit = false
-    @State private var selectItem:BankItem = BankItem()
+    @State private var selectedItem: BankItem?
+    @State private var activeSheet: ActiveSheet?
     
     @ViewBuilder
     func itemInList(_ item:BankItem) -> some View {
         
         Button( action: {
-            selectItem = item
-            isShow = true
+            selectedItem = item
+            activeSheet = .show
             HapticFeedback.selection()
         }, label: {
             VStack(spacing:0){
@@ -146,8 +158,8 @@ struct ListView: View {
                         .id(item.id)
                         .contextMenu{
                             Button{
-                                selectItem = item
-                                isEdit = true
+                                selectedItem = item
+                                activeSheet = .edit
                             }label: {
                                 Label("Edit",systemImage: "pencil.circle")
                             }
@@ -177,16 +189,29 @@ struct ListView: View {
             }
             
         })
-        .sheet(isPresented: $isEdit,content: {
-            NewBankItem(pageType:.constant(pageType),bankItem: $selectItem)
-                    .presentationDetents([.medium])
-        })
-        .sheet(isPresented: $isShow,content: {
-            ShowItem(bankItem: $selectItem)
-                .presentationDetents([.height(400),.large])
+        .sheet(item: $activeSheet, content: { sheet in
+            switch sheet {
+            case .edit:
+                if let selectedItem {
+                    NewBankItem(pageType: .constant(pageType), bankItem: binding(for: selectedItem))
+                        .presentationDetents([.medium])
+                }
+            case .show:
+                if let selectedItem {
+                    ShowItem(bankItem: binding(for: selectedItem))
+                        .presentationDetents([.height(400), .large])
+                }
+            }
         })
 
         
         
+    }
+
+    private func binding(for item: BankItem) -> Binding<BankItem> {
+        Binding(
+            get: { item },
+            set: { _ in }
+        )
     }
 }

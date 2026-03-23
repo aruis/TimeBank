@@ -15,6 +15,7 @@ struct TimeBankWatch_Watch_AppApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             BankItem.self,
+            ItemLog.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         
@@ -34,5 +35,4 @@ struct TimeBankWatch_Watch_AppApp: App {
         .modelContainer(sharedModelContainer)
     }
 }
-
 

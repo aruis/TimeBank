@@ -31,6 +31,7 @@ struct ShowItem: View {
 
     @State private var showConfirmDelete = false
     @State private var showTip = false
+    @State private var pendingNotificationID: String?
 
 #if canImport(ActivityKit) && !os(macOS)
     @State private var activity:Activity<TimerActivityAttributes>?
@@ -257,6 +258,23 @@ struct ShowItem: View {
         settings.themeColor(isSave: bankItem.isSave)
     }
 
+    private var notificationIDPrefix: String {
+        "timer-\(bankItem.id.uuidString)"
+    }
+
+    private func isAuthorizedNotificationStatus(_ status: UNAuthorizationStatus) -> Bool {
+        switch status {
+        case .authorized, .provisional:
+            return true
+        #if !os(macOS)
+        case .ephemeral:
+            return true
+        #endif
+        default:
+            return false
+        }
+    }
+
     private func startTimer() {
         HapticFeedback.tap()
 
@@ -298,7 +316,11 @@ struct ShowItem: View {
             }
 
             // 启动 ActivityKit
-            let activityAttributes = TimerActivityAttributes(name: bankItem.name,start: start!)
+            let activityAttributes = TimerActivityAttributes(
+                itemID: bankItem.id.uuidString,
+                name: bankItem.name,
+                start: start!
+            )
             let initialContentState = TimerActivityAttributes.ContentState(timeRemaining: timeRemaining)
 
             do {
@@ -315,31 +337,37 @@ struct ShowItem: View {
         }
 #endif
         if settings.isTimerEnabled && settings.timerDuration > 0 {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-                if granted {
-
-                    let content = UNMutableNotificationContent()
-                    content.title = bankItem.isSave ? NSLocalizedString("SaveTime Complete", comment: ""):NSLocalizedString("KillTime Complete", comment: "")
-                    //                    content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), arguments: [String(Int( settings.timerDuration)), bankItem.name])
-
-
-                    let actionWordKey = bankItem.isSave ? "Invested" : "Spent"
-                    let actionWord = NSLocalizedString(actionWordKey, comment: "Action word based on bank item saving or spending")
-                    content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), String(Int(settings.timerDuration)), "[\(bankItem.name)]", actionWord)
-                    content.sound = UNNotificationSound.default
-
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: settings.timerDuration * 60, repeats: false)
-
-                    let request = UNNotificationRequest(identifier: "meetingReminder", content: content, trigger: trigger)
-
-                    UNUserNotificationCenter.current().add(request)
+            let notificationID = "\(notificationIDPrefix)-\(UUID().uuidString)"
+            pendingNotificationID = notificationID
+            UNUserNotificationCenter.current().getNotificationSettings { notificationSettings in
+                guard isAuthorizedNotificationStatus(notificationSettings.authorizationStatus) else {
+                    DispatchQueue.main.async {
+                        pendingNotificationID = nil
+                    }
+                    return
                 }
+
+                let content = UNMutableNotificationContent()
+                content.title = bankItem.isSave ? NSLocalizedString("SaveTime Complete", comment: ""):NSLocalizedString("KillTime Complete", comment: "")
+
+                let actionWordKey = bankItem.isSave ? "Invested" : "Spent"
+                let actionWord = NSLocalizedString(actionWordKey, comment: "Action word based on bank item saving or spending")
+                content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), String(Int(settings.timerDuration)), "[\(bankItem.name)]", actionWord)
+                content.sound = UNNotificationSound.default
+
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: settings.timerDuration * 60, repeats: false)
+                let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
+
+                UNUserNotificationCenter.current().add(request)
             }
         }
     }
 
     private func resetTimer() {
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        if let pendingNotificationID {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [pendingNotificationID])
+            self.pendingNotificationID = nil
+        }
 
         withAnimation{
             isTimerRunning = false

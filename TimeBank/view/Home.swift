@@ -17,6 +17,8 @@ struct Home: View {
     @State private var isShowAdd = false
     @State private var isShowSetting = false
     @State private var isShowBalanceTitle = false
+    @State private var routedItemID: UUID?
+    @State private var routedItem: BankItem?
     
     @Query private var items: [BankItem]
     
@@ -127,6 +129,16 @@ struct Home: View {
         .sheet(isPresented: $isShowSetting, content: {
             SettingView()
         })
+        .sheet(item: $routedItem) { item in
+            ShowItem(bankItem: binding(for: item))
+                .presentationDetents([.height(400), .large])
+        }
+        .onOpenURL { url in
+            handleDeepLink(url)
+        }
+        .onChange(of: items) {
+            resolveRoutedItemIfNeeded()
+        }
 
     }
 
@@ -313,6 +325,40 @@ struct Home: View {
         } else {
             return String(format: "%.0f", items.balanceValue(useRate: false))
         }
+    }
+
+    private func binding(for item: BankItem) -> Binding<BankItem> {
+        Binding(
+            get: { item },
+            set: { _ in }
+        )
+    }
+
+    private func handleDeepLink(_ url: URL) {
+        guard url.scheme == "timebank",
+              url.host == "item" else {
+            return
+        }
+
+        guard let itemID = UUID(uuidString: url.lastPathComponent) else {
+            return
+        }
+
+        routedItemID = itemID
+        resolveRoutedItemIfNeeded()
+    }
+
+    private func resolveRoutedItemIfNeeded() {
+        guard let routedItemID else {
+            return
+        }
+
+        guard let item = items.first(where: { $0.id == routedItemID }) else {
+            return
+        }
+
+        pageType = item.isSave ? .save : .kill
+        routedItem = item
     }
     
 }

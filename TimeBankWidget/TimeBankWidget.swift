@@ -9,6 +9,10 @@ import WidgetKit
 import ActivityKit
 import SwiftUI
 
+private func activityURL(for context: ActivityViewContext<TimerActivityAttributes>) -> URL? {
+    URL(string: "timebank://item/\(context.attributes.itemID)")
+}
+
 struct TimerActivityView: View {
     var context: ActivityViewContext<TimerActivityAttributes>
     @State private var timeRemaining:Int = 0
@@ -40,6 +44,7 @@ struct TimerActivityView: View {
         .padding()
         .foregroundStyle(Color.white)
         .activityBackgroundTint(.pig)
+        .widgetURL(activityURL(for: context))
 
     }
 }
@@ -108,6 +113,7 @@ struct TimerActivityWidget: Widget {
 //                        .foregroundStyle(.pig)
                 }
             )
+            .widgetURL(activityURL(for: context))
         }
         .supportedFamilies([.accessoryRectangular])
 
@@ -121,25 +127,25 @@ struct TimerActivityWidget: Widget {
 struct TimerActivityView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            TimerActivityAttributes(name: "Focus Timer",start: .now)
+            TimerActivityAttributes(itemID: UUID().uuidString, name: "Focus Timer",start: .now)
                 .previewContext(
                     TimerActivityAttributes.ContentState(timeRemaining: 123),
                     viewKind: .content
                 )
 
-            TimerActivityAttributes(name: "Focus Timer",start: .now)
+            TimerActivityAttributes(itemID: UUID().uuidString, name: "Focus Timer",start: .now)
                 .previewContext(
                     TimerActivityAttributes.ContentState(timeRemaining:123),
                     viewKind: .dynamicIsland(.expanded)
                 )
 
-            TimerActivityAttributes(name: "Focus Timer",start: .now.addingTimeInterval(-10000))
+            TimerActivityAttributes(itemID: UUID().uuidString, name: "Focus Timer",start: .now.addingTimeInterval(-10000))
                 .previewContext(
                     TimerActivityAttributes.ContentState(timeRemaining: 123),
                     viewKind: .dynamicIsland(.compact)
                 )
 
-            TimerActivityAttributes(name: "Focus Timer",start: .now)
+            TimerActivityAttributes(itemID: UUID().uuidString, name: "Focus Timer",start: .now)
                 .previewContext(
                     TimerActivityAttributes.ContentState(timeRemaining: 123),
                     viewKind: .dynamicIsland(.minimal)
@@ -147,4 +153,3 @@ struct TimerActivityView_Previews: PreviewProvider {
         }
     }
 }
-

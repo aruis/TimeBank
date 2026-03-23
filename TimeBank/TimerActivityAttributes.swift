@@ -15,6 +15,7 @@ struct TimerActivityAttributes:ActivityAttributes{
         var timeRemaining: Int        
     }
 
+    var itemID: String
     var name: String
     var start: Date
 

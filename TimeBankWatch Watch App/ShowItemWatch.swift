@@ -52,11 +52,15 @@ struct ShowItemWatch: View {
             .ignoresSafeArea(edges:.bottom)
             .onChange(of: scenePhase, {
                 switch scenePhase {
-                case .active:                    
+                case .active:
                     if isTimerRunning, let start {
-                        let backgroundDuration = Date().timeIntervalSince(start)
+                        let now = Date()
+                        let backgroundDuration = now.timeIntervalSince(start)
                         timeRemaining = Int(backgroundDuration)
+                        persistTimerSession(at: now)
                     }
+                case .background:
+                    persistTimerSession(at: Date())
                 default:
                     break
                 }
@@ -210,9 +214,12 @@ struct ShowItemWatch: View {
         }
         
         start = Date()
+        persistTimerSession(at: start!)
     }
     
     private func resetTimer() {
+        TimerSessionCoordinator.clearSession()
+
         withAnimation{
             isTimerRunning = false
         }
@@ -246,6 +253,18 @@ struct ShowItemWatch: View {
 
         self.start = nil
         
+    }
+
+    private func persistTimerSession(at date: Date) {
+        guard let start, isTimerRunning else {
+            return
+        }
+
+        TimerSessionCoordinator.persistRunningSession(
+            bankItemID: bankItem.id,
+            start: start,
+            verifiedAt: date
+        )
     }
     
     private func formatTime(seconds: Int) -> String {

@@ -35,6 +35,8 @@ struct WatchHome: View {
     @State private var selectItem: BankItem?
     @State private var activeSheet: ActiveSheet?
     @State private var isShowingItemActions = false
+    @State private var interruptedSession: TimerSessionSnapshot?
+    @State private var isShowingInterruptedPrompt = false
 
     
     var body: some View {
@@ -90,6 +92,16 @@ struct WatchHome: View {
                     }
                 }
             }
+            .alert("Session Interrupted", isPresented: $isShowingInterruptedPrompt, presenting: interruptedSession) { snapshot in
+                Button("Keep") {
+                    clearInterruptedSessionPrompt()
+                }
+                Button("Discard", role: .destructive) {
+                    discardInterruptedSession(snapshot)
+                }
+            } message: { snapshot in
+                Text(TimerSessionCoordinator.interruptedMessage(for: snapshot))
+            }
             .navigationTitle(navigationTitle)
             .toolbarTitleDisplayMode(.inline)
             .animation(.default, value: pageType)
@@ -98,9 +110,15 @@ struct WatchHome: View {
                     Button("Edit", systemImage: "ellipsis"){
                         isShowSetting = true
                     }
-                    
+
                 }
 
+            }
+            .onChange(of: items) {
+                resolveInterruptedSessionIfNeeded()
+            }
+            .task {
+                resolveInterruptedSessionIfNeeded()
             }
 
         }                    
@@ -192,6 +210,32 @@ struct WatchHome: View {
             get: { item },
             set: { _ in }
         )
+    }
+
+    private func resolveInterruptedSessionIfNeeded() {
+        guard interruptedSession == nil,
+              let snapshot = TimerSessionCoordinator.interruptedSessionForPrompt(items: items) else {
+            return
+        }
+
+        interruptedSession = snapshot
+        isShowingInterruptedPrompt = true
+    }
+
+    private func discardInterruptedSession(_ snapshot: TimerSessionSnapshot) {
+        do {
+            try TimerSessionCoordinator.discardInterruptedSession(snapshot, items: items, modelContext: modelContext)
+        } catch {
+            return
+        }
+
+        clearInterruptedSessionPrompt()
+    }
+
+    private func clearInterruptedSessionPrompt() {
+        TimerSessionCoordinator.clearSession()
+        interruptedSession = nil
+        isShowingInterruptedPrompt = false
     }
     
     func list(type:PageType) -> [BankItem]{

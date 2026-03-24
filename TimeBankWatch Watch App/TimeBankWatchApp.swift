@@ -28,11 +28,26 @@ struct TimeBankWatch_Watch_AppApp: App {
     
     var body: some Scene {
         WindowGroup {
-                WatchHome()                        
+                WatchHome()
+                    .task {
+                        await reconcileInterruptedTimerSessionIfNeeded()
+                    }
         }        
         .environmentObject(appSetting)
         //        .modelContainer(for: BankItem.self, isAutosaveEnabled: true ,isUndoEnabled: true)
         .modelContainer(sharedModelContainer)
     }
-}
 
+    @MainActor
+    private func reconcileInterruptedTimerSessionIfNeeded() async {
+        let context = ModelContext(sharedModelContainer)
+        let fetchDescriptor = FetchDescriptor<BankItem>()
+
+        guard let items = try? context.fetch(fetchDescriptor) else {
+            return
+        }
+
+        _ = TimerSessionCoordinator.reconcileInterruptedSession(items: items)
+        try? context.save()
+    }
+}

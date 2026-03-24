@@ -22,6 +22,7 @@
 		5799CD752D37537600D153EA /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5799CD712D37531F00D153EA /* IntExt.swift */; };
 		830D75A62F72C7A900C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
 		830D75A72F72C7AD00C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
+		830D75A82F72C7B100C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
 		8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */; };
 		8302EA992B4E22F500A8ECF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA982B4E22F500A8ECF8 /* Assets.xcassets */; };
 		8302EA9C2B4E22F500A8ECF8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA9B2B4E22F500A8ECF8 /* Preview Assets.xcassets */; };
@@ -692,6 +693,7 @@
 				83F227712B4E8C4D00D26488 /* PageType.swift in Sources */,
 				83F410F32B4CF62C008F004A /* AppSetting.swift in Sources */,
 				836DE9E42B6F8B290026316A /* SettingView.swift in Sources */,
+				830D75A82F72C7B100C46FB1 /* TimerSessionCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

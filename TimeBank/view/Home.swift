@@ -23,6 +23,7 @@ struct Home: View {
     @State private var interruptedSession: TimerSessionSnapshot?
     @State private var interruptedLog: ItemLog?
     @State private var isShowingInterruptedPrompt = false
+    @State private var runningSessionConflictItemName: String?
     
     @Query private var items: [BankItem]
     
@@ -154,6 +155,16 @@ struct Home: View {
             }
         } message: { snapshot in
             Text(interruptedMessage(for: snapshot))
+        }
+        .alert("Timer Already Running", isPresented: Binding(
+            get: { runningSessionConflictItemName != nil },
+            set: { if !$0 { runningSessionConflictItemName = nil } }
+        )) {
+            Button("OK", role: .cancel) {
+                runningSessionConflictItemName = nil
+            }
+        } message: {
+            Text(runningSessionConflictMessage)
         }
         .onOpenURL { url in
             handleDeepLink(url)
@@ -370,6 +381,19 @@ struct Home: View {
             return
         }
 
+        if let runningSession = TimerSessionStore.load(), runningSession.phase == .running {
+            if runningSession.bankItemID == itemID {
+                return
+            }
+
+            if let item = items.first(where: { $0.id == runningSession.bankItemID }) {
+                runningSessionConflictItemName = item.name
+            } else {
+                runningSessionConflictItemName = "another item"
+            }
+            return
+        }
+
         routedItemID = itemID
         resolveRoutedItemIfNeeded()
     }
@@ -435,6 +459,14 @@ struct Home: View {
         formatter.dateStyle = .none
 
         return "Recorded \(recordedMinutes) min until \(formatter.string(from: snapshot.lastVerifiedAt)). You can keep it, adjust it, or discard it."
+    }
+
+    private var runningSessionConflictMessage: String {
+        guard let runningSessionConflictItemName else {
+            return ""
+        }
+
+        return "A timer is already running for \(runningSessionConflictItemName). Stop or resolve it before opening a different item from the widget."
     }
     
 }

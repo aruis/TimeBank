@@ -363,7 +363,7 @@ struct ShowItem: View {
     }
 
     private func resetTimer() {
-        TimerSessionStore.clear()
+        TimerSessionCoordinator.clearSession()
 
         if let pendingNotificationID {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [pendingNotificationID])
@@ -427,13 +427,10 @@ struct ShowItem: View {
             return
         }
 
-        TimerSessionStore.save(
-            TimerSessionSnapshot(
-                bankItemID: bankItem.id,
-                start: start,
-                lastVerifiedAt: date,
-                phase: .running
-            )
+        TimerSessionCoordinator.persistRunningSession(
+            bankItemID: bankItem.id,
+            start: start,
+            verifiedAt: date
         )
     }
 

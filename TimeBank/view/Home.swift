@@ -154,7 +154,7 @@ struct Home: View {
                 discardInterruptedSession(snapshot)
             }
         } message: { snapshot in
-            Text(interruptedMessage(for: snapshot))
+            Text(TimerSessionCoordinator.interruptedMessage(for: snapshot))
         }
         .alert("Timer Already Running", isPresented: Binding(
             get: { runningSessionConflictItemName != nil },
@@ -164,7 +164,7 @@ struct Home: View {
                 runningSessionConflictItemName = nil
             }
         } message: {
-            Text(runningSessionConflictMessage)
+            Text(runningSessionConflictItemName ?? "")
         }
         .onOpenURL { url in
             handleDeepLink(url)
@@ -381,21 +381,19 @@ struct Home: View {
             return
         }
 
-        if let runningSession = TimerSessionStore.load(), runningSession.phase == .running {
-            if runningSession.bankItemID == itemID {
-                return
-            }
-
-            if let item = items.first(where: { $0.id == runningSession.bankItemID }) {
-                runningSessionConflictItemName = item.name
-            } else {
-                runningSessionConflictItemName = "another item"
-            }
+        switch TimerSessionCoordinator.deepLinkDecision(for: itemID) {
+        case .openRequestedItem:
+            routedItemID = itemID
+            resolveRoutedItemIfNeeded()
+        case .ignoreRunningItem:
+            return
+        case let .blockWhileRunning(runningItemID):
+            runningSessionConflictItemName = TimerSessionCoordinator.runningSessionConflictMessage(
+                for: runningItemID,
+                items: items
+            )
             return
         }
-
-        routedItemID = itemID
-        resolveRoutedItemIfNeeded()
     }
 
     private func resolveRoutedItemIfNeeded() {
@@ -413,9 +411,7 @@ struct Home: View {
 
     private func resolveInterruptedSessionIfNeeded() {
         guard interruptedSession == nil,
-              let snapshot = TimerSessionStore.load(),
-              snapshot.phase == .interrupted,
-              matchingInterruptedLog(for: snapshot) != nil else {
+              let snapshot = TimerSessionCoordinator.interruptedSessionForPrompt(items: items) else {
             return
         }
 
@@ -424,49 +420,23 @@ struct Home: View {
     }
 
     private func matchingInterruptedLog(for snapshot: TimerSessionSnapshot) -> ItemLog? {
-        guard let item = items.first(where: { $0.id == snapshot.bankItemID }),
-              let logs = item.logs else {
-            return nil
-        }
-
-        return logs.first {
-            abs($0.begin.timeIntervalSince(snapshot.start)) < 1 &&
-            abs($0.end.timeIntervalSince(snapshot.lastVerifiedAt)) < 1
-        }
+        TimerSessionCoordinator.matchingInterruptedLog(for: snapshot, items: items)
     }
 
     private func discardInterruptedSession(_ snapshot: TimerSessionSnapshot) {
-        if let log = matchingInterruptedLog(for: snapshot) {
-            log.bankItem?.logs?.removeAll(where: { $0.id == log.id })
-            modelContext.delete(log)
-            try? modelContext.save()
+        do {
+            try TimerSessionCoordinator.discardInterruptedSession(snapshot, items: items, modelContext: modelContext)
+        } catch {
+            return
         }
-
         clearInterruptedSessionPrompt()
     }
 
     private func clearInterruptedSessionPrompt() {
-        TimerSessionStore.clear()
+        TimerSessionCoordinator.clearSession()
         interruptedSession = nil
         interruptedLog = nil
         isShowingInterruptedPrompt = false
-    }
-
-    private func interruptedMessage(for snapshot: TimerSessionSnapshot) -> String {
-        let recordedMinutes = max(snapshot.recordedSeconds / 60, 1)
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        formatter.dateStyle = .none
-
-        return "Recorded \(recordedMinutes) min until \(formatter.string(from: snapshot.lastVerifiedAt)). You can keep it, adjust it, or discard it."
-    }
-
-    private var runningSessionConflictMessage: String {
-        guard let runningSessionConflictItemName else {
-            return ""
-        }
-
-        return "A timer is already running for \(runningSessionConflictItemName). Stop or resolve it before opening a different item from the widget."
     }
     
 }

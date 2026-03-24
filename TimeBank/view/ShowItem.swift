@@ -79,9 +79,13 @@ struct ShowItem: View {
                 switch scenePhase {
                 case .active:
                     if isTimerRunning, let start {
-                        let backgroundDuration = Date().timeIntervalSince(start)
+                        let now = Date()
+                        let backgroundDuration = now.timeIntervalSince(start)
                         timeRemaining = Int(backgroundDuration)
+                        persistTimerSession(at: now)
                     }
+                case .background:
+                    persistTimerSession(at: Date())
                 default:
                     break
                 }
@@ -287,17 +291,8 @@ struct ShowItem: View {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             withAnimation(.default, {
                 self.timeRemaining += 1
-
-#if canImport(ActivityKit) && !os(macOS)
-//                if let activity{
-//                    Task{
-//                        await activity.update(.init(state: TimerActivityAttributes.ContentState(timeRemaining: timeRemaining), staleDate: nil))
-//                    }
-//                }
-
-#endif
-
             })
+            persistTimerSession(at: Date())
 
         }
 
@@ -307,6 +302,7 @@ struct ShowItem: View {
         }
 
         start = Date()
+        persistTimerSession(at: start!)
 
 #if canImport(ActivityKit) && !os(macOS)
         Task {
@@ -321,7 +317,10 @@ struct ShowItem: View {
                 name: bankItem.name,
                 start: start!
             )
-            let initialContentState = TimerActivityAttributes.ContentState(timeRemaining: timeRemaining)
+            let initialContentState = TimerActivityAttributes.ContentState(
+                recordedSeconds: timeRemaining,
+                sessionState: .running
+            )
 
             do {
                 activity = try Activity.request(
@@ -364,6 +363,8 @@ struct ShowItem: View {
     }
 
     private func resetTimer() {
+        TimerSessionStore.clear()
+
         if let pendingNotificationID {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [pendingNotificationID])
             self.pendingNotificationID = nil
@@ -419,6 +420,21 @@ struct ShowItem: View {
     private func confirmDelete(item: ItemLog) {
         itemToDelete = item
         showConfirmDelete = true
+    }
+
+    private func persistTimerSession(at date: Date) {
+        guard let start, isTimerRunning else {
+            return
+        }
+
+        TimerSessionStore.save(
+            TimerSessionSnapshot(
+                bankItemID: bankItem.id,
+                start: start,
+                lastVerifiedAt: date,
+                phase: .running
+            )
+        )
     }
 
 }

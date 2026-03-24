@@ -12,6 +12,7 @@ import OSLog
 struct Home: View {
         
     @EnvironmentObject var settings: AppSetting
+    @Environment(\.modelContext) private var modelContext
     
     @State private var pageType = PageType.save
     @State private var isShowAdd = false
@@ -19,6 +20,9 @@ struct Home: View {
     @State private var isShowBalanceTitle = false
     @State private var routedItemID: UUID?
     @State private var routedItem: BankItem?
+    @State private var interruptedSession: TimerSessionSnapshot?
+    @State private var interruptedLog: ItemLog?
+    @State private var isShowingInterruptedPrompt = false
     
     @Query private var items: [BankItem]
     
@@ -133,11 +137,33 @@ struct Home: View {
             ShowItem(bankItem: binding(for: item))
                 .presentationDetents([.height(400), .large])
         }
+        .sheet(item: $interruptedLog) { log in
+            InterruptedSessionReview(log: log) {
+                clearInterruptedSessionPrompt()
+            }
+        }
+        .alert("Session Interrupted", isPresented: $isShowingInterruptedPrompt, presenting: interruptedSession) { snapshot in
+            Button("Keep") {
+                clearInterruptedSessionPrompt()
+            }
+            Button("Adjust") {
+                interruptedLog = matchingInterruptedLog(for: snapshot)
+            }
+            Button("Discard", role: .destructive) {
+                discardInterruptedSession(snapshot)
+            }
+        } message: { snapshot in
+            Text(interruptedMessage(for: snapshot))
+        }
         .onOpenURL { url in
             handleDeepLink(url)
         }
         .onChange(of: items) {
             resolveRoutedItemIfNeeded()
+            resolveInterruptedSessionIfNeeded()
+        }
+        .task {
+            resolveInterruptedSessionIfNeeded()
         }
 
     }
@@ -360,5 +386,111 @@ struct Home: View {
         pageType = item.isSave ? .save : .kill
         routedItem = item
     }
+
+    private func resolveInterruptedSessionIfNeeded() {
+        guard interruptedSession == nil,
+              let snapshot = TimerSessionStore.load(),
+              snapshot.phase == .interrupted,
+              matchingInterruptedLog(for: snapshot) != nil else {
+            return
+        }
+
+        interruptedSession = snapshot
+        isShowingInterruptedPrompt = true
+    }
+
+    private func matchingInterruptedLog(for snapshot: TimerSessionSnapshot) -> ItemLog? {
+        guard let item = items.first(where: { $0.id == snapshot.bankItemID }),
+              let logs = item.logs else {
+            return nil
+        }
+
+        return logs.first {
+            abs($0.begin.timeIntervalSince(snapshot.start)) < 1 &&
+            abs($0.end.timeIntervalSince(snapshot.lastVerifiedAt)) < 1
+        }
+    }
+
+    private func discardInterruptedSession(_ snapshot: TimerSessionSnapshot) {
+        if let log = matchingInterruptedLog(for: snapshot) {
+            log.bankItem?.logs?.removeAll(where: { $0.id == log.id })
+            modelContext.delete(log)
+            try? modelContext.save()
+        }
+
+        clearInterruptedSessionPrompt()
+    }
+
+    private func clearInterruptedSessionPrompt() {
+        TimerSessionStore.clear()
+        interruptedSession = nil
+        interruptedLog = nil
+        isShowingInterruptedPrompt = false
+    }
+
+    private func interruptedMessage(for snapshot: TimerSessionSnapshot) -> String {
+        let recordedMinutes = max(snapshot.recordedSeconds / 60, 1)
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+
+        return "Recorded \(recordedMinutes) min until \(formatter.string(from: snapshot.lastVerifiedAt)). You can keep it, adjust it, or discard it."
+    }
     
+}
+
+private struct InterruptedSessionReview: View {
+    @Environment(\.dismiss) private var dismiss
+
+    let log: ItemLog
+    let onComplete: () -> Void
+
+    @State private var end: Date
+
+    init(log: ItemLog, onComplete: @escaping () -> Void) {
+        self.log = log
+        self.onComplete = onComplete
+        _end = State(initialValue: log.end)
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Interrupted Session") {
+                    DatePicker(
+                        "Begin",
+                        selection: .constant(log.begin),
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                    .disabled(true)
+
+                    DatePicker(
+                        "End",
+                        selection: $end,
+                        in: log.begin.plus(1, component: .minute)...Date(),
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                }
+            }
+            .navigationTitle("Adjust Time")
+            #if !os(macOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        log.end = end
+                        log.saveMin = max(log.begin.elapsedMin(end), 0)
+                        onComplete()
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
 }

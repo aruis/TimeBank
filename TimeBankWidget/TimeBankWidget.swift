@@ -13,9 +13,19 @@ private func activityURL(for context: ActivityViewContext<TimerActivityAttribute
     URL(string: "timebank://item/\(context.attributes.itemID)")
 }
 
+private func formattedDuration(_ seconds: Int) -> String {
+    let hours = seconds / 3600
+    let minutes = (seconds % 3600) / 60
+
+    if hours > 0 {
+        return String(format: "%dh %02dm", hours, minutes)
+    }
+
+    return String(format: "%dm", minutes)
+}
+
 struct TimerActivityView: View {
     var context: ActivityViewContext<TimerActivityAttributes>
-    @State private var timeRemaining:Int = 0
 
     var body: some View {
         HStack(spacing: 0) {
@@ -32,11 +42,20 @@ struct TimerActivityView: View {
 
             Spacer().frame(maxWidth: .infinity)
 
-            Text(context.attributes.start,style: .timer)
-                .font(.largeTitle.monospacedDigit())
-                .fontWeight(.regular)
-                .multilineTextAlignment(.trailing)
-                .contentTransition(.numericText(value: Double( timeRemaining)))
+            if context.state.sessionState == .running {
+                Text(context.attributes.start, style: .timer)
+                    .font(.largeTitle.monospacedDigit())
+                    .fontWeight(.regular)
+                    .multilineTextAlignment(.trailing)
+            } else {
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(formattedDuration(context.state.recordedSeconds))
+                        .font(.headline.monospacedDigit())
+                    Text("Interrupted")
+                        .font(.caption)
+                        .opacity(0.85)
+                }
+            }
 
 
         }
@@ -72,11 +91,20 @@ struct TimerActivityWidget: Widget {
 
                     DynamicIslandExpandedRegion(.trailing) {
                         VStack(alignment: .center){
-                            Text(context.attributes.start,style: .timer)
-                                .font(.title.monospacedDigit())
-                                .fontWeight(.regular)
-                                .multilineTextAlignment(.trailing)
-                                .foregroundStyle(.pig)
+                            if context.state.sessionState == .running {
+                                Text(context.attributes.start, style: .timer)
+                                    .font(.title.monospacedDigit())
+                                    .fontWeight(.regular)
+                                    .multilineTextAlignment(.trailing)
+                                    .foregroundStyle(.pig)
+                            } else {
+                                Text(formattedDuration(context.state.recordedSeconds))
+                                    .font(.headline.monospacedDigit())
+                                    .foregroundStyle(.pig)
+                                Text("Interrupted")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
 
                         }
                         .frame(maxHeight: .infinity,alignment: .trailing)
@@ -90,27 +118,27 @@ struct TimerActivityWidget: Widget {
 //                        .padding(.leading,4)
                 },
                 compactTrailing: {
-//                    Image("icon_a")
-//                        .resizable()
-//                        .scaledToFit()
-                    Text(context.attributes.start,style: .timer)
-                        .monospacedDigit()
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 45)
-                        .foregroundStyle(.pig)
-//                        .padding(.trailing,-1)
-//                        .background(Color.red)
+                    if context.state.sessionState == .running {
+                        Text(context.attributes.start, style: .timer)
+                            .monospacedDigit()
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 45)
+                            .foregroundStyle(.pig)
+                    } else {
+                        Image(systemName: "pause.fill")
+                            .foregroundStyle(.pig)
+                    }
                 },
                 minimal: {
-                    Image("icon_a")
-                        .resizable()
-//                        .frame(width: 50, height: 50)
-                        .scaledToFill()
-                        .padding(2)
-//                        .scaledToFit()
-
-//                    Text(context.attributes.name.prefix(1))
-//                        .foregroundStyle(.pig)
+                    if context.state.sessionState == .running {
+                        Image("icon_a")
+                            .resizable()
+                            .scaledToFill()
+                            .padding(2)
+                    } else {
+                        Image(systemName: "pause.fill")
+                            .foregroundStyle(.pig)
+                    }
                 }
             )
             .widgetURL(activityURL(for: context))
@@ -129,25 +157,25 @@ struct TimerActivityView_Previews: PreviewProvider {
         Group {
             TimerActivityAttributes(itemID: UUID().uuidString, name: "Focus Timer",start: .now)
                 .previewContext(
-                    TimerActivityAttributes.ContentState(timeRemaining: 123),
+                    TimerActivityAttributes.ContentState(recordedSeconds: 123, sessionState: .running),
                     viewKind: .content
                 )
 
             TimerActivityAttributes(itemID: UUID().uuidString, name: "Focus Timer",start: .now)
                 .previewContext(
-                    TimerActivityAttributes.ContentState(timeRemaining:123),
+                    TimerActivityAttributes.ContentState(recordedSeconds: 123, sessionState: .running),
                     viewKind: .dynamicIsland(.expanded)
                 )
 
             TimerActivityAttributes(itemID: UUID().uuidString, name: "Focus Timer",start: .now.addingTimeInterval(-10000))
                 .previewContext(
-                    TimerActivityAttributes.ContentState(timeRemaining: 123),
+                    TimerActivityAttributes.ContentState(recordedSeconds: 123, sessionState: .running),
                     viewKind: .dynamicIsland(.compact)
                 )
 
             TimerActivityAttributes(itemID: UUID().uuidString, name: "Focus Timer",start: .now)
                 .previewContext(
-                    TimerActivityAttributes.ContentState(timeRemaining: 123),
+                    TimerActivityAttributes.ContentState(recordedSeconds: 123, sessionState: .interrupted),
                     viewKind: .dynamicIsland(.minimal)
                 )
         }

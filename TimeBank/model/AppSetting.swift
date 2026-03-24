@@ -130,6 +130,47 @@ enum NotificationPermissionError: Error {
     case error(Error)
 }
 
+enum TimerSessionPhase: String, Codable {
+    case running
+    case interrupted
+}
+
+struct TimerSessionSnapshot: Codable {
+    var bankItemID: UUID
+    var start: Date
+    var lastVerifiedAt: Date
+    var phase: TimerSessionPhase
+
+    var recordedSeconds: Int {
+        max(Int(lastVerifiedAt.timeIntervalSince(start)), 0)
+    }
+}
+
+enum TimerSessionStore {
+    private static let key = "activeTimerSession"
+    private static let defaults = UserDefaults.standard
+
+    static func load() -> TimerSessionSnapshot? {
+        guard let data = defaults.data(forKey: key) else {
+            return nil
+        }
+
+        return try? JSONDecoder().decode(TimerSessionSnapshot.self, from: data)
+    }
+
+    static func save(_ snapshot: TimerSessionSnapshot) {
+        guard let data = try? JSONEncoder().encode(snapshot) else {
+            return
+        }
+
+        defaults.set(data, forKey: key)
+    }
+
+    static func clear() {
+        defaults.removeObject(forKey: key)
+    }
+}
+
 enum HapticFeedback {
     static func tap() {
 #if os(iOS)

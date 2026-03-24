@@ -12,7 +12,13 @@ import Foundation
 struct TimerActivityAttributes:ActivityAttributes{
 
     struct ContentState: Codable, Hashable {
-        var timeRemaining: Int        
+        enum SessionState: String, Codable, Hashable {
+            case running
+            case interrupted
+        }
+
+        var recordedSeconds: Int
+        var sessionState: SessionState
     }
 
     var itemID: String

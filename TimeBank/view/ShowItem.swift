@@ -19,6 +19,7 @@ struct ShowItem: View {
     @Environment(\.dismiss) var dismiss
 
     @Binding var bankItem:BankItem
+    let resumeStart: Date?
 
     @State private var timeRemaining = 0
     @State private var timer: Timer?
@@ -32,10 +33,16 @@ struct ShowItem: View {
     @State private var showConfirmDelete = false
     @State private var showTip = false
     @State private var pendingNotificationID: String?
+    @State private var hasResumedFromExternalActivity = false
 
 #if canImport(ActivityKit) && !os(macOS)
     @State private var activity:Activity<TimerActivityAttributes>?
 #endif
+
+    init(bankItem: Binding<BankItem>, resumeStart: Date? = nil) {
+        self._bankItem = bankItem
+        self.resumeStart = resumeStart
+    }
 
     var body: some View {
         NavigationStack{
@@ -120,6 +127,9 @@ struct ShowItem: View {
             })
         }
         .interactiveDismissDisabled(isTimerRunning)
+        .task {
+            resumeTimerIfNeeded()
+        }
     }
 
     @ViewBuilder
@@ -280,13 +290,18 @@ struct ShowItem: View {
     }
 
     private func startTimer() {
+        startTimer(from: nil)
+    }
+
+    private func startTimer(from resumedStart: Date?) {
         HapticFeedback.tap()
 
         withAnimation{
             isTimerRunning = true
         }
 
-        timeRemaining = 0
+        let sessionStart = resumedStart ?? Date()
+        timeRemaining = max(Int(Date().timeIntervalSince(sessionStart)), 0)
 
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             withAnimation(.default, {
@@ -301,43 +316,22 @@ struct ShowItem: View {
             bankItem.logs = []
         }
 
-        start = Date()
-        persistTimerSession(at: start!)
+        start = sessionStart
+        persistTimerSession(at: Date())
 
 #if canImport(ActivityKit) && !os(macOS)
         Task {
-            // 启动新的之前关闭残留的
-            for activity in Activity<TimerActivityAttributes>.activities {
-                await activity.end(nil,dismissalPolicy: .immediate)
-            }
-
-            // 启动 ActivityKit
-            let activityAttributes = TimerActivityAttributes(
-                itemID: bankItem.id.uuidString,
-                name: bankItem.name,
-                start: start!
-            )
-            let initialContentState = TimerActivityAttributes.ContentState(
-                recordedSeconds: timeRemaining,
-                sessionState: .running
-            )
-
-            do {
-                activity = try Activity.request(
-                    attributes: activityAttributes,
-                    content: .init(state: initialContentState, staleDate: nil),
-                    pushType: nil
-                )
-
-                print("Live Activity started with ID: \(String(describing: activity?.id))")
-            } catch {
-                print("Failed to start Live Activity: \(error)")
-            }
+            await startOrResumeLiveActivity(start: sessionStart, endingExistingActivities: resumedStart == nil)
         }
 #endif
         if settings.isTimerEnabled && settings.timerDuration > 0 {
             let notificationID = "\(notificationIDPrefix)-\(UUID().uuidString)"
             pendingNotificationID = notificationID
+            let remainingSeconds = max((settings.timerDuration * 60) - Double(timeRemaining), 0)
+            guard remainingSeconds > 0 else {
+                pendingNotificationID = nil
+                return
+            }
             UNUserNotificationCenter.current().getNotificationSettings { notificationSettings in
                 guard isAuthorizedNotificationStatus(notificationSettings.authorizationStatus) else {
                     DispatchQueue.main.async {
@@ -354,7 +348,7 @@ struct ShowItem: View {
                 content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), String(Int(settings.timerDuration)), "[\(bankItem.name)]", actionWord)
                 content.sound = UNNotificationSound.default
 
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: settings.timerDuration * 60, repeats: false)
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: remainingSeconds, repeats: false)
                 let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
 
                 UNUserNotificationCenter.current().add(request)
@@ -433,6 +427,70 @@ struct ShowItem: View {
             verifiedAt: date
         )
     }
+
+    private func resumeTimerIfNeeded() {
+        guard !hasResumedFromExternalActivity,
+              !isTimerRunning,
+              let resumeStart = resumeStartCandidate() else {
+            return
+        }
+
+        hasResumedFromExternalActivity = true
+        startTimer(from: resumeStart)
+    }
+
+    private func resumeStartCandidate() -> Date? {
+        if let resumeStart {
+            return resumeStart
+        }
+
+        if let snapshot = TimerSessionCoordinator.currentSession(),
+           snapshot.phase == .running,
+           snapshot.bankItemID == bankItem.id {
+            return snapshot.start
+        }
+
+        return nil
+    }
+
+#if canImport(ActivityKit) && !os(macOS)
+    private func startOrResumeLiveActivity(start: Date, endingExistingActivities: Bool) async {
+        let runningState = TimerActivityAttributes.ContentState(
+            recordedSeconds: timeRemaining,
+            sessionState: .running
+        )
+
+        if let existing = Activity<TimerActivityAttributes>.activities.first(where: {
+            $0.attributes.itemID == bankItem.id.uuidString
+        }) {
+            await existing.update(.init(state: runningState, staleDate: nil))
+            activity = existing
+            return
+        }
+
+        if endingExistingActivities {
+            for activity in Activity<TimerActivityAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
+        }
+
+        let activityAttributes = TimerActivityAttributes(
+            itemID: bankItem.id.uuidString,
+            name: bankItem.name,
+            start: start
+        )
+
+        do {
+            activity = try Activity.request(
+                attributes: activityAttributes,
+                content: .init(state: runningState, staleDate: nil),
+                pushType: nil
+            )
+        } catch {
+            print("Failed to start Live Activity: \(error)")
+        }
+    }
+#endif
 
 }
 

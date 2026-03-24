@@ -238,4 +238,72 @@ struct BankItemLogicTests {
 
         #expect(message.contains("Focus"))
     }
+
+    @Test
+    func prepareResumeFromLiveActivityRemovesInterruptedLogAndRestoresRunningSession() throws {
+        let schema = Schema([
+            BankItem.self,
+            ItemLog.self,
+        ])
+        let container = try ModelContainer(
+            for: schema,
+            configurations: [ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)]
+        )
+        let context = ModelContext(container)
+
+        let item = BankItem(name: "Resume", isSave: true)
+        let interruptedSnapshot = TimerSessionSnapshot(
+            bankItemID: item.id,
+            start: Date(timeIntervalSince1970: 0),
+            lastVerifiedAt: Date(timeIntervalSince1970: 120),
+            phase: .interrupted
+        )
+        let log = ItemLog(bankItem: item, begin: interruptedSnapshot.start, end: interruptedSnapshot.lastVerifiedAt)
+        item.logs = [log]
+        context.insert(item)
+        TimerSessionStore.save(interruptedSnapshot)
+
+        let resumedStart = Date(timeIntervalSince1970: 0)
+        try TimerSessionCoordinator.prepareResumeFromLiveActivity(
+            itemID: item.id,
+            start: resumedStart,
+            items: [item],
+            modelContext: context
+        )
+
+        #expect(item.logs?.isEmpty == true)
+        #expect(TimerSessionCoordinator.currentSession()?.phase == .running)
+        #expect(TimerSessionCoordinator.currentSession()?.start == resumedStart)
+    }
+
+    @Test
+    func prepareResumeFromLiveActivityDoesNothingWhenItemIsMissing() throws {
+        let schema = Schema([
+            BankItem.self,
+            ItemLog.self,
+        ])
+        let container = try ModelContainer(
+            for: schema,
+            configurations: [ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)]
+        )
+        let context = ModelContext(container)
+
+        let snapshot = TimerSessionSnapshot(
+            bankItemID: UUID(),
+            start: Date(timeIntervalSince1970: 0),
+            lastVerifiedAt: Date(timeIntervalSince1970: 120),
+            phase: .interrupted
+        )
+        TimerSessionStore.save(snapshot)
+
+        try TimerSessionCoordinator.prepareResumeFromLiveActivity(
+            itemID: snapshot.bankItemID,
+            start: snapshot.start,
+            items: [],
+            modelContext: context
+        )
+
+        #expect(TimerSessionCoordinator.currentSession()?.phase == .interrupted)
+        #expect(TimerSessionCoordinator.currentSession()?.bankItemID == snapshot.bankItemID)
+    }
 }

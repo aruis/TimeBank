@@ -8,6 +8,9 @@
 import SwiftUI
 import SwiftData
 import OSLog
+#if canImport(ActivityKit) && !os(macOS)
+import ActivityKit
+#endif
 
 struct Home: View {
         
@@ -20,6 +23,7 @@ struct Home: View {
     @State private var isShowBalanceTitle = false
     @State private var routedItemID: UUID?
     @State private var routedItem: BankItem?
+    @State private var routedResumeStart: Date?
     @State private var interruptedSession: TimerSessionSnapshot?
     @State private var interruptedLog: ItemLog?
     @State private var isShowingInterruptedPrompt = false
@@ -31,6 +35,83 @@ struct Home: View {
     private let balanceBadgeHeight: CGFloat = 42
     
     var body: some View {
+        homeSurface()
+    }
+
+    @ViewBuilder
+    private func homeSurface() -> some View {
+        homeScaffold()
+        .background(
+            Rectangle()
+                .fill(.black.opacity(0.05))
+                .ignoresSafeArea()
+            
+        )
+        #if os(macOS)
+        .overlay(alignment: .bottomTrailing, content: {
+            addButton()
+        })
+        #endif
+        #if !os(visionOS)
+        .sensoryFeedback(.selection, trigger: pageType)
+        #endif
+        .sheet(isPresented: $isShowAdd, content: {
+            NewBankItem(pageType:$pageType,bankItem: .constant(BankItem()))
+                .presentationDetents([.medium])
+        })
+        .sheet(isPresented: $isShowSetting, content: {
+            SettingView()
+        })
+        .sheet(item: $routedItem, onDismiss: {
+            routedResumeStart = nil
+        }) { item in
+            ShowItem(bankItem: binding(for: item), resumeStart: routedResumeStart)
+                .presentationDetents([.height(400), .large])
+        }
+        .sheet(item: $interruptedLog) { log in
+            InterruptedSessionReview(log: log) {
+                clearInterruptedSessionPrompt()
+            }
+        }
+        .alert("Session Interrupted", isPresented: $isShowingInterruptedPrompt, presenting: interruptedSession) { snapshot in
+            Button("Keep") {
+                clearInterruptedSessionPrompt()
+            }
+            Button("Adjust") {
+                interruptedLog = matchingInterruptedLog(for: snapshot)
+            }
+            Button("Discard", role: .destructive) {
+                discardInterruptedSession(snapshot)
+            }
+        } message: { snapshot in
+            Text(TimerSessionCoordinator.interruptedMessage(for: snapshot))
+        }
+        .alert("Timer Already Running", isPresented: Binding(
+            get: { runningSessionConflictItemName != nil },
+            set: { if !$0 { runningSessionConflictItemName = nil } }
+        )) {
+            Button("OK", role: .cancel) {
+                runningSessionConflictItemName = nil
+            }
+        } message: {
+            Text(runningSessionConflictItemName ?? "")
+        }
+        .onOpenURL { url in
+            handleDeepLink(url)
+        }
+        .onChange(of: items) {
+            resolveRoutedItemIfNeeded()
+            resumeRunningSessionIfNeeded()
+            resolveInterruptedSessionIfNeeded()
+        }
+        .task {
+            resumeRunningSessionIfNeeded()
+            resolveInterruptedSessionIfNeeded()
+        }
+    }
+
+    @ViewBuilder
+    private func homeScaffold() -> some View {
         ZStack(alignment: .bottom) {
             pageContent()
         }
@@ -113,70 +194,6 @@ struct Home: View {
             }
         }
         #endif
-        .background(
-            Rectangle()
-                .fill(.black.opacity(0.05))
-                .ignoresSafeArea()
-            
-        )
-        #if os(macOS)
-        .overlay(alignment: .bottomTrailing, content: {
-            addButton()
-        })
-        #endif
-        #if !os(visionOS)
-        .sensoryFeedback(.selection, trigger: pageType)
-        #endif
-        .sheet(isPresented: $isShowAdd, content: {
-            NewBankItem(pageType:$pageType,bankItem: .constant(BankItem()))
-                .presentationDetents([.medium])
-        })
-        .sheet(isPresented: $isShowSetting, content: {
-            SettingView()
-        })
-        .sheet(item: $routedItem) { item in
-            ShowItem(bankItem: binding(for: item))
-                .presentationDetents([.height(400), .large])
-        }
-        .sheet(item: $interruptedLog) { log in
-            InterruptedSessionReview(log: log) {
-                clearInterruptedSessionPrompt()
-            }
-        }
-        .alert("Session Interrupted", isPresented: $isShowingInterruptedPrompt, presenting: interruptedSession) { snapshot in
-            Button("Keep") {
-                clearInterruptedSessionPrompt()
-            }
-            Button("Adjust") {
-                interruptedLog = matchingInterruptedLog(for: snapshot)
-            }
-            Button("Discard", role: .destructive) {
-                discardInterruptedSession(snapshot)
-            }
-        } message: { snapshot in
-            Text(TimerSessionCoordinator.interruptedMessage(for: snapshot))
-        }
-        .alert("Timer Already Running", isPresented: Binding(
-            get: { runningSessionConflictItemName != nil },
-            set: { if !$0 { runningSessionConflictItemName = nil } }
-        )) {
-            Button("OK", role: .cancel) {
-                runningSessionConflictItemName = nil
-            }
-        } message: {
-            Text(runningSessionConflictItemName ?? "")
-        }
-        .onOpenURL { url in
-            handleDeepLink(url)
-        }
-        .onChange(of: items) {
-            resolveRoutedItemIfNeeded()
-            resolveInterruptedSessionIfNeeded()
-        }
-        .task {
-            resolveInterruptedSessionIfNeeded()
-        }
-
     }
 
     @ViewBuilder
@@ -383,6 +400,18 @@ struct Home: View {
 
         switch TimerSessionCoordinator.deepLinkDecision(for: itemID) {
         case .openRequestedItem:
+            if let resumeStart = resumableLiveActivityStart(for: itemID) {
+                try? TimerSessionCoordinator.prepareResumeFromLiveActivity(
+                    itemID: itemID,
+                    start: resumeStart,
+                    items: items,
+                    modelContext: modelContext
+                )
+                clearInterruptedPromptUI()
+                routedResumeStart = resumeStart
+            } else {
+                routedResumeStart = nil
+            }
             routedItemID = itemID
             resolveRoutedItemIfNeeded()
         case .ignoreRunningItem:
@@ -419,6 +448,21 @@ struct Home: View {
         isShowingInterruptedPrompt = true
     }
 
+    private func resumeRunningSessionIfNeeded() {
+        guard routedItem == nil,
+              interruptedSession == nil,
+              let snapshot = TimerSessionCoordinator.currentSession(),
+              snapshot.phase == .running,
+              let resumeStart = resumableLiveActivityStart(for: snapshot.bankItemID),
+              items.contains(where: { $0.id == snapshot.bankItemID }) else {
+            return
+        }
+
+        routedResumeStart = resumeStart
+        routedItemID = snapshot.bankItemID
+        resolveRoutedItemIfNeeded()
+    }
+
     private func matchingInterruptedLog(for snapshot: TimerSessionSnapshot) -> ItemLog? {
         TimerSessionCoordinator.matchingInterruptedLog(for: snapshot, items: items)
     }
@@ -434,9 +478,37 @@ struct Home: View {
 
     private func clearInterruptedSessionPrompt() {
         TimerSessionCoordinator.clearSession()
+        clearInterruptedPromptUI()
+    }
+
+    private func clearInterruptedPromptUI() {
         interruptedSession = nil
         interruptedLog = nil
         isShowingInterruptedPrompt = false
+    }
+
+    private func resumableLiveActivityStart(for itemID: UUID) -> Date? {
+#if canImport(ActivityKit) && !os(macOS)
+        if let activityStart = Activity<TimerActivityAttributes>.activities.first(where: {
+            $0.attributes.itemID == itemID.uuidString
+        })?.attributes.start {
+            return activityStart
+        }
+#else
+        if let snapshot = TimerSessionCoordinator.currentSession(),
+           snapshot.bankItemID == itemID {
+            return snapshot.start
+        }
+
+        return nil
+#endif
+
+        if let snapshot = TimerSessionCoordinator.currentSession(),
+           snapshot.bankItemID == itemID {
+            return snapshot.start
+        }
+
+        return nil
     }
     
 }

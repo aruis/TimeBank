@@ -10,15 +10,15 @@ import SwiftData
 
 struct ListView: View {
     private enum ActiveSheet: Identifiable {
-        case show
-        case edit
+        case show(BankItem)
+        case edit(BankItem)
 
-        var id: Int {
+        var id: String {
             switch self {
-            case .show:
-                return 0
-            case .edit:
-                return 1
+            case let .show(item):
+                return "show-\(item.id)"
+            case let .edit(item):
+                return "edit-\(item.id)"
             }
         }
     }
@@ -30,15 +30,13 @@ struct ListView: View {
     
     @Query(sort: \BankItem.lastTouch ,order: .reverse) private var items: [BankItem]
     
-    @State private var selectedItem: BankItem?
     @State private var activeSheet: ActiveSheet?
     
     @ViewBuilder
     func itemInList(_ item:BankItem) -> some View {
         
         Button( action: {
-            selectedItem = item
-            activeSheet = .show
+            activeSheet = .show(item)
             HapticFeedback.selection()
         }, label: {
             VStack(spacing:0){
@@ -133,8 +131,7 @@ struct ListView: View {
                         .id(item.id)
                         .contextMenu{
                             Button{
-                                selectedItem = item
-                                activeSheet = .edit
+                                activeSheet = .edit(item)
                             }label: {
                                 Label("Edit",systemImage: "pencil.circle")
                             }
@@ -166,16 +163,12 @@ struct ListView: View {
         })
         .sheet(item: $activeSheet, content: { sheet in
             switch sheet {
-            case .edit:
-                if let selectedItem {
-                    NewBankItem(pageType: .constant(pageType), bankItem: binding(for: selectedItem))
-                        .presentationDetents([.medium])
-                }
-            case .show:
-                if let selectedItem {
-                    ShowItem(bankItem: binding(for: selectedItem))
-                        .presentationDetents([.height(400), .large])
-                }
+            case let .edit(item):
+                NewBankItem(pageType: .constant(pageType), bankItem: binding(for: item))
+                    .presentationDetents([.medium])
+            case let .show(item):
+                ShowItem(bankItem: binding(for: item))
+                    .presentationDetents([.height(400), .large])
             }
         })
 

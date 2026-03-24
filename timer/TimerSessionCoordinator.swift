@@ -153,4 +153,26 @@ enum TimerSessionCoordinator {
 
         TimerSessionStore.clear()
     }
+
+    static func prepareResumeFromLiveActivity(
+        itemID: UUID,
+        start: Date,
+        items: [BankItem],
+        modelContext: ModelContext
+    ) throws {
+        guard items.contains(where: { $0.id == itemID }) else {
+            return
+        }
+
+        if let snapshot = TimerSessionStore.load(),
+           snapshot.phase == .interrupted,
+           snapshot.bankItemID == itemID,
+           let log = matchingInterruptedLog(for: snapshot, items: items) {
+            log.bankItem?.logs?.removeAll(where: { $0.id == log.id })
+            modelContext.delete(log)
+            try modelContext.save()
+        }
+
+        persistRunningSession(bankItemID: itemID, start: start, verifiedAt: Date())
+    }
 }

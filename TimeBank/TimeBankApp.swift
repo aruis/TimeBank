@@ -67,6 +67,16 @@ struct TimeBankApp: App {
 
     @MainActor
     private func reconcileInterruptedTimerSessionIfNeeded() async {
+        #if canImport(ActivityKit) && !os(macOS)
+        if let snapshot = TimerSessionCoordinator.currentSession(),
+           snapshot.phase == .running,
+           Activity<TimerActivityAttributes>.activities.contains(where: {
+               $0.attributes.itemID == snapshot.bankItemID.uuidString
+           }) {
+            return
+        }
+        #endif
+
         let context = ModelContext(sharedModelContainer)
         let fetchDescriptor = FetchDescriptor<BankItem>()
 

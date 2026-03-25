@@ -143,10 +143,10 @@ struct TimerActivityView: View {
     var context: ActivityViewContext<TimerActivityAttributes>
 
     var body: some View {
-        HStack(alignment: .center, spacing: 14) {
+        HStack(alignment: .center, spacing: 0) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(context.attributes.name)
-                    .font(.title3.weight(.semibold))
+                    .font(.title2.weight(.semibold))
                     .lineLimit(1)
                     .multilineTextAlignment(.leading)
 

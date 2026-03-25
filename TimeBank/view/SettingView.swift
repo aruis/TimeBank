@@ -9,211 +9,443 @@ import SwiftUI
 import UserNotifications
 
 struct SettingView: View {
-    
-    @Environment(\.dismiss) var dismiss
-    
-    @EnvironmentObject var settings: AppSetting
-    
-    @State var text:String = ""
-    @State var showingAlert = false
-    
-    @FocusState private var sliderFocused: Bool
-    
-    let keyStore = NSUbiquitousKeyValueStore.default
-    
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var settings: AppSetting
+
+    @State private var showingAlert = false
+    @State private var logoAnimating = false
+
+    private let recommendedApps: [RecommendedApp] = [
+        .init(
+            name: "BookTime",
+            tagline: "您的阅读计时伴侣",
+            assetName: "booktime_icon",
+            appStoreURL: URL(string: "https://apps.apple.com/cn/app/booktime-%E6%82%A8%E7%9A%84%E9%98%85%E8%AF%BB%E8%AE%A1%E6%97%B6%E4%BC%B4%E4%BE%A3/id1600654269")!,
+            accent: .orange
+        ),
+        .init(
+            name: "PinTime",
+            tagline: "标记您的重要时刻",
+            assetName: "PinTimeLogo",
+            appStoreURL: URL(string: "https://apps.apple.com/cn/app/pintime-%E6%A0%87%E8%AE%B0%E6%82%A8%E7%9A%84%E9%87%8D%E8%A6%81%E6%97%B6%E5%88%BB/id6757686170")!,
+            accent: .indigo
+        )
+    ]
+
     var body: some View {
         NavigationStack {
-            Form {
-                Section ("Scheduled Reminder"){
-                    Toggle(isOn: $settings.isTimerEnabled) {
-                        Text("Enable Timer Notification🍅")
+            List {
+                brandHeader
+
+                Section("提醒") {
+                    SettingsToggleRow(
+                        title: "启用番茄钟提醒",
+                        subtitle: "倒计时结束后发送通知提醒",
+                        icon: "bell.badge.fill",
+                        color: .red,
+                        isOn: $settings.isTimerEnabled
+                    )
+                    .onChange(of: settings.isTimerEnabled) {
+                        handleTimerToggleChanged()
                     }
-                    .onChange(of: settings.isTimerEnabled){
-                        if settings.isTimerEnabled{
-                            
-                            Task {
-                                let result = await settings.requestNotificationPermission()
-                                switch result {
-                                case .success(let granted):
-                                    if !granted {
-                                        // 用户拒绝授权，可以在这里更新 UI 或状态
-                                        showingAlert = true
-                                    }
-                                case .failure(let error):
-                                    // 处理错误
-                                    print(error)
-                                    showingAlert = true
-                                }
-                            }
-                            
-                        }
-                        
-                    }
-                    
+
                     if settings.isTimerEnabled {
-                        
-                        HStack{
-                            Text("Timer Duration")
-                            Spacer()
-                            Text("\(Int( settings.timerDuration)) Min")
-                                .fontWeight(.bold)
-                            
-                        }
+                        VStack(alignment: .leading, spacing: 14) {
+                            HStack {
+                                Label("时长", systemImage: "timer")
+                                    .foregroundStyle(.primary)
+                                Spacer()
+                                Text("\(Int(settings.timerDuration)) 分钟")
+                                    .font(.subheadline.weight(.semibold))
+                                    .foregroundStyle(.secondary)
+                                    .monospacedDigit()
+                            }
 
-                        Slider(
-                            value: $settings.timerDuration,
-                            in: 0...60,
-                            step: 5
-                        ) {
-                            
-                        } minimumValueLabel: {
-                            Text("0")
-                        } maximumValueLabel: {
-                            Text("60")
+                            Slider(
+                                value: $settings.timerDuration,
+                                in: 0...60,
+                                step: 5
+                            ) {
+                                Text("Timer Duration")
+                            } minimumValueLabel: {
+                                Text("0")
+                            } maximumValueLabel: {
+                                Text("60")
+                            }
+                            .tint(.red)
                         }
-                        .focused($sliderFocused)
-                        .contentShape(.capsule)
-                        .overlay{
-                            RoundedRectangle(cornerRadius: 5) // 你可以根据需要调整圆角大小
-                                .stroke(sliderFocused ? Color.green : Color.clear, lineWidth: 2)
-                        }
-                        
-                    }
-                    
-                }
-                Section ("Rate Mode"){
-                    Toggle(isOn: $settings.isEnableRate) {
-                        Text("Enabling the Rate Mode will convert time based on the specified ratio.")
+                        .padding(.vertical, 6)
                     }
                 }
 
-                Section("SaveTime / KillTime 颜色") {
-                    HStack(spacing: 12) {
-                        colorThemeOption(
-                            saveColor: .red,
-                            killColor: .green,
-                            isSelected: !settings.swapThemeColors
-                        ) {
-                            settings.swapThemeColors = false
-                        }
+                Section("换算") {
+                    SettingsToggleRow(
+                        title: "启用比率模式",
+                        subtitle: "根据设定比例换算时间价值",
+                        icon: "scale.3d",
+                        color: .blue,
+                        isOn: $settings.isEnableRate
+                    )
+                }
 
-                        colorThemeOption(
-                            saveColor: .green,
-                            killColor: .red,
-                            isSelected: settings.swapThemeColors
-                        ) {
-                            settings.swapThemeColors = true
+                Section("主题") {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label("SaveTime / KillTime 颜色", systemImage: "paintpalette.fill")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.primary)
+
+                        HStack(spacing: 12) {
+                            colorThemeOption(
+                                title: "默认",
+                                saveColor: .red,
+                                killColor: .green,
+                                isSelected: !settings.swapThemeColors
+                            ) {
+                                settings.swapThemeColors = false
+                            }
+
+                            colorThemeOption(
+                                title: "互换",
+                                saveColor: .green,
+                                killColor: .red,
+                                isSelected: settings.swapThemeColors
+                            ) {
+                                settings.swapThemeColors = true
+                            }
                         }
                     }
                     .padding(.vertical, 4)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                 }
 
-                Section("My Apps"){
-                    HStack(spacing: 10){
-                        Image("booktime_icon")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 50, height: 50)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                Section("支持") {
+                    Link(destination: URL(string: "mailto:eastern.howls0a@icloud.com")!) {
+                        SettingsLinkRow(
+                            title: "反馈建议",
+                            subtitle: "欢迎告诉我你的想法",
+                            icon: "envelope.fill",
+                            color: .gray
+                        )
+                    }
+                    .buttonStyle(.plain)
 
-                        VStack(alignment: .leading){
-                            Text("BookTime")
-                                .font(.title3)
-                            Text("Reading timing buddy")
-                                .font(.caption)
+                    Link(destination: URL(string: "https://apps.apple.com/cn/app/timebank-%E6%97%B6%E9%97%B4%E6%98%AF%E4%BD%A0%E5%94%AF%E4%B8%80%E6%8B%A5%E6%9C%89%E7%9A%84%E4%B8%9C%E8%A5%BF/id6474505609?action=write-review")!) {
+                        SettingsLinkRow(
+                            title: "给我鼓励",
+                            subtitle: "在 App Store 留下你的评价",
+                            icon: "heart.fill",
+                            color: .pink
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+
+                Section("更多应用") {
+                    ForEach(recommendedApps) { app in
+                        Link(destination: app.appStoreURL) {
+                            RecommendedAppRow(app: app)
                         }
-
-                        Spacer()
-
-                        Link(destination: URL(string: "https://apps.apple.com/us/app/booktime-%E6%82%A8%E7%9A%84%E9%98%85%E8%AF%BB%E8%AE%A1%E6%97%B6%E4%BC%B4%E4%BE%A3/id1600654269")!,label: {
-                            Image(systemName: "arrow.right.circle.fill")
-                        })
-
+                        .buttonStyle(.plain)
                     }
                 }
 
-                Text("苏ICP备2024057896号-3A")
-                    .font(.callout)
+                footerView
             }
-            .alert("You need to manually enable notification permissions", isPresented: $showingAlert) {
-                Button("OK", role: .cancel) {
-                    
+            .alert("需要手动开启通知权限", isPresented: $showingAlert) {
+                #if os(iOS) || os(visionOS)
+                Button("去设置") {
+                    settings.openAppSettings()
                 }
+                #endif
+                Button("知道了", role: .cancel) {}
+            } message: {
+                Text("请前往系统设置里的 TimeBank 通知权限，开启提醒后再使用番茄钟。")
             }
 #if os(macOS)
-            .frame(width: 450,height:  360,alignment: .topLeading)
+            .frame(width: 460, height: 560, alignment: .topLeading)
             .padding()
 #endif
-            .toolbar{
+            .toolbar {
 #if os(macOS)
-                ToolbarItem(placement: .cancellationAction, content: {
-                    Button{
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") {
                         dismiss()
-                    }label: {
-                        Text("Close")
                     }
-                })
+                }
 #elseif !os(watchOS)
-                ToolbarItem(placement: .topBarTrailing, content: {
-                    Button{
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("完成") {
                         dismiss()
-                    }label: {
-                        Text("Close")
                     }
-                })
+                    .fontWeight(.bold)
+                }
 #endif
             }
-            .navigationTitle("Setting")
-            #if !os(visionOS)
+            .navigationTitle("设置")
+#if os(iOS) || os(visionOS)
+            .navigationBarTitleDisplayMode(.inline)
+#endif
+#if !os(visionOS)
             .sensoryFeedback(.selection, trigger: settings.timerDuration)
 #endif
-            
         }
-        
+    }
+
+    private func handleTimerToggleChanged() {
+        guard settings.isTimerEnabled else { return }
+
+        Task {
+            let result = await settings.requestNotificationPermission()
+            switch result {
+            case .success(let granted):
+                if !granted {
+                    showingAlert = true
+                }
+            case .failure(let error):
+                print(error)
+                showingAlert = true
+            }
+        }
+    }
+
+    private var brandHeader: some View {
+        VStack(spacing: 20) {
+            Image("TimeBankLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 88, height: 88)
+                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .stroke(Color.white.opacity(0.28), lineWidth: 1)
+                }
+                .shadow(color: Color.orange.opacity(0.18), radius: 18, y: 10)
+                .background {
+                    ZStack {
+                        Circle()
+                            .fill(Color.orange.opacity(logoAnimating ? 0.24 : 0.12))
+                            .frame(width: 160, height: 160)
+                            .blur(radius: logoAnimating ? 34 : 22)
+                            .offset(x: -20)
+
+                        Circle()
+                            .fill(Color.green.opacity(logoAnimating ? 0.20 : 0.10))
+                            .frame(width: 150, height: 150)
+                            .blur(radius: logoAnimating ? 38 : 24)
+                            .offset(x: 24, y: 6)
+                    }
+                    .blendMode(.screen)
+                    .scaleEffect(logoAnimating ? 1.08 : 0.92)
+                    .frame(width: 10, height: 10)
+                }
+
+            VStack(spacing: 6) {
+                Text("TimeBank")
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+
+                Text("时间是你唯一真正拥有的东西")
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 28)
+        .padding(.bottom, 12)
+        .listRowBackground(Color.clear)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.easeInOut(duration: 3.8).repeatForever(autoreverses: true)) {
+                    logoAnimating = true
+                }
+            }
+        }
     }
 
     @ViewBuilder
-    func colorThemeOption(
+    private func colorThemeOption(
+        title: String,
         saveColor: Color,
         killColor: Color,
         isSelected: Bool,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
-            HStack(spacing: 8) {
-                RoundedRectangle(cornerRadius: 7, style: .continuous)
-                    .fill(saveColor.gradient)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 20)
+            VStack(alignment: .leading, spacing: 10) {
+                Text(title)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.primary)
 
-                RoundedRectangle(cornerRadius: 7, style: .continuous)
-                    .fill(killColor.gradient)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 20)
+                HStack(spacing: 8) {
+                    RoundedRectangle(cornerRadius: 7, style: .continuous)
+                        .fill(saveColor.gradient)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 22)
+
+                    RoundedRectangle(cornerRadius: 7, style: .continuous)
+                        .fill(killColor.gradient)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 22)
+                }
+
+                HStack(spacing: 6) {
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    Text(isSelected ? "当前使用" : "点击切换")
+                }
+                .font(.caption2.weight(.medium))
+                .foregroundStyle(isSelected ? .primary : .secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 12)
             .padding(.vertical, 12)
             .background {
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(.regularMaterial)
                     .overlay {
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .stroke(.white.opacity(0.12), lineWidth: 0.8)
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(isSelected ? Color.accentColor.opacity(0.45) : Color.white.opacity(0.12), lineWidth: 1)
                     }
             }
-            .saturation(isSelected ? 1 : 0.35)
-            .opacity(isSelected ? 1 : 0.72)
+            .saturation(isSelected ? 1 : 0.45)
+            .opacity(isSelected ? 1 : 0.78)
         }
         .buttonStyle(.plain)
+        .contentShape(Rectangle())
+    }
+
+    private var footerView: some View {
+        VStack(spacing: 6) {
+            Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0")")
+            Text("苏ICP备2024057896号-3A")
+        }
+        .font(.caption)
+        .foregroundStyle(.tertiary)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 10)
+        .listRowBackground(Color.clear)
+    }
+}
+
+private struct SettingsToggleRow: View {
+    let title: String
+    let subtitle: String
+    let icon: String
+    let color: Color
+    @Binding var isOn: Bool
+
+    var body: some View {
+        HStack(spacing: 12) {
+            iconView
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .foregroundStyle(.primary)
+
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer(minLength: 12)
+
+            Toggle("", isOn: $isOn)
+                .labelsHidden()
+        }
+        .padding(.vertical, 2)
+    }
+
+    private var iconView: some View {
+        Image(systemName: icon)
+            .font(.system(size: 14, weight: .bold))
+            .foregroundStyle(.white)
+            .frame(width: 30, height: 30)
+            .background(color.gradient)
+            .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+    }
+}
+
+private struct SettingsLinkRow: View {
+    let title: String
+    let subtitle: String
+    let icon: String
+    let color: Color
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: 30, height: 30)
+                .background(color.gradient)
+                .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .foregroundStyle(.primary)
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer(minLength: 8)
+
+            Image(systemName: "arrow.up.right")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(.tertiary)
+        }
+        .padding(.vertical, 2)
+        .contentShape(Rectangle())
+    }
+}
+
+private struct RecommendedApp: Identifiable {
+    let id = UUID()
+    let name: String
+    let tagline: String
+    let assetName: String
+    let appStoreURL: URL
+    let accent: Color
+}
+
+private struct RecommendedAppRow: View {
+    let app: RecommendedApp
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(app.assetName)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 44, height: 44)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Color.white.opacity(0.25), lineWidth: 1)
+                }
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text(app.name)
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+
+                Text(app.tagline)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+            }
+
+            Spacer(minLength: 8)
+
+            Image(systemName: "arrow.up.right")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(app.accent)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 2)
         .contentShape(Rectangle())
     }
 }
 
 #Preview {
-    
     SettingView()
         .environmentObject(AppSetting())
-    
 }

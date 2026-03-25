@@ -38,6 +38,7 @@
       }
     },
     "%lld Min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -99,6 +100,9 @@
           }
         }
       }
+    },
+    "%lld 分钟" : {
+
     },
     "~" : {
       "localizations" : {
@@ -289,6 +293,7 @@
       }
     },
     "Enable Timer Notification🍅" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -299,6 +304,7 @@
       }
     },
     "Enabling the Rate Mode will convert time based on the specified ratio." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -406,6 +412,7 @@
       }
     },
     "My Apps" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -467,6 +474,7 @@
       }
     },
     "Rate Mode" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -487,6 +495,7 @@
       }
     },
     "Reading timing buddy" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -540,6 +549,7 @@
       }
     },
     "Scheduled Reminder" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -608,7 +618,11 @@
     "Unpin" : {
 
     },
+    "Version %@" : {
+
+    },
     "You need to manually enable notification permissions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -644,6 +658,42 @@
         }
       }
     },
+    "主题" : {
+
+    },
+    "去设置" : {
+
+    },
+    "完成" : {
+
+    },
+    "当前使用" : {
+
+    },
+    "换算" : {
+
+    },
+    "提醒" : {
+
+    },
+    "支持" : {
+
+    },
+    "时长" : {
+
+    },
+    "时间是你唯一真正拥有的东西" : {
+
+    },
+    "更多应用" : {
+
+    },
+    "点击切换" : {
+
+    },
+    "知道了" : {
+
+    },
     "苏ICP备2024057896号-3A" : {
       "localizations" : {
         "en" : {
@@ -659,6 +709,15 @@
           }
         }
       }
+    },
+    "设置" : {
+
+    },
+    "请前往系统设置里的 TimeBank 通知权限，开启提醒后再使用番茄钟。" : {
+
+    },
+    "需要手动开启通知权限" : {
+
     }
   },
   "version" : "1.0"

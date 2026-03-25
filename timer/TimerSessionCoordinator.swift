@@ -8,6 +8,7 @@ enum TimerSessionPhase: String, Codable {
 
 struct TimerSessionSnapshot: Codable {
     var bankItemID: UUID
+    var sessionID: UUID? = nil
     var start: Date
     var lastVerifiedAt: Date
     var phase: TimerSessionPhase
@@ -57,10 +58,11 @@ enum TimerSessionCoordinator {
         TimerSessionStore.load()
     }
 
-    static func persistRunningSession(bankItemID: UUID, start: Date, verifiedAt: Date) {
+    static func persistRunningSession(bankItemID: UUID, sessionID: UUID? = nil, start: Date, verifiedAt: Date) {
         TimerSessionStore.save(
             TimerSessionSnapshot(
                 bankItemID: bankItemID,
+                sessionID: sessionID,
                 start: start,
                 lastVerifiedAt: verifiedAt,
                 phase: .running
@@ -173,6 +175,27 @@ enum TimerSessionCoordinator {
             try modelContext.save()
         }
 
-        persistRunningSession(bankItemID: itemID, start: start, verifiedAt: Date())
+        persistRunningSession(bankItemID: itemID, sessionID: snapshotSessionID(for: itemID), start: start, verifiedAt: Date())
+    }
+
+    static func currentSessionMatches(bankItemID: UUID, sessionID: UUID?) -> Bool {
+        guard let snapshot = currentSession(),
+              snapshot.bankItemID == bankItemID else {
+            return false
+        }
+
+        guard let sessionID else {
+            return true
+        }
+
+        return snapshot.sessionID == sessionID
+    }
+
+    private static func snapshotSessionID(for bankItemID: UUID) -> UUID? {
+        guard let snapshot = currentSession(), snapshot.bankItemID == bankItemID else {
+            return nil
+        }
+
+        return snapshot.sessionID
     }
 }

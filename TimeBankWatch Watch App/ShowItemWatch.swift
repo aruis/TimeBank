@@ -21,6 +21,7 @@ struct ShowItemWatch: View {
     @State private var isTimerRunning = false
     
     @State private var start:Date?
+    @State private var sessionID: UUID?
     
     @State private var showTip = false
     
@@ -214,7 +215,16 @@ struct ShowItemWatch: View {
         }
         
         start = Date()
+        let newSessionID = UUID()
+        sessionID = newSessionID
         persistTimerSession(at: start!)
+        WatchLiveActivityMessenger.shared.sendStart(
+            itemID: bankItem.id,
+            itemName: bankItem.name,
+            isSave: bankItem.isSave,
+            sessionID: newSessionID,
+            start: start!
+        )
     }
     
     private func resetTimer() {
@@ -227,7 +237,7 @@ struct ShowItemWatch: View {
         timer?.invalidate()
         timer = nil
         timeRemaining = 0
-        
+
         if let start {
             let now = Date()
             
@@ -249,9 +259,20 @@ struct ShowItemWatch: View {
                 
                 return
             }
+
+            if let currentSessionID = sessionID ?? TimerSessionCoordinator.currentSession()?.sessionID {
+                WatchLiveActivityMessenger.shared.sendStop(
+                    itemID: bankItem.id,
+                    itemName: bankItem.name,
+                    isSave: bankItem.isSave,
+                    sessionID: currentSessionID,
+                    end: now
+                )
+            }
         }
 
         self.start = nil
+        self.sessionID = nil
         
     }
 
@@ -262,6 +283,7 @@ struct ShowItemWatch: View {
 
         TimerSessionCoordinator.persistRunningSession(
             bankItemID: bankItem.id,
+            sessionID: sessionID,
             start: start,
             verifiedAt: date
         )

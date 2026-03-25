@@ -33,6 +33,14 @@ struct Home: View {
     
     private let floatingButtonDiameter: CGFloat = 58
     private let balanceBadgeHeight: CGFloat = 42
+
+    private var topBarExtraPaddingForPad: CGFloat {
+        #if os(iOS)
+        UIDevice.current.userInterfaceIdiom == .pad ? 20 : 0
+        #else
+        0
+        #endif
+    }
     
     var body: some View {
         homeSurface()
@@ -116,17 +124,17 @@ struct Home: View {
             pageContent()
         }
         #if os(macOS)
-        .padding(.top,60)
-        .overlay(alignment: .top, content: {
+        .safeAreaInset(edge: .top, spacing: 0) {
             HStack{
                 title()
                     .focusable(false)
                 Spacer()
                 balance()
             }
-            .padding()
-//            .padding(.top,20)
-        })
+            .padding(.horizontal, 16)
+            .padding(.top, 10)
+            .padding(.bottom, 10)
+        }
         #elseif os(iOS)
         .safeAreaInset(edge: .top, spacing: 0) {
             HStack {
@@ -136,6 +144,7 @@ struct Home: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, 8)
+            .padding(.top, topBarExtraPaddingForPad)
             .padding(.bottom, 10)
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {

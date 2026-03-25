@@ -20,6 +20,8 @@
 		5799CD732D37532300D153EA /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5799CD712D37531F00D153EA /* IntExt.swift */; };
 		5799CD742D37532300D153EA /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5799CD712D37531F00D153EA /* IntExt.swift */; };
 		5799CD752D37537600D153EA /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5799CD712D37531F00D153EA /* IntExt.swift */; };
+		57A100032D7B000000000001 /* ReleaseNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A100012D7B000000000001 /* ReleaseNote.swift */; };
+		57A100042D7B000000000001 /* ReleaseNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A100022D7B000000000001 /* ReleaseNoteView.swift */; };
 		830D75A62F72C7A900C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
 		830D75A72F72C7AD00C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
 		830D75A82F72C7B100C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
@@ -139,6 +141,8 @@
 		57754B972D0ACCB200E3EB82 /* TimerActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerActivityAttributes.swift; sourceTree = "<group>"; };
 		577933D52D096D1300253432 /* EditLogItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLogItem.swift; sourceTree = "<group>"; };
 		5799CD712D37531F00D153EA /* IntExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExt.swift; sourceTree = "<group>"; };
+		57A100012D7B000000000001 /* ReleaseNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseNote.swift; sourceTree = "<group>"; };
+		57A100022D7B000000000001 /* ReleaseNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseNoteView.swift; sourceTree = "<group>"; };
 		8302EA8E2B4E22F400A8ECF8 /* TimeBankVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBankVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8302EA912B4E22F400A8ECF8 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankVisionApp.swift; sourceTree = "<group>"; };
@@ -312,6 +316,7 @@
 		8317E6332AFCC2B7003543CB /* TimeBank */ = {
 			isa = PBXGroup;
 			children = (
+				57A100012D7B000000000001 /* ReleaseNote.swift */,
 				57754B972D0ACCB200E3EB82 /* TimerActivityAttributes.swift */,
 				836DD00C2B30392000B3F0FB /* Localizable.xcstrings */,
 				83F227732B4E8C6D00D26488 /* data */,
@@ -343,6 +348,7 @@
 				835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */,
 				83BCD6DA2B0734EA004FCBE1 /* ListView.swift */,
 				83BCD6E02B07474E004FCBE1 /* Home.swift */,
+				57A100022D7B000000000001 /* ReleaseNoteView.swift */,
 				83E0BB672B2AA3B000F1396E /* ShowItem.swift */,
 				836ED07D2B61CA8B00097211 /* SettingView.swift */,
 			);
@@ -668,9 +674,11 @@
 				83E0BB6F2B2AEE8400F1396E /* DateExt.swift in Sources */,
 				57754B982D0ACCBD00E3EB82 /* TimerActivityAttributes.swift in Sources */,
 				835B8B7C2AFCDAB5001A144D /* NewBankItem.swift in Sources */,
+				57A100042D7B000000000001 /* ReleaseNoteView.swift in Sources */,
 				836ED07E2B61CA8B00097211 /* SettingView.swift in Sources */,
 				836DE9E22B6F60620026316A /* RectButtonStyle.swift in Sources */,
 				83F227702B4E8C4D00D26488 /* PageType.swift in Sources */,
+				57A100032D7B000000000001 /* ReleaseNote.swift in Sources */,
 				830D75A62F72C7A900C46FB1 /* TimerSessionCoordinator.swift in Sources */,
 				8317E6392AFCC2B8003543CB /* BankItem.swift in Sources */,
 				8317E6352AFCC2B7003543CB /* TimeBankApp.swift in Sources */,

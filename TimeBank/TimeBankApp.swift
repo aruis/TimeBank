@@ -16,6 +16,8 @@ struct TimeBankApp: App {
     
     @StateObject var appSetting = AppSetting()
     @State private var isShowSetting = false
+    @State private var activeReleaseNote: ReleaseNote?
+    @State private var hasCheckedReleaseNote = false
     
     #if !os(macOS)
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -46,8 +48,20 @@ struct TimeBankApp: App {
                     SettingView()
                         .presentationDetents([.medium])
                 })
+                .sheet(item: $activeReleaseNote) { note in
+                    ReleaseNoteView(note: note) {
+                        ReleaseNotesManager.shared.markShown(version: note.version)
+                        activeReleaseNote = nil
+                    }
+#if os(iOS) || os(visionOS)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+#endif
+                    .interactiveDismissDisabled()
+                }
                 .task {
                     await reconcileInterruptedTimerSessionIfNeeded()
+                    checkReleaseNoteIfNeeded()
                 }
 
         }
@@ -98,5 +112,16 @@ struct TimeBankApp: App {
             )
         }
 #endif
+    }
+
+    @MainActor
+    private func checkReleaseNoteIfNeeded() {
+        guard !hasCheckedReleaseNote else { return }
+        hasCheckedReleaseNote = true
+
+        let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
+        if let note = ReleaseNotesManager.shared.noteToShow(for: currentVersion) {
+            activeReleaseNote = note
+        }
     }
 }

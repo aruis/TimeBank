@@ -31,8 +31,10 @@ struct ReleaseNoteView: View {
             .padding(.bottom, 16)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(releaseBackgroundColor.ignoresSafeArea())
-            .toolbar(.hidden, for: .navigationBar)
         }
+#if !os(macOS)
+        .toolbar(.hidden, for: .navigationBar)
+#endif
     }
 
     private var header: some View {

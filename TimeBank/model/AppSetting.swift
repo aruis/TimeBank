@@ -91,20 +91,22 @@ class AppSetting :ObservableObject {
     }
     
     func requestNotificationPermission() async -> Result<Bool, NotificationPermissionError> {
-        return await withCheckedContinuation { continuation in
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-                DispatchQueue.main.async {
-                    if success {
-                        continuation.resume(returning: .success(true))
-                    } else if let error = error {
-                        continuation.resume(returning: .failure(.error(error)))
-                        self.isTimerEnabled = false
-                    } else {
-                        continuation.resume(returning: .failure(.denied))
-                        self.isTimerEnabled = false
-                    }
-                }
+        do {
+            let success = try await UNUserNotificationCenter.current()
+                .requestAuthorization(options: [.alert, .badge, .sound])
+            if success {
+                return .success(true)
             }
+
+            await MainActor.run {
+                isTimerEnabled = false
+            }
+            return .failure(.denied)
+        } catch {
+            await MainActor.run {
+                isTimerEnabled = false
+            }
+            return .failure(.error(error))
         }
     }
         

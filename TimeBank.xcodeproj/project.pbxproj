@@ -22,9 +22,6 @@
 		5799CD752D37537600D153EA /* IntExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5799CD712D37531F00D153EA /* IntExt.swift */; };
 		57A100032D7B000000000001 /* ReleaseNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A100012D7B000000000001 /* ReleaseNote.swift */; };
 		57A100042D7B000000000001 /* ReleaseNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A100022D7B000000000001 /* ReleaseNoteView.swift */; };
-		830D75A62F72C7A900C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
-		830D75A72F72C7AD00C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
-		830D75A82F72C7B100C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
 		8302EA952B4E22F400A8ECF8 /* TimeBankVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8302EA942B4E22F400A8ECF8 /* TimeBankVisionApp.swift */; };
 		8302EA992B4E22F500A8ECF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA982B4E22F500A8ECF8 /* Assets.xcassets */; };
 		8302EA9C2B4E22F500A8ECF8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8302EA9B2B4E22F500A8ECF8 /* Preview Assets.xcassets */; };
@@ -37,6 +34,9 @@
 		8302EAA82B4E24A300A8ECF8 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */; };
 		8302EAA92B4E24A300A8ECF8 /* BankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6382AFCC2B8003543CB /* BankItem.swift */; };
 		8302EAAA2B4E24A300A8ECF8 /* ShowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB672B2AA3B000F1396E /* ShowItem.swift */; };
+		830D75A62F72C7A900C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
+		830D75A72F72C7AD00C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
+		830D75A82F72C7B100C46FB1 /* TimerSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D75A52F72C78500C46FB1 /* TimerSessionCoordinator.swift */; };
 		83130D322B21BEAF00ACFD84 /* CircularButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83130D312B21BEAF00ACFD84 /* CircularButtonStyle.swift */; };
 		8317E6352AFCC2B7003543CB /* TimeBankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6342AFCC2B7003543CB /* TimeBankApp.swift */; };
 		8317E6392AFCC2B8003543CB /* BankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317E6382AFCC2B8003543CB /* BankItem.swift */; };
@@ -761,7 +761,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.25.2;
+				MARKETING_VERSION = 1.26.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.TimeBankWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -800,7 +800,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.25.2;
+				MARKETING_VERSION = 1.26.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.TimeBankWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -831,7 +831,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.25.2;
+				MARKETING_VERSION = 1.26.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -860,7 +860,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.25.2;
+				MARKETING_VERSION = 1.26.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -1023,7 +1023,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.25.2;
+				MARKETING_VERSION = 1.26.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1066,7 +1066,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.25.2;
+				MARKETING_VERSION = 1.26.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1097,7 +1097,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.25.2;
+				MARKETING_VERSION = 1.26.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
 				PRODUCT_NAME = TimeBank;
 				SDKROOT = watchos;
@@ -1129,7 +1129,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.25.2;
+				MARKETING_VERSION = 1.26.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
 				PRODUCT_NAME = TimeBank;
 				SDKROOT = watchos;

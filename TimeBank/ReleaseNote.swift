@@ -17,6 +17,14 @@ struct ReleaseNote: Identifiable, Equatable {
 enum ReleaseNotesRegistry {
     static let notes: [ReleaseNote] = [
         ReleaseNote(
+            version: "1.26.1",
+            features: [
+                "适配了“液态玻璃”（Liquid Glass）设计语言",
+                "进程被杀死后，仍然可以通过实时小组件恢复计时状态",
+                "支持切换 Save/Kill 的主题配色"
+            ]
+        ),
+        ReleaseNote(
             version: "1.25.2",
             features: [
                 "设置页面改成了更清晰的分组布局",

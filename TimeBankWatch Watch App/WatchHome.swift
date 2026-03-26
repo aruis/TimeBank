@@ -175,7 +175,7 @@ struct WatchHome: View {
                             selectItem = item
                             isShowingItemActions = true
                         }label: {
-                            Label("edit",systemImage: "slider.horizontal.3")
+                            Label("Edit", systemImage: "slider.horizontal.3")
                         }
                     }
                     

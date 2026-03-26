@@ -139,6 +139,35 @@ private struct CompactSummaryText: View {
     }
 }
 
+private struct ActivitySecondaryStatusLine: View {
+    let sessionState: TimerActivityAttributes.ContentState.SessionState
+    let isStale: Bool
+
+    var body: some View {
+        let statusText = activityStatusText(sessionState: sessionState, isStale: isStale)
+
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 4) {
+                Text("TimeBank")
+                if isStale || sessionState != .running {
+                    Text("/")
+                    Text(statusText)
+                }
+            }
+
+            if isStale || sessionState != .running {
+                Text(statusText)
+            } else {
+                Text("TimeBank")
+            }
+        }
+        .font(.caption)
+        .foregroundStyle(.white.opacity(0.72))
+        .lineLimit(1)
+        .minimumScaleFactor(0.85)
+    }
+}
+
 struct TimerActivityView: View {
     var context: ActivityViewContext<TimerActivityAttributes>
 
@@ -150,19 +179,10 @@ struct TimerActivityView: View {
                     .lineLimit(1)
                     .multilineTextAlignment(.leading)
 
-                HStack{
-                    Text("TimeBank")
-                    if context.isStale || context.state.sessionState != .running {
-                        Text("/")
-                        Text(activityStatusText(
-                            sessionState: context.state.sessionState,
-                            isStale: context.isStale
-                        ))
-                    }
-                }
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.72))
-                
+                ActivitySecondaryStatusLine(
+                    sessionState: context.state.sessionState,
+                    isStale: context.isStale
+                )
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 

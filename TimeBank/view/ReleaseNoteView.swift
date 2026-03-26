@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct ReleaseNoteView: View {
     let note: ReleaseNote
@@ -56,7 +57,7 @@ struct ReleaseNoteView: View {
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("关闭更新说明")
+                .accessibilityLabel(Text("关闭更新说明"))
             }
 
             Text("版本更新")
@@ -94,7 +95,15 @@ struct ReleaseNoteView: View {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .stroke(Color.primary.opacity(0.06), lineWidth: 1)
                 )
-                .accessibilityLabel("更新\(index + 1): \(feature)")
+                .accessibilityLabel(
+                    Text(
+                        String.localizedStringWithFormat(
+                            NSLocalizedString("更新%lld: %@", comment: "Release note item accessibility label"),
+                            index + 1,
+                            feature
+                        )
+                    )
+                )
             }
         }
     }
@@ -137,14 +146,7 @@ struct ReleaseNoteView: View {
 struct ReleaseNoteView_Previews: PreviewProvider {
     static var previews: some View {
         ReleaseNoteView(
-            note: ReleaseNote(
-                version: "1.25.2",
-                features: [
-                    "设置页面改成了更清晰的分组布局",
-                    "新增了“更多应用”推荐区域，可以直接查看 BookTime 和 PinTime",
-                    "优化了设置页的品牌展示与通知引导"
-                ]
-            ),
+            note: ReleaseNotesRegistry.note(for: "1.26.1")!,
             onConfirm: {}
         )
     }

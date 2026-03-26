@@ -503,13 +503,6 @@ struct Home: View {
         })?.attributes.start {
             return activityStart
         }
-#else
-        if let snapshot = TimerSessionCoordinator.currentSession(),
-           snapshot.bankItemID == itemID {
-            return snapshot.start
-        }
-
-        return nil
 #endif
 
         if let snapshot = TimerSessionCoordinator.currentSession(),

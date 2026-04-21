@@ -37,17 +37,6 @@
         }
       }
     },
-    "%lld Min" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld 分"
-          }
-        }
-      }
-    },
     "%lld MIN" : {
       "localizations" : {
         "zh-Hans" : {
@@ -296,17 +285,6 @@
     "Discard" : {
 
     },
-    "edit" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "编辑"
-          }
-        }
-      }
-    },
     "Edit" : {
       "localizations" : {
         "zh-Hans" : {
@@ -333,28 +311,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "编辑时间"
-          }
-        }
-      }
-    },
-    "Enable Timer Notification🍅" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "开启计时提醒🍅"
-          }
-        }
-      }
-    },
-    "Enabling the Rate Mode will convert time based on the specified ratio." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "开启汇率模式，就会把时间按设定比例进行折算"
           }
         }
       }
@@ -395,17 +351,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保存这条记录失败。"
-          }
-        }
-      }
-    },
-    "Interrupted" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已中断"
           }
         }
       }
@@ -493,28 +438,6 @@
         }
       }
     },
-    "My Apps" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "我的App"
-          }
-        }
-      }
-    },
-    "Needs Review" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "待确认"
-          }
-        }
-      }
-    },
     "No Data." : {
       "localizations" : {
         "zh-Hans" : {
@@ -555,34 +478,12 @@
         }
       }
     },
-    "Rate Mode" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "汇率模式"
-          }
-        }
-      }
-    },
     "RATE: %@" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "费率：%@"
-          }
-        }
-      }
-    },
-    "Reading timing buddy" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您的阅读计时伴侣"
           }
         }
       }
@@ -639,17 +540,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SaveTime 已达成"
-          }
-        }
-      }
-    },
-    "Scheduled Reminder" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "计时提醒"
           }
         }
       }
@@ -721,17 +611,6 @@
     },
     "Version %@" : {
 
-    },
-    "You need to manually enable notification permissions" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您需要前往“设置”-“通知”，打开相应权限"
-          }
-        }
-      }
     },
     "YouHaveJustInvested" : {
       "localizations" : {
@@ -1083,23 +962,6 @@
         }
       }
     },
-    "更新说明" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Release notes"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "更新说明"
-          }
-        }
-      }
-    },
     "标记您的重要时刻" : {
       "localizations" : {
         "en" : {
@@ -1144,23 +1006,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "欢迎告诉我你的想法"
-          }
-        }
-      }
-    },
-    "液态玻璃" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liquid Glass"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "液态玻璃"
           }
         }
       }

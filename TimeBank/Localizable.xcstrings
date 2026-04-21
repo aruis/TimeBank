@@ -170,6 +170,16 @@
         }
       }
     },
+    "Add First Log" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加第一条记录"
+          }
+        }
+      }
+    },
     "Add Item" : {
       "localizations" : {
         "zh-Hans" : {
@@ -180,11 +190,35 @@
         }
       }
     },
+    "Add Log" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加记录"
+          }
+        }
+      }
+    },
     "Adjust" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "调整"
+          }
+        }
+      }
     },
     "Adjust Time" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "调整时间"
+          }
+        }
+      }
     },
     "Are you sure you want to delete this item?" : {
       "localizations" : {
@@ -225,6 +259,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "关闭"
+          }
+        }
+      }
+    },
+    "Create a record without starting the timer." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无需启动计时器，直接补录一条记录。"
           }
         }
       }
@@ -325,12 +369,32 @@
         }
       }
     },
+    "End time must be later than begin time." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "结束时间必须晚于开始时间。"
+          }
+        }
+      }
+    },
     "Execute in less than 1 minute, no record will be made." : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "执行时间小于1分钟，不予记录呦。"
+          }
+        }
+      }
+    },
+    "Failed to save this log." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存这条记录失败。"
           }
         }
       }
@@ -347,7 +411,14 @@
       }
     },
     "Interrupted Session" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中断会话"
+          }
+        }
+      }
     },
     "Invested" : {
       "extractionState" : "manual",
@@ -408,6 +479,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "上次执行："
+          }
+        }
+      }
+    },
+    "Logs" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "记录"
           }
         }
       }
@@ -602,6 +683,9 @@
           }
         }
       }
+    },
+    "The record must be at least %lld minute long and cannot overlap another log." : {
+
     },
     "Time Range" : {
       "localizations" : {
@@ -1237,6 +1321,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "需要手动开启通知权限"
+          }
+        }
+      }
+    },
+    "The record cannot be in the future." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "记录时间不能晚于当前时间。"
+          }
+        }
+      }
+    },
+    "The record must be at least %lld minute long." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The record must be at least %lld minute long."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "记录时长至少需要 %lld 分钟。"
+          }
+        }
+      }
+    },
+    "The record must be at least %lld minute long and cannot overlap another log." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The record must be at least %lld minute long and cannot overlap another log."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "记录时长至少需要 %lld 分钟，且不能与其他记录重叠。"
+          }
+        }
+      }
+    },
+    "This log overlaps an existing record." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这条记录与已有记录时间重叠。"
           }
         }
       }

@@ -58,9 +58,19 @@ class BankItem {
     }
 }
 extension BankItem {
+    static let minimumLogDurationMinutes = 1
+    static let defaultManualLogDurationMinutes = 30
+
     struct TimerStopResult {
         let shouldRecord: Bool
         let recordedLog: ItemLog?
+    }
+
+    enum LogRecordError: Error {
+        case invalidRange
+        case durationTooShort
+        case overlappingLog
+        case futureRange
     }
 
     static func displaySort(_ lhs: BankItem, _ rhs: BankItem) -> Bool {
@@ -84,20 +94,105 @@ extension BankItem {
         useRate ? exchange : Float(saveMin)
     }
 
-    @discardableResult
-    func stopTimer(start: Date, end: Date = Date()) -> TimerStopResult {
-        guard start.elapsedMin(end) >= 1 else {
-            return TimerStopResult(shouldRecord: false, recordedLog: nil)
+    func refreshLastTouchFromLogs() {
+        lastTouch = logs?.map(\.end).max()
+    }
+
+    func overlappingLogs(begin: Date, end: Date, excluding log: ItemLog? = nil) -> [ItemLog] {
+        (logs ?? []).filter { candidate in
+            guard candidate.id != log?.id else {
+                return false
+            }
+
+            return candidate.begin < end && begin < candidate.end
         }
+    }
+
+    func latestAvailableRangeEndingNow(
+        now: Date = Date(),
+        preferredDurationMinutes: Int = BankItem.defaultManualLogDurationMinutes
+    ) -> (begin: Date, end: Date) {
+        let roundedNow = Calendar.current.dateInterval(of: .minute, for: now)?.start ?? now
+        var candidateEnd = roundedNow
+
+        while true {
+            let candidateBegin = candidateEnd.minus(preferredDurationMinutes, component: .minute)
+            let conflicts = overlappingLogs(begin: candidateBegin, end: candidateEnd)
+                .sorted { lhs, rhs in
+                    if lhs.end != rhs.end {
+                        return lhs.end > rhs.end
+                    }
+                    return lhs.begin > rhs.begin
+                }
+
+            guard let latestConflict = conflicts.first else {
+                return (candidateBegin, candidateEnd)
+            }
+
+            if latestConflict.end < candidateEnd {
+                return (latestConflict.end, candidateEnd)
+            }
+
+            candidateEnd = latestConflict.begin
+        }
+    }
+
+    private func validateLogRange(begin: Date, end: Date, excluding log: ItemLog? = nil) throws {
+        guard end > begin else {
+            throw LogRecordError.invalidRange
+        }
+
+        guard end <= Date() else {
+            throw LogRecordError.futureRange
+        }
+
+        guard begin.elapsedMin(end) >= BankItem.minimumLogDurationMinutes else {
+            throw LogRecordError.durationTooShort
+        }
+
+        guard overlappingLogs(begin: begin, end: end, excluding: log).isEmpty else {
+            throw LogRecordError.overlappingLog
+        }
+    }
+
+    func updateLog(_ log: ItemLog, begin: Date, end: Date) throws {
+        try validateLogRange(begin: begin, end: end, excluding: log)
+
+        log.begin = begin
+        log.end = end
+        log.saveMin = begin.elapsedMin(end)
+        refreshLastTouchFromLogs()
+    }
+
+    func removeLog(_ log: ItemLog) {
+        logs?.removeAll(where: { $0.id == log.id })
+        refreshLastTouchFromLogs()
+    }
+
+    @discardableResult
+    func recordLog(begin: Date, end: Date = Date()) throws -> ItemLog {
+        try validateLogRange(begin: begin, end: end)
 
         if logs == nil {
             logs = []
         }
 
-        lastTouch = end
-        let log = ItemLog(bankItem: self, begin: start, end: end)
+        let log = ItemLog(bankItem: self, begin: begin, end: end)
         logs?.append(log)
-        return TimerStopResult(shouldRecord: true, recordedLog: log)
+        refreshLastTouchFromLogs()
+        return log
+    }
+
+    @discardableResult
+    func stopTimer(start: Date, end: Date = Date()) -> TimerStopResult {
+        do {
+            let log = try recordLog(begin: start, end: end)
+            return TimerStopResult(shouldRecord: true, recordedLog: log)
+        } catch LogRecordError.durationTooShort {
+            return TimerStopResult(shouldRecord: false, recordedLog: nil)
+        } catch {
+            return TimerStopResult(shouldRecord: false, recordedLog: nil)
+        }
     }
 }
 

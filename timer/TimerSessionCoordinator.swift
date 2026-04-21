@@ -148,7 +148,7 @@ enum TimerSessionCoordinator {
         modelContext: ModelContext
     ) throws {
         if let log = matchingInterruptedLog(for: snapshot, items: items) {
-            log.bankItem?.logs?.removeAll(where: { $0.id == log.id })
+            log.bankItem?.removeLog(log)
             modelContext.delete(log)
             try modelContext.save()
         }
@@ -170,7 +170,7 @@ enum TimerSessionCoordinator {
            snapshot.phase == .interrupted,
            snapshot.bankItemID == itemID,
            let log = matchingInterruptedLog(for: snapshot, items: items) {
-            log.bankItem?.logs?.removeAll(where: { $0.id == log.id })
+            log.bankItem?.removeLog(log)
             modelContext.delete(log)
             try modelContext.save()
         }

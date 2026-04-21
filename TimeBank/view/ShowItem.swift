@@ -29,6 +29,7 @@ struct ShowItem: View {
 
     @State private var selectedLog: ItemLog?
     @State private var itemToDelete: ItemLog?
+    @State private var showCreateLog = false
 
     @State private var showConfirmDelete = false
     @State private var showTip = false
@@ -185,69 +186,106 @@ struct ShowItem: View {
     @ViewBuilder
     func logView() -> some View{
         List{
-            ForEach(sortedLog){ item in
-                HStack{
-                    Text(settings.isEnableRate ? "\(item.saveMin) MIN / $\(item.exchangeString)" : "\(item.saveMin) MIN")
-                        .font(.title3)
-                        .fontWeight(.medium)
-
-                    Spacer()
-
-                    VStack(alignment: .trailing){
-                        Text(item.begin.dayString())
-                            .opacity(0.9)
-                        HStack(spacing:1){
-                            Text(item.begin.timeString())
-                            Text("~")
-                            Text(item.end.timeString())
+            Section {
+                if sortedLog.isEmpty {
+                    Button {
+                        showCreateLog = true
+                    } label: {
+                        VStack(spacing: 8) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title2)
+                            Text("Add First Log")
+                                .font(.headline)
+                            Text("Create a record without starting the timer.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                         }
-                        .opacity(0.9)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    ForEach(sortedLog){ item in
+                        HStack{
+                            Text(settings.isEnableRate ? "\(item.saveMin) MIN / $\(item.exchangeString)" : "\(item.saveMin) MIN")
+                                .font(.title3)
+                                .fontWeight(.medium)
 
-                    }
-                    .font(.caption.monospacedDigit())
+                            Spacer()
 
-                }
-                .id(item.id)
-                .transition(.slide)
-                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                    Button(role: .destructive, action: {
-                        confirmDelete(item: item)
-                    }) {
-                        Image(systemName: "trash")
-                    }
-                }
-                .swipeActions(edge: .leading){
-                    Button(action: {
-                        selectedLog = item                        
-                    }) {
-                        Image(systemName:"clock.arrow.trianglehead.counterclockwise.rotate.90")
-                    }
-                    .tint(.blue)
+                            VStack(alignment: .trailing){
+                                Text(item.begin.dayString())
+                                    .opacity(0.9)
+                                HStack(spacing:1){
+                                    Text(item.begin.timeString())
+                                    Text("~")
+                                    Text(item.end.timeString())
+                                }
+                                .opacity(0.9)
 
-                }
-                .contextMenu{
-                    Button(){
-                        selectedLog = item
-                    }label: {
-                        Label("Edit", systemImage:  "clock.arrow.trianglehead.counterclockwise.rotate.90")
-                    }
-                    Button(role:.destructive){
-                        confirmDelete(item: item)
-                    }label: {
-                        Label("Delete", systemImage:  "trash")
-                    }
-                }
+                            }
+                            .font(.caption.monospacedDigit())
 
+                        }
+                        .id(item.id)
+                        .transition(.slide)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                            Button(role: .destructive, action: {
+                                confirmDelete(item: item)
+                            }) {
+                                Image(systemName: "trash")
+                            }
+                        }
+                        .swipeActions(edge: .leading){
+                            Button(action: {
+                                selectedLog = item
+                            }) {
+                                Image(systemName:"clock.arrow.trianglehead.counterclockwise.rotate.90")
+                            }
+                            .tint(.blue)
+
+                        }
+                        .contextMenu{
+                            Button(){
+                                selectedLog = item
+                            }label: {
+                                Label("Edit", systemImage:  "clock.arrow.trianglehead.counterclockwise.rotate.90")
+                            }
+                            Button(role:.destructive){
+                                confirmDelete(item: item)
+                            }label: {
+                                Label("Delete", systemImage:  "trash")
+                            }
+                        }
+                    }
+                }
+            }
+        header: {
+                HStack {
+                    Text("Logs")
+                    Spacer()
+                    Button {
+                        showCreateLog = true
+                    } label: {
+                        Label("Add Log", systemImage: "plus")
+                            .labelStyle(.iconOnly)
+                    }
+                    .buttonStyle(.borderless)
+                }
             }
         }
         .animation(.default,value: bankItem.logs)
+        .sheet(isPresented: $showCreateLog) {
+            EditLogItem(bankItem: bankItem)
+                .presentationDetents([.medium, .large])
+        }
         .sheet(item: $selectedLog) {log in
             EditLogItem(log: log)
                 .presentationDetents([.medium, .large])
         }
         .alert("Delete Item", isPresented: $showConfirmDelete, presenting: itemToDelete) { item in
             Button("Delete", role: .destructive) {
-                bankItem.logs?.removeAll(where: { $0 == item })
+                bankItem.removeLog(item)
                 modelContext.delete(item)
                 itemToDelete = nil
             }

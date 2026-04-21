@@ -168,7 +168,7 @@ struct ShowItemWatch: View {
                 .transition(.slide)
                 .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
                     Button(role: .destructive, action: {
-                        bankItem.logs?.removeAll(where:{ $0 == item})
+                        bankItem.removeLog(item)
                         modelContext.delete(item)
                     })  {
                         Image(systemName: "trash")
@@ -207,6 +207,7 @@ struct ShowItemWatch: View {
         
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.timeRemaining += 1
+            persistTimerSession(at: Date())
         }
         
         

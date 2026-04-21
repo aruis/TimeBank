@@ -522,11 +522,20 @@ private struct InterruptedSessionReview: View {
     let onComplete: () -> Void
 
     @State private var end: Date
+    @State private var errorMessage: String?
 
     init(log: ItemLog, onComplete: @escaping () -> Void) {
         self.log = log
         self.onComplete = onComplete
         _end = State(initialValue: log.end)
+    }
+
+    private var minimumDurationMessage: String {
+        String(
+            format: String(localized: "The record must be at least %lld minute long."),
+            locale: Locale.current,
+            BankItem.minimumLogDurationMinutes
+        )
     }
 
     var body: some View {
@@ -547,18 +556,21 @@ private struct InterruptedSessionReview: View {
                         displayedComponents: [.date, .hourAndMinute]
                     )
                 }
+                if let errorMessage {
+                    Section {
+                        Text(errorMessage)
+                            .foregroundStyle(.red)
+                    }
+                }
             }
-            .navigationTitle("Adjust Time")
+            .navigationTitle(String(localized: "Adjust Time"))
             #if !os(macOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        log.end = end
-                        log.saveMin = max(log.begin.elapsedMin(end), 0)
-                        onComplete()
-                        dismiss()
+                        save()
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
@@ -567,6 +579,29 @@ private struct InterruptedSessionReview: View {
                     }
                 }
             }
+        }
+    }
+
+    private func save() {
+        do {
+            guard let bankItem = log.bankItem else {
+                errorMessage = String(localized: "Failed to save this log.")
+                return
+            }
+
+            try bankItem.updateLog(log, begin: log.begin, end: end)
+            onComplete()
+            dismiss()
+        } catch BankItem.LogRecordError.invalidRange {
+            errorMessage = String(localized: "End time must be later than begin time.")
+        } catch BankItem.LogRecordError.futureRange {
+            errorMessage = String(localized: "The record cannot be in the future.")
+        } catch BankItem.LogRecordError.durationTooShort {
+            errorMessage = minimumDurationMessage
+        } catch BankItem.LogRecordError.overlappingLog {
+            errorMessage = String(localized: "This log overlaps an existing record.")
+        } catch {
+            errorMessage = String(localized: "Failed to save this log.")
         }
     }
 }

@@ -85,6 +85,274 @@ struct BankItemLogicTests {
     }
 
     @Test
+    func recordLogStoresManualLogAndUpdatesLastTouch() throws {
+        let item = BankItem(name: "Manual", isSave: true, rate: 1.2)
+        let begin = Date(timeIntervalSince1970: 60)
+        let end = Date(timeIntervalSince1970: 240)
+
+        let log = try item.recordLog(begin: begin, end: end)
+
+        #expect(item.logs?.count == 1)
+        #expect(item.logs?.first === log)
+        #expect(log.saveMin == 3)
+        #expect(item.lastTouch == end)
+    }
+
+    @Test
+    func recordLogDoesNotRegressLastTouchWhenBackfillingOlderLog() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 600),
+            end: Date(timeIntervalSince1970: 900)
+        )
+
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 60),
+            end: Date(timeIntervalSince1970: 240)
+        )
+
+        #expect(item.lastTouch == Date(timeIntervalSince1970: 900))
+    }
+
+    @Test
+    func recordLogRejectsShortDuration() {
+        let item = BankItem(name: "Manual", isSave: true)
+        let begin = Date(timeIntervalSince1970: 0)
+        let end = Date(timeIntervalSince1970: 59)
+
+        #expect(throws: BankItem.LogRecordError.durationTooShort) {
+            try item.recordLog(begin: begin, end: end)
+        }
+
+        #expect(item.logs?.isEmpty == true)
+        #expect(item.lastTouch == nil)
+    }
+
+    @Test
+    func recordLogRejectsFutureRange() {
+        let item = BankItem(name: "Manual", isSave: true)
+        let now = Date()
+        let begin = now.minus(5, component: .minute)
+        let end = now.plus(5, component: .minute)
+
+        #expect(throws: BankItem.LogRecordError.futureRange) {
+            try item.recordLog(begin: begin, end: end)
+        }
+    }
+
+    @Test
+    func updateLogRefreshesLastTouchFromAllLogs() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        let olderLog = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 60),
+            end: Date(timeIntervalSince1970: 240)
+        )
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 600),
+            end: Date(timeIntervalSince1970: 900)
+        )
+
+        try item.updateLog(
+            olderLog,
+            begin: Date(timeIntervalSince1970: 120),
+            end: Date(timeIntervalSince1970: 300)
+        )
+
+        #expect(item.lastTouch == Date(timeIntervalSince1970: 900))
+        #expect(olderLog.saveMin == 3)
+    }
+
+    @Test
+    func updateLogCanMoveLatestLogEarlierAndRecomputeLastTouch() throws {
+        let item = BankItem(name: "Interrupted", isSave: true)
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 60),
+            end: Date(timeIntervalSince1970: 900)
+        )
+        let latestLog = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 600),
+            end: Date(timeIntervalSince1970: 1200)
+        )
+
+        try item.updateLog(
+            latestLog,
+            begin: latestLog.begin,
+            end: Date(timeIntervalSince1970: 840)
+        )
+
+        #expect(item.lastTouch == Date(timeIntervalSince1970: 900))
+        #expect(latestLog.saveMin == latestLog.begin.elapsedMin(Date(timeIntervalSince1970: 840)))
+    }
+
+    @Test
+    func recordLogRejectsOverlappingRange() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 600),
+            end: Date(timeIntervalSince1970: 900)
+        )
+
+        #expect(throws: BankItem.LogRecordError.overlappingLog) {
+            try item.recordLog(
+                begin: Date(timeIntervalSince1970: 840),
+                end: Date(timeIntervalSince1970: 1200)
+            )
+        }
+    }
+
+    @Test
+    func recordLogAllowsAdjacentRangesWithoutOverlap() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 600),
+            end: Date(timeIntervalSince1970: 900)
+        )
+
+        let nextLog = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 900),
+            end: Date(timeIntervalSince1970: 1200)
+        )
+
+        #expect(nextLog.begin == Date(timeIntervalSince1970: 900))
+        #expect(item.logs?.count == 2)
+    }
+
+    @Test
+    func updateLogRejectsOverlappingRange() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        let firstLog = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 60),
+            end: Date(timeIntervalSince1970: 300)
+        )
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 600),
+            end: Date(timeIntervalSince1970: 900)
+        )
+
+        #expect(throws: BankItem.LogRecordError.overlappingLog) {
+            try item.updateLog(
+                firstLog,
+                begin: Date(timeIntervalSince1970: 120),
+                end: Date(timeIntervalSince1970: 660)
+            )
+        }
+    }
+
+    @Test
+    func updateLogRejectsFutureRange() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        let log = try item.recordLog(
+            begin: Date().minus(20, component: .minute),
+            end: Date().minus(10, component: .minute)
+        )
+
+        #expect(throws: BankItem.LogRecordError.futureRange) {
+            try item.updateLog(
+                log,
+                begin: log.begin,
+                end: Date().plus(5, component: .minute)
+            )
+        }
+    }
+
+    @Test
+    func removeLogRefreshesLastTouchToRemainingLatestLog() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        let olderLog = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 60),
+            end: Date(timeIntervalSince1970: 300)
+        )
+        let latestLog = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 600),
+            end: Date(timeIntervalSince1970: 900)
+        )
+
+        item.removeLog(latestLog)
+
+        #expect(item.logs?.count == 1)
+        #expect(item.logs?.first === olderLog)
+        #expect(item.lastTouch == Date(timeIntervalSince1970: 300))
+    }
+
+    @Test
+    func latestAvailableRangeEndingNowUsesLastThirtyMinutesWhenNoConflicts() {
+        let item = BankItem(name: "Manual", isSave: true)
+        let now = Date(timeIntervalSince1970: 3600)
+
+        let range = item.latestAvailableRangeEndingNow(now: now)
+
+        #expect(range.begin == Date(timeIntervalSince1970: 1800))
+        #expect(range.end == now)
+    }
+
+    @Test
+    func latestAvailableRangeEndingNowShrinksToNearestGapWhenRecentLogConflicts() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 3300),
+            end: Date(timeIntervalSince1970: 3540)
+        )
+        let now = Date(timeIntervalSince1970: 3600)
+
+        let range = item.latestAvailableRangeEndingNow(now: now)
+
+        #expect(range.begin == Date(timeIntervalSince1970: 3540))
+        #expect(range.end == now)
+    }
+
+    @Test
+    func latestAvailableRangeEndingNowFallsBackToOneMinuteWhenNowIsInsideConflict() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 3300),
+            end: Date(timeIntervalSince1970: 3600)
+        )
+        let now = Date(timeIntervalSince1970: 3600)
+
+        let range = item.latestAvailableRangeEndingNow(now: now)
+
+        #expect(range.begin == Date(timeIntervalSince1970: 1500))
+        #expect(range.end == Date(timeIntervalSince1970: 3300))
+        #expect(range.begin.elapsedMin(range.end) == 30)
+    }
+
+    @Test
+    func latestAvailableRangeEndingNowSkipsBackAcrossContinuousRecentLogs() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 3000),
+            end: Date(timeIntervalSince1970: 3300)
+        )
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 3300),
+            end: Date(timeIntervalSince1970: 3600)
+        )
+        let now = Date(timeIntervalSince1970: 3600)
+
+        let range = item.latestAvailableRangeEndingNow(now: now)
+
+        #expect(range.begin == Date(timeIntervalSince1970: 1200))
+        #expect(range.end == Date(timeIntervalSince1970: 3000))
+        #expect(range.begin.elapsedMin(range.end) == 30)
+    }
+
+    @Test
+    func latestAvailableRangeEndingNowReturnsShortNearestGapInsteadOfJumpingFurtherBack() throws {
+        let item = BankItem(name: "Manual", isSave: true)
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 3300),
+            end: Date(timeIntervalSince1970: 3540)
+        )
+        let now = Date(timeIntervalSince1970: 3600)
+
+        let range = item.latestAvailableRangeEndingNow(now: now, preferredDurationMinutes: 10)
+
+        #expect(range.begin == Date(timeIntervalSince1970: 3540))
+        #expect(range.end == Date(timeIntervalSince1970: 3600))
+        #expect(range.begin.elapsedMin(range.end) == 1)
+    }
+
+    @Test
     func reconcileInterruptedSessionClearsShortRunningSnapshot() {
         let item = BankItem(name: "Short", isSave: true)
         let snapshot = TimerSessionSnapshot(

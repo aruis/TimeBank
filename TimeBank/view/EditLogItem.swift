@@ -7,70 +7,183 @@
 import SwiftUI
 
 struct EditLogItem: View {
-    private var log: ItemLog
-    @Environment(\.dismiss) private var dismiss // 用于关闭页面
+    enum Mode {
+        case create(BankItem)
+        case edit(ItemLog)
+    }
 
-    @State private var begin:Date;
-    @State private var end:Date;
+    private let mode: Mode
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var begin: Date
+    @State private var end: Date
+    @State private var errorMessage: String?
 
     init(log: ItemLog) {
-        self.log = log
-        self.begin = log.begin
-        self.end = log.end
+        self.mode = .edit(log)
+        self._begin = State(initialValue: log.begin)
+        self._end = State(initialValue: log.end)
+    }
+
+    init(bankItem: BankItem, begin: Date? = nil, end: Date? = nil) {
+        let defaultRange = Self.defaultRange(for: bankItem, begin: begin, end: end)
+        self.mode = .create(bankItem)
+        self._begin = State(initialValue: defaultRange.begin)
+        self._end = State(initialValue: defaultRange.end)
     }
 
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Time Range")) {
+                Section(header: Text("Time Range"), footer: footerView) {
                     DatePicker(
                         "Begin",
                         selection: $begin,
-                        displayedComponents: .hourAndMinute
+                        in: ...end.minus(1, component: .minute),
+                        displayedComponents: [.date, .hourAndMinute]
                     )
-                    .disabled(true)
                     DatePicker(
                         "End",
                         selection: $end,
-                        in: begin.plus(1, component: .minute)...log.end, // 结束时间不能早于开始时间
-                        displayedComponents: .hourAndMinute
+                        in: begin.plus(1, component: .minute)...,
+                        displayedComponents: [.date, .hourAndMinute]
                     )
                 }
             }
-            .navigationTitle("Edit Time")
-            #if !os(macOS)
+            .navigationTitle(title)
+#if !os(macOS)
             .navigationBarTitleDisplayMode(.inline)
-            #endif
+#endif
             .toolbar(content: {
                 ToolbarItem(placement: .confirmationAction, content: {
-                    Button{
-                        log.begin = begin
-                        log.end = end
-                        let duration = begin.elapsedMin(end)
-                        log.saveMin = max(duration, 0) // 确保分钟数不为负数
-                        dismiss()
-                    } label:{
+                    Button {
+                        save()
+                    } label: {
                         Text("Save")
                     }
-                    .disabled(begin == log.begin && end == log.end)
+                    .disabled(!canSave)
                 })
 #if os(macOS) || os(visionOS)
                 ToolbarItem(placement: .cancellationAction, content: {
-
-                    Button{
+                    Button {
                         dismiss()
-                    }label: {
+                    } label: {
                         Text("Close")
+                    }
+                })
+#else
+                ToolbarItem(placement: .cancellationAction, content: {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
                     }
                 })
 #endif
             })
+            .onChange(of: begin) {
+                errorMessage = nil
+            }
+            .onChange(of: end) {
+                errorMessage = nil
+            }
         }
-
     }
 
+    @ViewBuilder
+    private var footerView: some View {
+        if let errorMessage {
+            Text(errorMessage)
+                .foregroundStyle(.red)
+        } else {
+            Text(footerMessage)
+        }
+    }
+
+    private var title: LocalizedStringKey {
+        switch mode {
+        case .create:
+            "Add Log"
+        case .edit:
+            "Edit Time"
+        }
+    }
+
+    private var footerMessage: String {
+        String(
+            format: String(localized: "The record must be at least %lld minute long and cannot overlap another log."),
+            locale: Locale.current,
+            BankItem.minimumLogDurationMinutes
+        )
+    }
+
+    private var minimumDurationMessage: String {
+        String(
+            format: String(localized: "The record must be at least %lld minute long."),
+            locale: Locale.current,
+            BankItem.minimumLogDurationMinutes
+        )
+    }
+
+    private var canSave: Bool {
+        switch mode {
+        case .create:
+            return begin < end && begin.elapsedMin(end) >= BankItem.minimumLogDurationMinutes
+        case let .edit(log):
+            guard begin < end, begin.elapsedMin(end) >= BankItem.minimumLogDurationMinutes else {
+                return false
+            }
+
+            return begin != log.begin || end != log.end
+        }
+    }
+
+    private func save() {
+        do {
+            switch mode {
+            case let .create(bankItem):
+                _ = try bankItem.recordLog(begin: begin, end: end)
+            case let .edit(log):
+                guard let bankItem = log.bankItem else {
+                    errorMessage = String(localized: "Failed to save this log.")
+                    return
+                }
+                try bankItem.updateLog(log, begin: begin, end: end)
+            }
+
+            dismiss()
+        } catch BankItem.LogRecordError.invalidRange {
+            errorMessage = String(localized: "End time must be later than begin time.")
+        } catch BankItem.LogRecordError.futureRange {
+            errorMessage = String(localized: "The record cannot be in the future.")
+        } catch BankItem.LogRecordError.durationTooShort {
+            errorMessage = minimumDurationMessage
+        } catch BankItem.LogRecordError.overlappingLog {
+            errorMessage = String(localized: "This log overlaps an existing record.")
+        } catch {
+            errorMessage = String(localized: "Failed to save this log.")
+        }
+    }
+
+    private static func defaultRange(for bankItem: BankItem, begin: Date?, end: Date?) -> (begin: Date, end: Date) {
+        if let begin, let end {
+            return normalizedRange(begin: begin, end: end)
+        }
+
+        let defaultRange = bankItem.latestAvailableRangeEndingNow()
+        return normalizedRange(begin: begin ?? defaultRange.begin, end: end ?? defaultRange.end)
+    }
+
+    private static func normalizedRange(begin: Date, end: Date) -> (begin: Date, end: Date) {
+        let normalizedEnd = max(end, begin.plus(1, component: .minute))
+        return (begin, normalizedEnd)
+    }
 }
 
-#Preview {
-    EditLogItem(log: ItemLog(bankItem: BankItem(name:"test"), begin: Date(), end: Date().addingTimeInterval(3600)))
+#Preview("Edit") {
+    EditLogItem(log: ItemLog(bankItem: BankItem(name: "test"), begin: Date(), end: Date().addingTimeInterval(3600)))
+}
+
+#Preview("Create") {
+    EditLogItem(bankItem: BankItem(name: "test"))
 }

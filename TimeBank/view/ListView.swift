@@ -31,6 +31,8 @@ struct ListView: View {
     @Query(sort: \BankItem.lastTouch ,order: .reverse) private var items: [BankItem]
     
     @State private var activeSheet: ActiveSheet?
+
+    private var emptyStateTitle: LocalizedStringKey { "No Data." }
     
     @ViewBuilder
     func itemInList(_ item:BankItem) -> some View {
@@ -70,7 +72,7 @@ struct ListView: View {
             .frame(maxWidth:.infinity,minHeight:  195)
             .overlay(alignment: .topTrailing, content: {
                 if (item.isPin){
-                    Button("Pin", systemImage: "mappin.circle"){
+                    Button(item.isPin ? "Unpin" : "Pin", systemImage: item.isPin ? "mappin.slash.circle" : "mappin.circle"){
                         item.isPin.toggle()
                     }
                     .labelStyle(.iconOnly)
@@ -155,7 +157,7 @@ struct ListView: View {
         }
         .overlay(content: {
             if list.isEmpty {
-                Text("No Data.")
+                Text(emptyStateTitle)
                     .font(.title)
                     .opacity(0.7)
             }

@@ -90,8 +90,15 @@
         }
       }
     },
-    "%lld 分钟" : {
-
+    "%lld minutes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 分钟"
+          }
+        }
+      }
     },
     "~" : {
       "localizations" : {
@@ -159,12 +166,12 @@
         }
       }
     },
-    "Add First Log" : {
+    "Add and edit logs manually for easier backfilling." : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加第一条记录"
+            "value" : "支持手动添加与编辑日志，补录时间记录更方便"
           }
         }
       }
@@ -189,6 +196,26 @@
         }
       }
     },
+    "Added a More Apps section featuring BookTime and PinTime." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增了“更多应用”推荐区域，可以直接查看 BookTime 和 PinTime"
+          }
+        }
+      }
+    },
+    "Added support for switching Save/Kill theme colors." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持切换 Save/Kill 的主题配色"
+          }
+        }
+      }
+    },
     "Adjust" : {
       "localizations" : {
         "zh-Hans" : {
@@ -205,6 +232,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "调整时间"
+          }
+        }
+      }
+    },
+    "Adopted the Liquid Glass design language." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "适配了“液态玻璃”（Liquid Glass）设计语言"
           }
         }
       }
@@ -252,12 +289,42 @@
         }
       }
     },
-    "Create a record without starting the timer." : {
+    "Conversion" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "无需启动计时器，直接补录一条记录。"
+            "value" : "换算"
+          }
+        }
+      }
+    },
+    "Convert time value based on the configured ratio" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "根据设定比例换算时间价值"
+          }
+        }
+      }
+    },
+    "Current Selection" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当前使用"
+          }
+        }
+      }
+    },
+    "Default" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "默认"
           }
         }
       }
@@ -283,7 +350,44 @@
       }
     },
     "Discard" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "丢弃"
+          }
+        }
+      }
+    },
+    "Dismiss Release Notes" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭更新说明"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
+          }
+        }
+      }
+    },
+    "Duration" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "时长"
+          }
+        }
+      }
     },
     "Edit" : {
       "localizations" : {
@@ -315,6 +419,26 @@
         }
       }
     },
+    "Enable Rate Mode" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用比率模式"
+          }
+        }
+      }
+    },
+    "Enable Timer Notifications" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用番茄钟提醒"
+          }
+        }
+      }
+    },
     "End" : {
       "localizations" : {
         "zh-Hans" : {
@@ -340,7 +464,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "执行时间小于1分钟，不予记录呦。"
+            "value" : "执行时间不足 1 分钟，不会生成记录。"
           }
         }
       }
@@ -351,6 +475,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保存这条记录失败。"
+          }
+        }
+      }
+    },
+    "Feedback" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反馈建议"
+          }
+        }
+      }
+    },
+    "Got it" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "知道了"
+          }
+        }
+      }
+    },
+    "Improved log validation to prevent future, overlapping, or invalid time ranges." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完善了日志时间校验，避免未来时间、重叠记录和无效区间"
+          }
+        }
+      }
+    },
+    "Improved the Settings branding and notification guidance." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "优化了设置页的品牌展示与通知引导"
           }
         }
       }
@@ -383,10 +547,34 @@
       }
     },
     "Item Actions" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "条目操作"
+          }
+        }
+      }
     },
     "Keep" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保留"
+          }
+        }
+      }
+    },
+    "Kill" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "消耗"
+          }
+        }
+      }
     },
     "KillTime" : {
       "localizations" : {
@@ -428,12 +616,32 @@
         }
       }
     },
-    "Logs" : {
+    "Leave a review on the App Store" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "记录"
+            "value" : "在 App Store 留下你的评价"
+          }
+        }
+      }
+    },
+    "Mark Your Important Moments" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标记你的重要时刻"
+          }
+        }
+      }
+    },
+    "More Apps" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更多应用"
           }
         }
       }
@@ -448,6 +656,26 @@
         }
       }
     },
+    "Notification Permission Required" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要开启通知权限"
+          }
+        }
+      }
+    },
+    "Notifications" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "提醒"
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "zh-Hans" : {
@@ -458,12 +686,22 @@
         }
       }
     },
+    "Open Settings" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "去设置"
+          }
+        }
+      }
+    },
     "Pin" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "固定"
+            "value" : "置顶"
           }
         }
       }
@@ -473,7 +711,17 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "进行"
+            "value" : "开始"
+          }
+        }
+      }
+    },
+    "Please enable TimeBank notification permissions in Settings before using the timer." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请前往系统设置里的 TimeBank 通知权限，开启提醒后再使用番茄钟。"
           }
         }
       }
@@ -484,6 +732,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "费率：%@"
+          }
+        }
+      }
+    },
+    "Refined the main Chinese copy and translations across the app." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "统一并润色了主要页面的中文文案与翻译"
+          }
+        }
+      }
+    },
+    "Release %lld: %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更新%1$lld: %2$@"
+          }
+        }
+      }
+    },
+    "Reorganized Settings with a clearer grouped layout." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置页面改成了更清晰的分组布局"
           }
         }
       }
@@ -518,7 +796,18 @@
         }
       }
     },
+    "SaveTime / KillTime Colors" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SaveTime / KillTime 配色"
+          }
+        }
+      }
+    },
     "SaveTime / KillTime 颜色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -544,15 +833,53 @@
         }
       }
     },
+    "Send a notification when the countdown ends" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "倒计时结束后发送通知提醒"
+          }
+        }
+      }
+    },
     "Session Interrupted" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "会话已中断"
+          }
+        }
+      }
     },
     "Setting" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "设置"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置"
+          }
+        }
+      }
+    },
+    "Share your thoughts with me" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "欢迎告诉我你的想法"
           }
         }
       }
@@ -574,8 +901,101 @@
         }
       }
     },
-    "The record must be at least %lld minute long and cannot overlap another log." : {
-
+    "Support" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持"
+          }
+        }
+      }
+    },
+    "Support Me" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "支持一下"
+          }
+        }
+      }
+    },
+    "Swapped" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "互换"
+          }
+        }
+      }
+    },
+    "Tap to Switch" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "点击切换"
+          }
+        }
+      }
+    },
+    "The record cannot be in the future." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "记录时间不能晚于当前时间。"
+          }
+        }
+      }
+    },
+    "The record must be at least %lld minute long." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The record must be at least %lld minute long."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "记录时长至少为 %lld 分钟。"
+          }
+        }
+      }
+    },
+    "Theme" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主题"
+          }
+        }
+      }
+    },
+    "This log overlaps an existing record." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这条记录与已有记录时间重叠。"
+          }
+        }
+      }
+    },
+    "Time is the only thing you truly own" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "时间是你唯一真正拥有的东西"
+          }
+        }
+      }
     },
     "Time Range" : {
       "localizations" : {
@@ -591,7 +1011,14 @@
       "shouldTranslate" : false
     },
     "Timer Already Running" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已有计时正在进行"
+          }
+        }
+      }
     },
     "Timer Duration" : {
       "localizations" : {
@@ -603,14 +1030,56 @@
         }
       }
     },
+    "Timer state can still be restored from Live Activities after the app is terminated." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "进程被杀死后，仍然可以通过实时小组件恢复计时状态"
+          }
+        }
+      }
+    },
     "Unpin" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消置顶"
+          }
+        }
+      }
     },
     "v%@" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "v%@"
+          }
+        }
+      }
     },
     "Version %@" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本 %@"
+          }
+        }
+      }
+    },
+    "What's New" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本更新"
+          }
+        }
+      }
     },
     "YouHaveJustInvested" : {
       "localizations" : {
@@ -623,7 +1092,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "您刚刚在%2$@%3$@了%1$@分钟。"
+            "value" : "你刚刚在%2$@%3$@了%1$@分钟。"
           }
         }
       }
@@ -638,7 +1107,18 @@
         }
       }
     },
+    "Your Reading Timer Companion" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的阅读计时伴侣"
+          }
+        }
+      }
+    },
     "主题" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -655,6 +1135,7 @@
       }
     },
     "互换" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -671,6 +1152,7 @@
       }
     },
     "倒计时结束后发送通知提醒" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -687,6 +1169,7 @@
       }
     },
     "关闭更新说明" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -703,6 +1186,7 @@
       }
     },
     "去设置" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -719,6 +1203,7 @@
       }
     },
     "反馈建议" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -735,6 +1220,7 @@
       }
     },
     "启用比率模式" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -751,6 +1237,7 @@
       }
     },
     "启用番茄钟提醒" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -767,6 +1254,7 @@
       }
     },
     "在 App Store 留下你的评价" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -783,6 +1271,7 @@
       }
     },
     "完成" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -799,6 +1288,7 @@
       }
     },
     "当前使用" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -815,6 +1305,7 @@
       }
     },
     "您的阅读计时伴侣" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -830,10 +1321,8 @@
         }
       }
     },
-    "我知道了" : {
-
-    },
     "换算" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -850,6 +1339,7 @@
       }
     },
     "提醒" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -866,6 +1356,7 @@
       }
     },
     "支持" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -882,6 +1373,7 @@
       }
     },
     "支持切换 Save/Kill 的主题配色" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -898,6 +1390,7 @@
       }
     },
     "时长" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -914,6 +1407,7 @@
       }
     },
     "时间是你唯一真正拥有的东西" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -930,6 +1424,7 @@
       }
     },
     "更多应用" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -947,6 +1442,7 @@
     },
     "更新%lld: %@" : {
       "comment" : "Release note item accessibility label",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -963,6 +1459,7 @@
       }
     },
     "标记您的重要时刻" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -979,6 +1476,7 @@
       }
     },
     "根据设定比例换算时间价值" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -995,6 +1493,7 @@
       }
     },
     "欢迎告诉我你的想法" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1011,6 +1510,7 @@
       }
     },
     "点击切换" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1027,6 +1527,7 @@
       }
     },
     "版本更新" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1043,6 +1544,7 @@
       }
     },
     "知道了" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1059,6 +1561,7 @@
       }
     },
     "给我鼓励" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1091,6 +1594,7 @@
       }
     },
     "设置" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1107,6 +1611,7 @@
       }
     },
     "请前往系统设置里的 TimeBank 通知权限，开启提醒后再使用番茄钟。" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1123,6 +1628,7 @@
       }
     },
     "进程被杀死后，仍然可以通过实时小组件恢复计时状态" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1139,6 +1645,7 @@
       }
     },
     "适配了“液态玻璃”（Liquid Glass）设计语言" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1155,6 +1662,7 @@
       }
     },
     "需要手动开启通知权限" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1170,59 +1678,8 @@
         }
       }
     },
-    "The record cannot be in the future." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "记录时间不能晚于当前时间。"
-          }
-        }
-      }
-    },
-    "The record must be at least %lld minute long." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The record must be at least %lld minute long."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "记录时长至少需要 %lld 分钟。"
-          }
-        }
-      }
-    },
-    "The record must be at least %lld minute long and cannot overlap another log." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The record must be at least %lld minute long and cannot overlap another log."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "记录时长至少需要 %lld 分钟，且不能与其他记录重叠。"
-          }
-        }
-      }
-    },
-    "This log overlaps an existing record." : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "这条记录与已有记录时间重叠。"
-          }
-        }
-      }
-    },
     "默认" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

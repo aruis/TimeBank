@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "83F410DF2B4CF5F8008F004A"
-               BuildableName = "TimeBank.app"
+               BuildableName = "TimeBankWatch Watch App.app"
                BlueprintName = "TimeBankWatch Watch App"
                ReferencedContainer = "container:TimeBank.xcodeproj">
             </BuildableReference>
@@ -58,7 +58,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "83F410DF2B4CF5F8008F004A"
-            BuildableName = "TimeBank.app"
+            BuildableName = "TimeBankWatch Watch App.app"
             BlueprintName = "TimeBankWatch Watch App"
             ReferencedContainer = "container:TimeBank.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "83F410DF2B4CF5F8008F004A"
-            BuildableName = "TimeBank.app"
+            BuildableName = "TimeBankWatch Watch App.app"
             BlueprintName = "TimeBankWatch Watch App"
             ReferencedContainer = "container:TimeBank.xcodeproj">
          </BuildableReference>

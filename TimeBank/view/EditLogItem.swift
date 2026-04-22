@@ -35,7 +35,7 @@ struct EditLogItem: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Time Range"), footer: footerView) {
+                Section(header: Text("Time Range")) {
                     DatePicker(
                         "Begin",
                         selection: $begin,
@@ -49,6 +49,7 @@ struct EditLogItem: View {
                         displayedComponents: [.date, .hourAndMinute]
                     )
                 }
+                errorSection
             }
             .navigationTitle(title)
 #if !os(macOS)
@@ -90,16 +91,6 @@ struct EditLogItem: View {
         }
     }
 
-    @ViewBuilder
-    private var footerView: some View {
-        if let errorMessage {
-            Text(errorMessage)
-                .foregroundStyle(.red)
-        } else {
-            Text(footerMessage)
-        }
-    }
-
     private var title: LocalizedStringKey {
         switch mode {
         case .create:
@@ -109,20 +100,22 @@ struct EditLogItem: View {
         }
     }
 
-    private var footerMessage: String {
-        String(
-            format: String(localized: "The record must be at least %lld minute long and cannot overlap another log."),
-            locale: Locale.current,
-            BankItem.minimumLogDurationMinutes
-        )
-    }
-
     private var minimumDurationMessage: String {
         String(
             format: String(localized: "The record must be at least %lld minute long."),
             locale: Locale.current,
             BankItem.minimumLogDurationMinutes
         )
+    }
+
+    @ViewBuilder
+    private var errorSection: some View {
+        if let errorMessage {
+            Section {
+                Text(errorMessage)
+                    .foregroundStyle(.red)
+            }
+        }
     }
 
     private var canSave: Bool {

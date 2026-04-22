@@ -24,6 +24,14 @@ struct NewBankItem: View {
     @FocusState private var sliderFocused: Bool
     
     @Binding var bankItem:BankItem
+
+    private var rateText: String {
+        String(
+            format: String(localized: "RATE: %@"),
+            locale: Locale.current,
+            String(format: "%.1f", rate)
+        )
+    }
     
     var body: some View {
         
@@ -46,7 +54,7 @@ struct NewBankItem: View {
                     
                     
                     if(settings.isEnableRate){
-                        Text("RATE: \(String(format:"%.1f",rate))")
+                        Text(rateText)
                             .font(.title3)
                         
                         Slider(
@@ -106,7 +114,7 @@ struct NewBankItem: View {
 #else
             .padding(.horizontal,20)
 #endif
-            .navigationTitle(bankItem.name.isEmpty ?  "Add Item" :"Edit Item")
+            .navigationTitle(bankItem.name.isEmpty ? "Add Item" : "Edit Item")
             .toolbar(content: {
 #if os(macOS)
                 ToolbarItem(placement: .cancellationAction, content: {

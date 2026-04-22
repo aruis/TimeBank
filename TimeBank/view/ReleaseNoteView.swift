@@ -12,6 +12,17 @@ struct ReleaseNoteView: View {
     let note: ReleaseNote
     let onConfirm: () -> Void
 
+    private var releaseTitle: LocalizedStringKey { "What's New" }
+    private var dismissAccessibilityLabel: LocalizedStringKey { "Dismiss Release Notes" }
+    private var confirmTitle: LocalizedStringKey { "Got it" }
+    private var versionText: String {
+        String(
+            format: String(localized: "Version %@"),
+            locale: Locale.current,
+            note.version
+        )
+    }
+
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 20) {
@@ -57,13 +68,13 @@ struct ReleaseNoteView: View {
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(Text("关闭更新说明"))
+                .accessibilityLabel(Text(dismissAccessibilityLabel))
             }
 
-            Text("版本更新")
+            Text(releaseTitle)
                 .font(.system(size: 28, weight: .bold, design: .rounded))
 
-            Text("v\(note.version)")
+            Text(versionText)
                 .font(.system(size: 14, weight: .semibold, design: .rounded))
                 .foregroundStyle(.secondary)
         }
@@ -98,7 +109,7 @@ struct ReleaseNoteView: View {
                 .accessibilityLabel(
                     Text(
                         String.localizedStringWithFormat(
-                            NSLocalizedString("更新%lld: %@", comment: "Release note item accessibility label"),
+                            String(localized: "Release %lld: %@"),
                             index + 1,
                             feature
                         )
@@ -112,7 +123,7 @@ struct ReleaseNoteView: View {
         Button {
             onConfirm()
         } label: {
-            Text("我知道了")
+            Text(confirmTitle)
                 .font(.system(size: 17, weight: .bold, design: .rounded))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
@@ -146,7 +157,7 @@ struct ReleaseNoteView: View {
 struct ReleaseNoteView_Previews: PreviewProvider {
     static var previews: some View {
         ReleaseNoteView(
-            note: ReleaseNotesRegistry.note(for: "1.26.1")!,
+            note: ReleaseNotesRegistry.note(for: "1.26.2")!,
             onConfirm: {}
         )
     }

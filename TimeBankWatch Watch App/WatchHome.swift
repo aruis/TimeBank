@@ -132,7 +132,11 @@ struct WatchHome: View {
             numberView(title: "SaveTime",value: saveMinString)
             numberView(title: "KillTime",value: killMinString)
         }
+#if os(watchOS)
         .tabViewStyle(.verticalPage)
+#else
+        .tabViewStyle(.page)
+#endif
     }
     
     @ViewBuilder
@@ -200,7 +204,11 @@ struct WatchHome: View {
             .padding(.horizontal,15)
 
         }
+#if os(watchOS)
         .tabViewStyle(.verticalPage)
+#else
+        .tabViewStyle(.page)
+#endif
         .containerBackground( type == .save ? Color.red.gradient : Color.green.gradient, for: .navigation)
 
     }
@@ -242,7 +250,7 @@ struct WatchHome: View {
         items.filteredAndSorted(isSave: type == .save)
     }
 
-    var navigationTitle: String {
+    var navigationTitle: LocalizedStringKey {
         switch pageType {
         case .home:
             return "TimeBank"

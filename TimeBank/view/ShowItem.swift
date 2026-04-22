@@ -115,7 +115,7 @@ struct ShowItem: View {
 #endif
                 ToolbarItem(placement: .destructiveAction, content: {
 
-                    Button("Pin", systemImage: bankItem.isPin ? "mappin.slash.circle" :  "mappin.circle"){
+                    Button(bankItem.isPin ? "Unpin" : "Pin", systemImage: bankItem.isPin ? "mappin.slash.circle" :  "mappin.circle"){
                         bankItem.isPin.toggle()
                     }
                     .labelStyle(.iconOnly)
@@ -187,82 +187,62 @@ struct ShowItem: View {
     func logView() -> some View{
         List{
             Section {
-                if sortedLog.isEmpty {
-                    Button {
-                        showCreateLog = true
-                    } label: {
-                        VStack(spacing: 8) {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.title2)
-                            Text("Add First Log")
-                                .font(.headline)
-                            Text("Create a record without starting the timer.")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                    }
-                    .buttonStyle(.plain)
-                } else {
-                    ForEach(sortedLog){ item in
-                        HStack{
-                            Text(settings.isEnableRate ? "\(item.saveMin) MIN / $\(item.exchangeString)" : "\(item.saveMin) MIN")
-                                .font(.title3)
-                                .fontWeight(.medium)
+                ForEach(sortedLog){ item in
+                    HStack{
+                        Text(settings.isEnableRate ? "\(item.saveMin) MIN / $\(item.exchangeString)" : "\(item.saveMin) MIN")
+                            .font(.title3)
+                            .fontWeight(.medium)
 
-                            Spacer()
+                        Spacer()
 
-                            VStack(alignment: .trailing){
-                                Text(item.begin.dayString())
-                                    .opacity(0.9)
-                                HStack(spacing:1){
-                                    Text(item.begin.timeString())
-                                    Text("~")
-                                    Text(item.end.timeString())
-                                }
+                        VStack(alignment: .trailing){
+                            Text(item.begin.dayString())
                                 .opacity(0.9)
-
+                            HStack(spacing:1){
+                                Text(item.begin.timeString())
+                                Text("~")
+                                Text(item.end.timeString())
                             }
-                            .font(.caption.monospacedDigit())
-
-                        }
-                        .id(item.id)
-                        .transition(.slide)
-                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                            Button(role: .destructive, action: {
-                                confirmDelete(item: item)
-                            }) {
-                                Image(systemName: "trash")
-                            }
-                        }
-                        .swipeActions(edge: .leading){
-                            Button(action: {
-                                selectedLog = item
-                            }) {
-                                Image(systemName:"clock.arrow.trianglehead.counterclockwise.rotate.90")
-                            }
-                            .tint(.blue)
+                            .opacity(0.9)
 
                         }
-                        .contextMenu{
-                            Button(){
-                                selectedLog = item
-                            }label: {
-                                Label("Edit", systemImage:  "clock.arrow.trianglehead.counterclockwise.rotate.90")
-                            }
-                            Button(role:.destructive){
-                                confirmDelete(item: item)
-                            }label: {
-                                Label("Delete", systemImage:  "trash")
-                            }
+                        .font(.caption.monospacedDigit())
+
+                    }
+                    .id(item.id)
+                    .transition(.slide)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button(role: .destructive, action: {
+                            confirmDelete(item: item)
+                        }) {
+                            Image(systemName: "trash")
+                        }
+                    }
+                    .swipeActions(edge: .leading){
+                        Button(action: {
+                            selectedLog = item
+                        }) {
+                            Image(systemName:"clock.arrow.trianglehead.counterclockwise.rotate.90")
+                        }
+                        .tint(.blue)
+
+                    }
+                    .contextMenu{
+                        Button(){
+                            selectedLog = item
+                        }label: {
+                            Label("Edit", systemImage:  "clock.arrow.trianglehead.counterclockwise.rotate.90")
+                        }
+                        Button(role:.destructive){
+                            confirmDelete(item: item)
+                        }label: {
+                            Label("Delete", systemImage:  "trash")
                         }
                     }
                 }
             }
         header: {
                 HStack {
-                    Text("Logs")
                     Spacer()
                     Button {
                         showCreateLog = true
@@ -379,11 +359,16 @@ struct ShowItem: View {
                 }
 
                 let content = UNMutableNotificationContent()
-                content.title = bankItem.isSave ? NSLocalizedString("SaveTime Complete", comment: ""):NSLocalizedString("KillTime Complete", comment: "")
+                content.title = bankItem.isSave ? String(localized: "SaveTime Complete") : String(localized: "KillTime Complete")
 
-                let actionWordKey = bankItem.isSave ? "Invested" : "Spent"
-                let actionWord = NSLocalizedString(actionWordKey, comment: "Action word based on bank item saving or spending")
-                content.subtitle = String(format: NSLocalizedString("YouHaveJustInvested", comment: ""), String(Int(settings.timerDuration)), "[\(bankItem.name)]", actionWord)
+                let actionWord = bankItem.isSave ? String(localized: "Invested") : String(localized: "Spent")
+                content.subtitle = String(
+                    format: String(localized: "YouHaveJustInvested"),
+                    locale: Locale.current,
+                    String(Int(settings.timerDuration)),
+                    "[\(bankItem.name)]",
+                    actionWord
+                )
                 content.sound = UNNotificationSound.default
 
                 let trigger = UNTimeIntervalNotificationTrigger(timeInterval: remainingSeconds, repeats: false)

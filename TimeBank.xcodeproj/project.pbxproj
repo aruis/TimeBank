@@ -1098,7 +1098,7 @@
 				);
 				MARKETING_VERSION = 1.26.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
-				PRODUCT_NAME = TimeBank;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1129,7 +1129,7 @@
 				);
 				MARKETING_VERSION = 1.26.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
-				PRODUCT_NAME = TimeBank;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -18,14 +18,14 @@ struct SettingView: View {
     private let recommendedApps: [RecommendedApp] = [
         .init(
             name: "BookTime",
-            tagline: "您的阅读计时伴侣",
+            tagline: String(localized: "Your Reading Timer Companion"),
             assetName: "booktime_icon",
             appStoreURL: URL(string: "https://apps.apple.com/cn/app/booktime-%E6%82%A8%E7%9A%84%E9%98%85%E8%AF%BB%E8%AE%A1%E6%97%B6%E4%BC%B4%E4%BE%A3/id1600654269")!,
             accent: .orange
         ),
         .init(
             name: "PinTime",
-            tagline: "标记您的重要时刻",
+            tagline: String(localized: "Mark Your Important Moments"),
             assetName: "PinTimeLogo",
             appStoreURL: URL(string: "https://apps.apple.com/cn/app/pintime-%E6%A0%87%E8%AE%B0%E6%82%A8%E7%9A%84%E9%87%8D%E8%A6%81%E6%97%B6%E5%88%BB/id6757686170")!,
             accent: .indigo
@@ -37,10 +37,10 @@ struct SettingView: View {
             List {
                 brandHeader
 
-                Section("提醒") {
+                Section("Notifications") {
                     SettingsToggleRow(
-                        title: "启用番茄钟提醒",
-                        subtitle: "倒计时结束后发送通知提醒",
+                        title: String(localized: "Enable Timer Notifications"),
+                        subtitle: String(localized: "Send a notification when the countdown ends"),
                         icon: "bell.badge.fill",
                         color: .red,
                         isOn: $settings.isTimerEnabled
@@ -52,10 +52,16 @@ struct SettingView: View {
                     if settings.isTimerEnabled {
                         VStack(alignment: .leading, spacing: 14) {
                             HStack {
-                                Label("时长", systemImage: "timer")
+                                Label("Duration", systemImage: "timer")
                                     .foregroundStyle(.primary)
                                 Spacer()
-                                Text("\(Int(settings.timerDuration)) 分钟")
+                                Text(
+                                    String(
+                                        format: String(localized: "%lld minutes"),
+                                        locale: Locale.current,
+                                        Int(settings.timerDuration)
+                                    )
+                                )
                                     .font(.subheadline.weight(.semibold))
                                     .foregroundStyle(.secondary)
                                     .monospacedDigit()
@@ -78,25 +84,25 @@ struct SettingView: View {
                     }
                 }
 
-                Section("换算") {
+                Section("Conversion") {
                     SettingsToggleRow(
-                        title: "启用比率模式",
-                        subtitle: "根据设定比例换算时间价值",
+                        title: String(localized: "Enable Rate Mode"),
+                        subtitle: String(localized: "Convert time value based on the configured ratio"),
                         icon: "scale.3d",
                         color: .blue,
                         isOn: $settings.isEnableRate
                     )
                 }
 
-                Section("主题") {
+                Section("Theme") {
                     VStack(alignment: .leading, spacing: 12) {
-                        Label("SaveTime / KillTime 颜色", systemImage: "paintpalette.fill")
+                        Label("SaveTime / KillTime Colors", systemImage: "paintpalette.fill")
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(.primary)
 
                         HStack(spacing: 12) {
                             colorThemeOption(
-                                title: "默认",
+                                title: String(localized: "Default"),
                                 saveColor: .red,
                                 killColor: .green,
                                 isSelected: !settings.swapThemeColors
@@ -105,7 +111,7 @@ struct SettingView: View {
                             }
 
                             colorThemeOption(
-                                title: "互换",
+                                title: String(localized: "Swapped"),
                                 saveColor: .green,
                                 killColor: .red,
                                 isSelected: settings.swapThemeColors
@@ -117,11 +123,11 @@ struct SettingView: View {
                     .padding(.vertical, 4)
                 }
 
-                Section("支持") {
+                Section("Support") {
                     Link(destination: URL(string: "mailto:eastern.howls0a@icloud.com")!) {
                         SettingsLinkRow(
-                            title: "反馈建议",
-                            subtitle: "欢迎告诉我你的想法",
+                            title: String(localized: "Feedback"),
+                            subtitle: String(localized: "Share your thoughts with me"),
                             icon: "envelope.fill",
                             color: .gray
                         )
@@ -130,8 +136,8 @@ struct SettingView: View {
 
                     Link(destination: URL(string: "https://apps.apple.com/cn/app/timebank-%E6%97%B6%E9%97%B4%E6%98%AF%E4%BD%A0%E5%94%AF%E4%B8%80%E6%8B%A5%E6%9C%89%E7%9A%84%E4%B8%9C%E8%A5%BF/id6474505609?action=write-review")!) {
                         SettingsLinkRow(
-                            title: "给我鼓励",
-                            subtitle: "在 App Store 留下你的评价",
+                            title: String(localized: "Support Me"),
+                            subtitle: String(localized: "Leave a review on the App Store"),
                             icon: "heart.fill",
                             color: .pink
                         )
@@ -139,7 +145,7 @@ struct SettingView: View {
                     .buttonStyle(.plain)
                 }
 
-                Section("更多应用") {
+                Section("More Apps") {
                     ForEach(recommendedApps) { app in
                         Link(destination: app.appStoreURL) {
                             RecommendedAppRow(app: app)
@@ -150,15 +156,15 @@ struct SettingView: View {
 
                 footerView
             }
-            .alert("需要手动开启通知权限", isPresented: $showingAlert) {
+            .alert("Notification Permission Required", isPresented: $showingAlert) {
                 #if os(iOS) || os(visionOS)
-                Button("去设置") {
+                Button("Open Settings") {
                     settings.openAppSettings()
                 }
                 #endif
-                Button("知道了", role: .cancel) {}
+                Button("Got it", role: .cancel) {}
             } message: {
-                Text("请前往系统设置里的 TimeBank 通知权限，开启提醒后再使用番茄钟。")
+                Text("Please enable TimeBank notification permissions in Settings before using the timer.")
             }
 #if os(macOS)
             .frame(width: 460, height: 560, alignment: .topLeading)
@@ -173,14 +179,14 @@ struct SettingView: View {
                 }
 #elseif !os(watchOS)
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("完成") {
+                    Button("Done") {
                         dismiss()
                     }
                     .fontWeight(.bold)
                 }
 #endif
             }
-            .navigationTitle("设置")
+            .navigationTitle("Settings")
 #if os(iOS) || os(visionOS)
             .navigationBarTitleDisplayMode(.inline)
 #endif
@@ -242,7 +248,7 @@ struct SettingView: View {
                 Text("TimeBank")
                     .font(.system(size: 28, weight: .bold, design: .rounded))
 
-                Text("时间是你唯一真正拥有的东西")
+                Text("Time is the only thing you truly own")
                     .font(.system(size: 13, weight: .medium, design: .rounded))
                     .foregroundStyle(.secondary)
             }
@@ -288,7 +294,7 @@ struct SettingView: View {
 
                 HStack(spacing: 6) {
                     Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    Text(isSelected ? "当前使用" : "点击切换")
+                    Text(isSelected ? "Current Selection" : "Tap to Switch")
                 }
                 .font(.caption2.weight(.medium))
                 .foregroundStyle(isSelected ? .primary : .secondary)
@@ -313,7 +319,13 @@ struct SettingView: View {
 
     private var footerView: some View {
         VStack(spacing: 6) {
-            Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0")")
+            Text(
+                String(
+                    format: String(localized: "Version %@"),
+                    locale: Locale.current,
+                    Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+                )
+            )
             Text("苏ICP备2024057896号-3A")
         }
         .font(.caption)

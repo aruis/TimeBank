@@ -67,7 +67,7 @@ struct TimeBankApp: App {
         }
         .commands{
             CommandGroup(replacing: .appSettings, addition: {
-                Button("Setting"){
+                Button("Settings"){
                     isShowSetting = true
                 }.keyboardShortcut(",", modifiers: [.command])
             })

@@ -17,19 +17,27 @@ struct ReleaseNote: Identifiable, Equatable {
 enum ReleaseNotesRegistry {
     static let notes: [ReleaseNote] = [
         ReleaseNote(
+            version: "1.26.2",
+            features: [
+                String(localized: "Add and edit logs manually for easier backfilling."),
+                String(localized: "Improved log validation to prevent future, overlapping, or invalid time ranges."),
+                String(localized: "Refined the main Chinese copy and translations across the app.")
+            ]
+        ),
+        ReleaseNote(
             version: "1.26.1",
             features: [
-                "适配了“液态玻璃”（Liquid Glass）设计语言",
-                "进程被杀死后，仍然可以通过实时小组件恢复计时状态",
-                "支持切换 Save/Kill 的主题配色"
+                String(localized: "Adopted the Liquid Glass design language."),
+                String(localized: "Timer state can still be restored from Live Activities after the app is terminated."),
+                String(localized: "Added support for switching Save/Kill theme colors.")
             ]
         ),
         ReleaseNote(
             version: "1.25.2",
             features: [
-                "设置页面改成了更清晰的分组布局",
-                "新增了“更多应用”推荐区域，可以直接查看 BookTime 和 PinTime",
-                "优化了设置页的品牌展示与通知引导"
+                String(localized: "Reorganized Settings with a clearer grouped layout."),
+                String(localized: "Added a More Apps section featuring BookTime and PinTime."),
+                String(localized: "Improved the Settings branding and notification guidance.")
             ]
         )
     ]

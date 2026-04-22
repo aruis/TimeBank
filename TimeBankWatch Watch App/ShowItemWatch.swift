@@ -35,7 +35,11 @@ struct ShowItemWatch: View {
                 logView()
                     .transition(.opacity)
             }
+#if os(watchOS)
             .tabViewStyle(.verticalPage)
+#else
+            .tabViewStyle(.page)
+#endif
             .overlay(alignment: .bottom){
                 if showTip {
                     Text("Execute in less than 1 minute, no record will be made.")

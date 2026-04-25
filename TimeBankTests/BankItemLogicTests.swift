@@ -3,6 +3,7 @@ import SwiftData
 import Testing
 @testable import TimeBank
 
+@Suite(.serialized)
 struct BankItemLogicTests {
     init() {
         TimerSessionCoordinator.clearSession()
@@ -166,22 +167,47 @@ struct BankItemLogicTests {
     func updateLogCanMoveLatestLogEarlierAndRecomputeLastTouch() throws {
         let item = BankItem(name: "Interrupted", isSave: true)
         _ = try item.recordLog(
-            begin: Date(timeIntervalSince1970: 60),
+            begin: Date(timeIntervalSince1970: 720),
             end: Date(timeIntervalSince1970: 900)
         )
         let latestLog = try item.recordLog(
-            begin: Date(timeIntervalSince1970: 600),
+            begin: Date(timeIntervalSince1970: 960),
             end: Date(timeIntervalSince1970: 1200)
         )
 
         try item.updateLog(
             latestLog,
-            begin: latestLog.begin,
-            end: Date(timeIntervalSince1970: 840)
+            begin: Date(timeIntervalSince1970: 300),
+            end: Date(timeIntervalSince1970: 600)
         )
 
         #expect(item.lastTouch == Date(timeIntervalSince1970: 900))
-        #expect(latestLog.saveMin == latestLog.begin.elapsedMin(Date(timeIntervalSince1970: 840)))
+        #expect(latestLog.saveMin == 5)
+    }
+
+    @Test
+    func updateLogRejectsMovingLatestLogIntoExistingLogRange() throws {
+        let item = BankItem(name: "Interrupted", isSave: true)
+        _ = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 60),
+            end: Date(timeIntervalSince1970: 900)
+        )
+        let latestLog = try item.recordLog(
+            begin: Date(timeIntervalSince1970: 960),
+            end: Date(timeIntervalSince1970: 1200)
+        )
+
+        #expect(throws: BankItem.LogRecordError.overlappingLog) {
+            try item.updateLog(
+                latestLog,
+                begin: Date(timeIntervalSince1970: 600),
+                end: Date(timeIntervalSince1970: 840)
+            )
+        }
+
+        #expect(item.lastTouch == Date(timeIntervalSince1970: 1200))
+        #expect(latestLog.begin == Date(timeIntervalSince1970: 960))
+        #expect(latestLog.end == Date(timeIntervalSince1970: 1200))
     }
 
     @Test
@@ -470,14 +496,7 @@ struct BankItemLogicTests {
 
     @Test
     func discardInterruptedSessionDeletesMatchingLogAndClearsSnapshot() throws {
-        let schema = Schema([
-            BankItem.self,
-            ItemLog.self,
-        ])
-        let container = try ModelContainer(
-            for: schema,
-            configurations: [ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)]
-        )
+        let container = try TimeBankModelContainer.make(isStoredInMemoryOnly: true)
         let context = ModelContext(container)
 
         let item = BankItem(name: "Recorded", isSave: true)
@@ -509,14 +528,7 @@ struct BankItemLogicTests {
 
     @Test
     func prepareResumeFromLiveActivityRemovesInterruptedLogAndRestoresRunningSession() throws {
-        let schema = Schema([
-            BankItem.self,
-            ItemLog.self,
-        ])
-        let container = try ModelContainer(
-            for: schema,
-            configurations: [ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)]
-        )
+        let container = try TimeBankModelContainer.make(isStoredInMemoryOnly: true)
         let context = ModelContext(container)
 
         let item = BankItem(name: "Resume", isSave: true)
@@ -546,14 +558,7 @@ struct BankItemLogicTests {
 
     @Test
     func prepareResumeFromLiveActivityDoesNothingWhenItemIsMissing() throws {
-        let schema = Schema([
-            BankItem.self,
-            ItemLog.self,
-        ])
-        let container = try ModelContainer(
-            for: schema,
-            configurations: [ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)]
-        )
+        let container = try TimeBankModelContainer.make(isStoredInMemoryOnly: true)
         let context = ModelContext(container)
 
         let snapshot = TimerSessionSnapshot(

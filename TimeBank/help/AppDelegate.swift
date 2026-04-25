@@ -27,19 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         static let stopTimer = "stopTimer"
     }
 
-    private lazy var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            BankItem.self,
-            ItemLog.self,
-        ])
-        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [configuration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    private lazy var sharedModelContainer: ModelContainer = TimeBankModelContainer.shared
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // 请求通知权限

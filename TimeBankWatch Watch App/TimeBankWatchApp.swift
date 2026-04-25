@@ -84,19 +84,7 @@ final class WatchLiveActivityMessenger: NSObject, WCSessionDelegate {
 struct TimeBankWatch_Watch_AppApp: App {
     @StateObject var appSetting = AppSetting()
     
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            BankItem.self,
-            ItemLog.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-        
-        do {
-            return try ModelContainer(for: schema,  configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    var sharedModelContainer: ModelContainer = TimeBankModelContainer.shared
     
     var body: some Scene {
         WindowGroup {

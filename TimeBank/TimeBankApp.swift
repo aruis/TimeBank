@@ -23,19 +23,7 @@ struct TimeBankApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     #endif
     
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            BankItem.self,
-            ItemLog.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema,  configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    var sharedModelContainer: ModelContainer = TimeBankModelContainer.shared
 
     var body: some Scene {
         WindowGroup {

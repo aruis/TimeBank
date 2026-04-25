@@ -47,38 +47,50 @@ struct TimerSessionReconcileResult {
     let snapshot: TimerSessionSnapshot
 }
 
-enum TimerSessionStore {
+struct TimerSessionStore {
     private static let key = "activeTimerSession"
-    private static let defaults = UserDefaults.standard
+    static let standard = TimerSessionStore(defaults: .standard)
 
-    static func load() -> TimerSessionSnapshot? {
-        guard let data = defaults.data(forKey: key) else {
+    private let defaults: UserDefaults
+
+    init(defaults: UserDefaults) {
+        self.defaults = defaults
+    }
+
+    func load() -> TimerSessionSnapshot? {
+        guard let data = defaults.data(forKey: Self.key) else {
             return nil
         }
 
         return try? JSONDecoder().decode(TimerSessionSnapshot.self, from: data)
     }
 
-    static func save(_ snapshot: TimerSessionSnapshot) {
+    func save(_ snapshot: TimerSessionSnapshot) {
         guard let data = try? JSONEncoder().encode(snapshot) else {
             return
         }
 
-        defaults.set(data, forKey: key)
+        defaults.set(data, forKey: Self.key)
     }
 
-    static func clear() {
-        defaults.removeObject(forKey: key)
+    func clear() {
+        defaults.removeObject(forKey: Self.key)
     }
 }
 
 enum TimerSessionCoordinator {
-    static func currentSession() -> TimerSessionSnapshot? {
-        TimerSessionStore.load()
+    static func currentSession(store: TimerSessionStore = .standard) -> TimerSessionSnapshot? {
+        store.load()
     }
 
-    static func persistRunningSession(bankItemID: UUID, sessionID: UUID? = nil, start: Date, verifiedAt: Date) {
-        TimerSessionStore.save(
+    static func persistRunningSession(
+        bankItemID: UUID,
+        sessionID: UUID? = nil,
+        start: Date,
+        verifiedAt: Date,
+        store: TimerSessionStore = .standard
+    ) {
+        store.save(
             TimerSessionSnapshot(
                 bankItemID: bankItemID,
                 sessionID: sessionID,
@@ -89,12 +101,15 @@ enum TimerSessionCoordinator {
         )
     }
 
-    static func clearSession() {
-        TimerSessionStore.clear()
+    static func clearSession(store: TimerSessionStore = .standard) {
+        store.clear()
     }
 
-    static func deepLinkDecision(for requestedItemID: UUID) -> TimerSessionDeepLinkDecision {
-        guard let runningSession = TimerSessionStore.load(), runningSession.phase == .running else {
+    static func deepLinkDecision(
+        for requestedItemID: UUID,
+        store: TimerSessionStore = .standard
+    ) -> TimerSessionDeepLinkDecision {
+        guard let runningSession = store.load(), runningSession.phase == .running else {
             return .openRequestedItem
         }
 
@@ -110,29 +125,35 @@ enum TimerSessionCoordinator {
         return "A timer is already running for \(itemName). Stop or resolve it before opening a different item from the widget."
     }
 
-    static func reconcileInterruptedSession(items: [BankItem]) -> TimerSessionReconcileResult? {
-        guard var snapshot = TimerSessionStore.load(), snapshot.phase == .running else {
+    static func reconcileInterruptedSession(
+        items: [BankItem],
+        store: TimerSessionStore = .standard
+    ) -> TimerSessionReconcileResult? {
+        guard var snapshot = store.load(), snapshot.phase == .running else {
             return nil
         }
 
         guard let item = items.first(where: { $0.id == snapshot.bankItemID }) else {
-            TimerSessionStore.clear()
+            store.clear()
             return nil
         }
 
         let stopResult = item.stopTimer(start: snapshot.start, end: snapshot.lastVerifiedAt)
         guard stopResult.shouldRecord else {
-            TimerSessionStore.clear()
+            store.clear()
             return nil
         }
 
         snapshot.phase = .interrupted
-        TimerSessionStore.save(snapshot)
+        store.save(snapshot)
         return TimerSessionReconcileResult(snapshot: snapshot)
     }
 
-    static func interruptedSessionForPrompt(items: [BankItem]) -> TimerSessionSnapshot? {
-        guard let snapshot = TimerSessionStore.load(),
+    static func interruptedSessionForPrompt(
+        items: [BankItem],
+        store: TimerSessionStore = .standard
+    ) -> TimerSessionSnapshot? {
+        guard let snapshot = store.load(),
               snapshot.phase == .interrupted,
               matchingInterruptedLog(for: snapshot, items: items) != nil else {
             return nil
@@ -164,7 +185,8 @@ enum TimerSessionCoordinator {
     static func discardInterruptedSession(
         _ snapshot: TimerSessionSnapshot,
         items: [BankItem],
-        modelContext: ModelContext
+        modelContext: ModelContext,
+        store: TimerSessionStore = .standard
     ) throws {
         if let log = matchingInterruptedLog(for: snapshot, items: items) {
             log.bankItem?.removeLog(log)
@@ -172,20 +194,21 @@ enum TimerSessionCoordinator {
             try modelContext.save()
         }
 
-        TimerSessionStore.clear()
+        store.clear()
     }
 
     static func prepareResumeFromLiveActivity(
         itemID: UUID,
         start: Date,
         items: [BankItem],
-        modelContext: ModelContext
+        modelContext: ModelContext,
+        store: TimerSessionStore = .standard
     ) throws {
         guard items.contains(where: { $0.id == itemID }) else {
             return
         }
 
-        if let snapshot = TimerSessionStore.load(),
+        if let snapshot = store.load(),
            snapshot.phase == .interrupted,
            snapshot.bankItemID == itemID,
            let log = matchingInterruptedLog(for: snapshot, items: items) {
@@ -194,11 +217,21 @@ enum TimerSessionCoordinator {
             try modelContext.save()
         }
 
-        persistRunningSession(bankItemID: itemID, sessionID: snapshotSessionID(for: itemID), start: start, verifiedAt: Date())
+        persistRunningSession(
+            bankItemID: itemID,
+            sessionID: snapshotSessionID(for: itemID, store: store),
+            start: start,
+            verifiedAt: Date(),
+            store: store
+        )
     }
 
-    static func currentSessionMatches(bankItemID: UUID, sessionID: UUID?) -> Bool {
-        guard let snapshot = currentSession(),
+    static func currentSessionMatches(
+        bankItemID: UUID,
+        sessionID: UUID?,
+        store: TimerSessionStore = .standard
+    ) -> Bool {
+        guard let snapshot = currentSession(store: store),
               snapshot.bankItemID == bankItemID else {
             return false
         }
@@ -210,8 +243,8 @@ enum TimerSessionCoordinator {
         return snapshot.sessionID == sessionID
     }
 
-    private static func snapshotSessionID(for bankItemID: UUID) -> UUID? {
-        guard let snapshot = currentSession(), snapshot.bankItemID == bankItemID else {
+    private static func snapshotSessionID(for bankItemID: UUID, store: TimerSessionStore) -> UUID? {
+        guard let snapshot = currentSession(store: store), snapshot.bankItemID == bankItemID else {
             return nil
         }
 

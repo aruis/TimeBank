@@ -3,10 +3,15 @@ import SwiftData
 import Testing
 @testable import TimeBank
 
-@Suite(.serialized)
 struct BankItemLogicTests {
+    private let sessionStore: TimerSessionStore
+
     init() {
-        TimerSessionCoordinator.clearSession()
+        let suiteName = "TimeBankTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defaults.removePersistentDomain(forName: suiteName)
+        sessionStore = TimerSessionStore(defaults: defaults)
+        TimerSessionCoordinator.clearSession(store: sessionStore)
     }
 
     @Test
@@ -387,12 +392,12 @@ struct BankItemLogicTests {
             lastVerifiedAt: Date(timeIntervalSince1970: 59),
             phase: .running
         )
-        TimerSessionStore.save(snapshot)
+        sessionStore.save(snapshot)
 
-        let result = TimerSessionCoordinator.reconcileInterruptedSession(items: [item])
+        let result = TimerSessionCoordinator.reconcileInterruptedSession(items: [item], store: sessionStore)
 
         #expect(result == nil)
-        #expect(TimerSessionCoordinator.currentSession() == nil)
+        #expect(TimerSessionCoordinator.currentSession(store: sessionStore) == nil)
         #expect(item.logs?.isEmpty == true)
     }
 
@@ -405,13 +410,13 @@ struct BankItemLogicTests {
             lastVerifiedAt: Date(timeIntervalSince1970: 120),
             phase: .running
         )
-        TimerSessionStore.save(snapshot)
+        sessionStore.save(snapshot)
 
-        let result = TimerSessionCoordinator.reconcileInterruptedSession(items: [item])
+        let result = TimerSessionCoordinator.reconcileInterruptedSession(items: [item], store: sessionStore)
 
         #expect(result != nil)
         #expect(result?.snapshot.phase == .interrupted)
-        #expect(TimerSessionCoordinator.currentSession()?.phase == .interrupted)
+        #expect(TimerSessionCoordinator.currentSession(store: sessionStore)?.phase == .interrupted)
         #expect(item.logs?.count == 1)
         #expect(item.logs?.first?.saveMin == 2)
     }
@@ -420,7 +425,7 @@ struct BankItemLogicTests {
     func deepLinkDecisionOpensWhenNoRunningSession() {
         let requestedID = UUID()
 
-        let decision = TimerSessionCoordinator.deepLinkDecision(for: requestedID)
+        let decision = TimerSessionCoordinator.deepLinkDecision(for: requestedID, store: sessionStore)
 
         #expect(decision == .openRequestedItem)
     }
@@ -431,10 +436,11 @@ struct BankItemLogicTests {
         TimerSessionCoordinator.persistRunningSession(
             bankItemID: itemID,
             start: Date(timeIntervalSince1970: 0),
-            verifiedAt: Date(timeIntervalSince1970: 60)
+            verifiedAt: Date(timeIntervalSince1970: 60),
+            store: sessionStore
         )
 
-        let decision = TimerSessionCoordinator.deepLinkDecision(for: itemID)
+        let decision = TimerSessionCoordinator.deepLinkDecision(for: itemID, store: sessionStore)
 
         #expect(decision == .ignoreRunningItem)
     }
@@ -446,10 +452,11 @@ struct BankItemLogicTests {
         TimerSessionCoordinator.persistRunningSession(
             bankItemID: runningItemID,
             start: Date(timeIntervalSince1970: 0),
-            verifiedAt: Date(timeIntervalSince1970: 60)
+            verifiedAt: Date(timeIntervalSince1970: 60),
+            store: sessionStore
         )
 
-        let decision = TimerSessionCoordinator.deepLinkDecision(for: requestedID)
+        let decision = TimerSessionCoordinator.deepLinkDecision(for: requestedID, store: sessionStore)
 
         #expect(decision == .blockWhileRunning(runningItemID: runningItemID))
     }
@@ -470,9 +477,9 @@ struct BankItemLogicTests {
                 end: snapshot.lastVerifiedAt
             )
         ]
-        TimerSessionStore.save(snapshot)
+        sessionStore.save(snapshot)
 
-        let promptSnapshot = TimerSessionCoordinator.interruptedSessionForPrompt(items: [item])
+        let promptSnapshot = TimerSessionCoordinator.interruptedSessionForPrompt(items: [item], store: sessionStore)
 
         #expect(promptSnapshot?.bankItemID == item.id)
         #expect(promptSnapshot?.phase == .interrupted)
@@ -487,9 +494,9 @@ struct BankItemLogicTests {
             lastVerifiedAt: Date(timeIntervalSince1970: 120),
             phase: .interrupted
         )
-        TimerSessionStore.save(snapshot)
+        sessionStore.save(snapshot)
 
-        let promptSnapshot = TimerSessionCoordinator.interruptedSessionForPrompt(items: [item])
+        let promptSnapshot = TimerSessionCoordinator.interruptedSessionForPrompt(items: [item], store: sessionStore)
 
         #expect(promptSnapshot == nil)
     }
@@ -509,11 +516,16 @@ struct BankItemLogicTests {
         let log = ItemLog(bankItem: item, begin: snapshot.start, end: snapshot.lastVerifiedAt)
         item.logs = [log]
         context.insert(item)
-        TimerSessionStore.save(snapshot)
+        sessionStore.save(snapshot)
 
-        try TimerSessionCoordinator.discardInterruptedSession(snapshot, items: [item], modelContext: context)
+        try TimerSessionCoordinator.discardInterruptedSession(
+            snapshot,
+            items: [item],
+            modelContext: context,
+            store: sessionStore
+        )
 
-        #expect(TimerSessionCoordinator.currentSession() == nil)
+        #expect(TimerSessionCoordinator.currentSession(store: sessionStore) == nil)
         #expect(item.logs?.isEmpty == true)
     }
 
@@ -541,19 +553,20 @@ struct BankItemLogicTests {
         let log = ItemLog(bankItem: item, begin: interruptedSnapshot.start, end: interruptedSnapshot.lastVerifiedAt)
         item.logs = [log]
         context.insert(item)
-        TimerSessionStore.save(interruptedSnapshot)
+        sessionStore.save(interruptedSnapshot)
 
         let resumedStart = Date(timeIntervalSince1970: 0)
         try TimerSessionCoordinator.prepareResumeFromLiveActivity(
             itemID: item.id,
             start: resumedStart,
             items: [item],
-            modelContext: context
+            modelContext: context,
+            store: sessionStore
         )
 
         #expect(item.logs?.isEmpty == true)
-        #expect(TimerSessionCoordinator.currentSession()?.phase == .running)
-        #expect(TimerSessionCoordinator.currentSession()?.start == resumedStart)
+        #expect(TimerSessionCoordinator.currentSession(store: sessionStore)?.phase == .running)
+        #expect(TimerSessionCoordinator.currentSession(store: sessionStore)?.start == resumedStart)
     }
 
     @Test
@@ -567,16 +580,17 @@ struct BankItemLogicTests {
             lastVerifiedAt: Date(timeIntervalSince1970: 120),
             phase: .interrupted
         )
-        TimerSessionStore.save(snapshot)
+        sessionStore.save(snapshot)
 
         try TimerSessionCoordinator.prepareResumeFromLiveActivity(
             itemID: snapshot.bankItemID,
             start: snapshot.start,
             items: [],
-            modelContext: context
+            modelContext: context,
+            store: sessionStore
         )
 
-        #expect(TimerSessionCoordinator.currentSession()?.phase == .interrupted)
-        #expect(TimerSessionCoordinator.currentSession()?.bankItemID == snapshot.bankItemID)
+        #expect(TimerSessionCoordinator.currentSession(store: sessionStore)?.phase == .interrupted)
+        #expect(TimerSessionCoordinator.currentSession(store: sessionStore)?.bankItemID == snapshot.bankItemID)
     }
 }

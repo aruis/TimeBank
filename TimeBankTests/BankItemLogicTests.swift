@@ -462,6 +462,54 @@ struct BankItemLogicTests {
     }
 
     @Test
+    func timerSessionControllerPersistsAndResumesMatchingRunningSession() {
+        let itemID = UUID()
+        let controller = TimerSessionController(bankItemID: itemID, store: sessionStore)
+        let start = Date(timeIntervalSince1970: 30)
+
+        controller.persistRunning(
+            start: start,
+            verifiedAt: Date(timeIntervalSince1970: 90)
+        )
+
+        #expect(controller.resumeStartCandidate(explicitStart: nil) == start)
+    }
+
+    @Test
+    func timerSessionControllerPrefersExplicitResumeStart() {
+        let itemID = UUID()
+        let controller = TimerSessionController(bankItemID: itemID, store: sessionStore)
+        let storedStart = Date(timeIntervalSince1970: 30)
+        let explicitStart = Date(timeIntervalSince1970: 60)
+        controller.persistRunning(
+            start: storedStart,
+            verifiedAt: Date(timeIntervalSince1970: 90)
+        )
+
+        #expect(controller.resumeStartCandidate(explicitStart: explicitStart) == explicitStart)
+    }
+
+    @Test
+    func timerSessionControllerStopClearsSessionAndRecordsEligibleDuration() {
+        let item = BankItem(name: "Focus", isSave: true)
+        let controller = TimerSessionController(bankItemID: item.id, store: sessionStore)
+        controller.persistRunning(
+            start: Date(timeIntervalSince1970: 0),
+            verifiedAt: Date(timeIntervalSince1970: 60)
+        )
+
+        let result = controller.stop(
+            item: item,
+            start: Date(timeIntervalSince1970: 0),
+            end: Date(timeIntervalSince1970: 120)
+        )
+
+        #expect(result?.shouldRecord == true)
+        #expect(item.logs?.count == 1)
+        #expect(TimerSessionCoordinator.currentSession(store: sessionStore) == nil)
+    }
+
+    @Test
     func watchTimerStartPayloadParsesRequiredFields() throws {
         let itemID = UUID()
         let sessionID = UUID()

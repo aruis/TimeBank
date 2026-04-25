@@ -294,6 +294,10 @@ struct ShowItem: View {
         "timer-\(bankItem.id.uuidString)"
     }
 
+    private var timerSessionController: TimerSessionController {
+        TimerSessionController(bankItemID: bankItem.id)
+    }
+
     private func isAuthorizedNotificationStatus(_ status: UNAuthorizationStatus) -> Bool {
         switch status {
         case .authorized, .provisional:
@@ -380,8 +384,6 @@ struct ShowItem: View {
     }
 
     private func resetTimer() {
-        TimerSessionCoordinator.clearSession()
-
         if let pendingNotificationID {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [pendingNotificationID])
             self.pendingNotificationID = nil
@@ -403,11 +405,7 @@ struct ShowItem: View {
         }
 #endif
 
-        if let start {
-            let now = Date()
-
-            let stopResult = bankItem.stopTimer(start: start, end: now)
-
+        if let stopResult = timerSessionController.stop(item: bankItem, start: start, end: Date()) {
             if !stopResult.shouldRecord {
                 print("时间不足1分钟")
                 HapticFeedback.warning()
@@ -444,8 +442,7 @@ struct ShowItem: View {
             return
         }
 
-        TimerSessionCoordinator.persistRunningSession(
-            bankItemID: bankItem.id,
+        timerSessionController.persistRunning(
             start: start,
             verifiedAt: date
         )
@@ -463,17 +460,7 @@ struct ShowItem: View {
     }
 
     private func resumeStartCandidate() -> Date? {
-        if let resumeStart {
-            return resumeStart
-        }
-
-        if let snapshot = TimerSessionCoordinator.currentSession(),
-           snapshot.phase == .running,
-           snapshot.bankItemID == bankItem.id {
-            return snapshot.start
-        }
-
-        return nil
+        timerSessionController.resumeStartCandidate(explicitStart: resumeStart)
     }
 
 #if canImport(ActivityKit) && !os(macOS)

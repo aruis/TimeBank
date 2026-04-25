@@ -252,6 +252,48 @@ enum TimerSessionCoordinator {
     }
 }
 
+struct TimerSessionController {
+    let bankItemID: UUID
+    var store: TimerSessionStore = .standard
+
+    func persistRunning(start: Date, verifiedAt: Date) {
+        TimerSessionCoordinator.persistRunningSession(
+            bankItemID: bankItemID,
+            start: start,
+            verifiedAt: verifiedAt,
+            store: store
+        )
+    }
+
+    func clear() {
+        TimerSessionCoordinator.clearSession(store: store)
+    }
+
+    func resumeStartCandidate(explicitStart: Date?) -> Date? {
+        if let explicitStart {
+            return explicitStart
+        }
+
+        guard let snapshot = TimerSessionCoordinator.currentSession(store: store),
+              snapshot.phase == .running,
+              snapshot.bankItemID == bankItemID else {
+            return nil
+        }
+
+        return snapshot.start
+    }
+
+    func stop(item: BankItem, start: Date?, end: Date) -> BankItem.TimerStopResult? {
+        clear()
+
+        guard let start else {
+            return nil
+        }
+
+        return item.stopTimer(start: start, end: end)
+    }
+}
+
 enum WatchTimerSyncAction: String {
     case startTimer
     case stopTimer

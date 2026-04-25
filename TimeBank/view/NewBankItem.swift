@@ -92,6 +92,7 @@ struct NewBankItem: View {
                                 newItem.rate = rate
                                 modelContext.insert(newItem)
                             }
+                            try? modelContext.save()
                             HapticFeedback.success()
                             dismiss()
                         }

@@ -462,6 +462,115 @@ struct BankItemLogicTests {
     }
 
     @Test
+    func watchTimerStartPayloadParsesRequiredFields() throws {
+        let itemID = UUID()
+        let sessionID = UUID()
+        let start = Date(timeIntervalSince1970: 120)
+        let payload = WatchTimerSyncMessage.startPayload(
+            itemID: itemID,
+            itemName: "Focus",
+            isSave: true,
+            sessionID: sessionID,
+            start: start
+        )
+
+        let message = try #require(WatchTimerSyncMessage(payload))
+
+        #expect(message.action == .startTimer)
+        #expect(message.itemID == itemID)
+        #expect(message.itemName == "Focus")
+        #expect(message.isSave == true)
+        #expect(message.sessionID == sessionID)
+        #expect(message.start == start)
+    }
+
+    @Test
+    func watchTimerStartDecisionFallsBackToNameAndTypeWhenItemIDDiffers() throws {
+        let watchItemID = UUID()
+        let item = BankItem(name: "Focus", isSave: true)
+        let other = BankItem(name: "Focus", isSave: false)
+        let sessionID = UUID()
+        let payload = WatchTimerSyncMessage.startPayload(
+            itemID: watchItemID,
+            itemName: item.name,
+            isSave: item.isSave,
+            sessionID: sessionID,
+            start: Date(timeIntervalSince1970: 60)
+        )
+        let message = try #require(WatchTimerSyncMessage(payload))
+
+        let decision = WatchTimerSyncCoordinator.startDecision(
+            for: message,
+            items: [other, item],
+            now: Date(timeIntervalSince1970: 180)
+        )
+
+        #expect(decision?.bankItemID == item.id)
+        #expect(decision?.sessionID == sessionID)
+        #expect(decision?.recordedSeconds == 120)
+    }
+
+    @Test
+    func watchTimerStopDecisionIgnoresOldSessionID() throws {
+        let item = BankItem(name: "Focus", isSave: true)
+        let currentSessionID = UUID()
+        TimerSessionCoordinator.persistRunningSession(
+            bankItemID: item.id,
+            sessionID: currentSessionID,
+            start: Date(timeIntervalSince1970: 0),
+            verifiedAt: Date(timeIntervalSince1970: 60),
+            store: sessionStore
+        )
+        let payload = WatchTimerSyncMessage.stopPayload(
+            itemID: item.id,
+            itemName: item.name,
+            isSave: item.isSave,
+            sessionID: UUID(),
+            end: Date(timeIntervalSince1970: 90)
+        )
+        let message = try #require(WatchTimerSyncMessage(payload))
+
+        let decision = WatchTimerSyncCoordinator.stopDecision(
+            for: message,
+            items: [item],
+            store: sessionStore
+        )
+
+        #expect(decision == nil)
+        #expect(TimerSessionCoordinator.currentSession(store: sessionStore)?.sessionID == currentSessionID)
+    }
+
+    @Test
+    func watchTimerStopDecisionFallsBackToNameAndTypeBeforeSessionMatch() throws {
+        let watchItemID = UUID()
+        let item = BankItem(name: "Focus", isSave: true)
+        let sessionID = UUID()
+        TimerSessionCoordinator.persistRunningSession(
+            bankItemID: item.id,
+            sessionID: sessionID,
+            start: Date(timeIntervalSince1970: 0),
+            verifiedAt: Date(timeIntervalSince1970: 60),
+            store: sessionStore
+        )
+        let payload = WatchTimerSyncMessage.stopPayload(
+            itemID: watchItemID,
+            itemName: item.name,
+            isSave: item.isSave,
+            sessionID: sessionID,
+            end: Date(timeIntervalSince1970: 90)
+        )
+        let message = try #require(WatchTimerSyncMessage(payload))
+
+        let decision = WatchTimerSyncCoordinator.stopDecision(
+            for: message,
+            items: [item],
+            store: sessionStore
+        )
+
+        #expect(decision?.bankItemID == item.id)
+    }
+
+    @Test
     func interruptedSessionForPromptReturnsSnapshotWithMatchingLog() {
         let item = BankItem(name: "Recorded", isSave: true)
         let snapshot = TimerSessionSnapshot(

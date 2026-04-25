@@ -251,3 +251,172 @@ enum TimerSessionCoordinator {
         return snapshot.sessionID
     }
 }
+
+enum WatchTimerSyncAction: String {
+    case startTimer
+    case stopTimer
+}
+
+struct WatchTimerSyncMessage: Equatable {
+    private enum Key {
+        static let action = "action"
+        static let itemID = "itemID"
+        static let itemName = "itemName"
+        static let isSave = "isSave"
+        static let sessionID = "sessionID"
+        static let start = "start"
+        static let end = "end"
+    }
+
+    let action: WatchTimerSyncAction
+    let itemID: UUID
+    let itemName: String?
+    let isSave: Bool?
+    let sessionID: UUID?
+    let start: Date?
+    let end: Date?
+
+    init?(_ payload: [String: Any]) {
+        guard let actionValue = payload[Key.action] as? String,
+              let action = WatchTimerSyncAction(rawValue: actionValue),
+              let itemIDString = payload[Key.itemID] as? String,
+              let itemID = UUID(uuidString: itemIDString) else {
+            return nil
+        }
+
+        let start = (payload[Key.start] as? TimeInterval).map(Date.init(timeIntervalSince1970:))
+        if action == .startTimer, start == nil {
+            return nil
+        }
+
+        self.action = action
+        self.itemID = itemID
+        self.itemName = payload[Key.itemName] as? String
+        self.isSave = payload[Key.isSave] as? Bool
+        self.sessionID = (payload[Key.sessionID] as? String).flatMap(UUID.init(uuidString:))
+        self.start = start
+        self.end = (payload[Key.end] as? TimeInterval).map(Date.init(timeIntervalSince1970:))
+    }
+
+    static func startPayload(
+        itemID: UUID,
+        itemName: String,
+        isSave: Bool,
+        sessionID: UUID,
+        start: Date
+    ) -> [String: Any] {
+        [
+            Key.action: WatchTimerSyncAction.startTimer.rawValue,
+            Key.itemID: itemID.uuidString,
+            Key.itemName: itemName,
+            Key.isSave: isSave,
+            Key.sessionID: sessionID.uuidString,
+            Key.start: start.timeIntervalSince1970,
+        ]
+    }
+
+    static func stopPayload(
+        itemID: UUID,
+        itemName: String,
+        isSave: Bool,
+        sessionID: UUID,
+        end: Date
+    ) -> [String: Any] {
+        [
+            Key.action: WatchTimerSyncAction.stopTimer.rawValue,
+            Key.itemID: itemID.uuidString,
+            Key.itemName: itemName,
+            Key.isSave: isSave,
+            Key.sessionID: sessionID.uuidString,
+            Key.end: end.timeIntervalSince1970,
+        ]
+    }
+}
+
+struct WatchTimerStartDecision: Equatable {
+    let bankItemID: UUID
+    let itemName: String
+    let sessionID: UUID?
+    let start: Date
+    let recordedSeconds: Int
+}
+
+struct WatchTimerStopDecision: Equatable {
+    let bankItemID: UUID
+}
+
+enum WatchTimerSyncCoordinator {
+    static func startDecision(
+        for message: WatchTimerSyncMessage,
+        items: [BankItem],
+        now: Date = Date()
+    ) -> WatchTimerStartDecision? {
+        guard message.action == .startTimer,
+              let start = message.start,
+              let item = matchingItem(
+                in: items,
+                itemID: message.itemID,
+                itemName: message.itemName,
+                isSave: message.isSave
+              ) else {
+            return nil
+        }
+
+        return WatchTimerStartDecision(
+            bankItemID: item.id,
+            itemName: item.name,
+            sessionID: message.sessionID,
+            start: start,
+            recordedSeconds: max(Int(now.timeIntervalSince(start)), 0)
+        )
+    }
+
+    static func stopDecision(
+        for message: WatchTimerSyncMessage,
+        items: [BankItem],
+        store: TimerSessionStore = .standard
+    ) -> WatchTimerStopDecision? {
+        guard message.action == .stopTimer else {
+            return nil
+        }
+
+        let matchedItem = matchingItem(
+            in: items,
+            itemID: message.itemID,
+            itemName: message.itemName,
+            isSave: message.isSave
+        )
+        let bankItemID = matchedItem?.id ?? message.itemID
+
+        guard TimerSessionCoordinator.currentSessionMatches(
+            bankItemID: bankItemID,
+            sessionID: message.sessionID,
+            store: store
+        ) else {
+            return nil
+        }
+
+        return WatchTimerStopDecision(bankItemID: bankItemID)
+    }
+
+    static func matchingItem(
+        in items: [BankItem],
+        itemID: UUID,
+        itemName: String?,
+        isSave: Bool?
+    ) -> BankItem? {
+        if let exact = items.first(where: { $0.id == itemID }) {
+            return exact
+        }
+
+        guard let itemName else {
+            return nil
+        }
+
+        if let isSave {
+            return items.first(where: { $0.name == itemName && $0.isSave == isSave })
+        }
+
+        return items.first(where: { $0.name == itemName })
+    }
+}

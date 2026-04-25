@@ -15,18 +15,6 @@ import ActivityKit
 #endif
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, WCSessionDelegate {
-    private enum WatchTimerMessage {
-        static let action = "action"
-        static let itemID = "itemID"
-        static let itemName = "itemName"
-        static let isSave = "isSave"
-        static let sessionID = "sessionID"
-        static let start = "start"
-        static let end = "end"
-        static let startTimer = "startTimer"
-        static let stopTimer = "stopTimer"
-    }
-
     private lazy var sharedModelContainer: ModelContainer = TimeBankModelContainer.shared
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -70,60 +58,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     private func handleWatchTimerMessage(_ payload: [String: Any]) {
-        guard let action = payload[WatchTimerMessage.action] as? String,
-              let itemIDString = payload[WatchTimerMessage.itemID] as? String,
-              let itemID = UUID(uuidString: itemIDString) else {
-            return
-        }
+        guard let message = WatchTimerSyncMessage(payload) else { return }
 
-        let itemName = payload[WatchTimerMessage.itemName] as? String
-        let isSave = payload[WatchTimerMessage.isSave] as? Bool
-        let sessionID = (payload[WatchTimerMessage.sessionID] as? String).flatMap(UUID.init(uuidString:))
-
-        switch action {
-        case WatchTimerMessage.startTimer:
-            guard let startTimestamp = payload[WatchTimerMessage.start] as? TimeInterval else {
-                return
-            }
-
+        switch message.action {
+        case .startTimer:
             Task { @MainActor in
-                await handleWatchStart(
-                    itemID: itemID,
-                    itemName: itemName,
-                    isSave: isSave,
-                    sessionID: sessionID,
-                    start: Date(timeIntervalSince1970: startTimestamp)
-                )
+                await handleWatchStart(message)
             }
-        case WatchTimerMessage.stopTimer:
+        case .stopTimer:
             Task { @MainActor in
-                await handleWatchStop(itemID: itemID, itemName: itemName, isSave: isSave, sessionID: sessionID)
+                await handleWatchStop(message)
             }
-        default:
-            break
         }
     }
 
     @MainActor
-    private func handleWatchStart(itemID: UUID, itemName: String?, isSave: Bool?, sessionID: UUID?, start: Date) async {
+    private func handleWatchStart(_ message: WatchTimerSyncMessage) async {
         let context = ModelContext(sharedModelContainer)
         let fetchDescriptor = FetchDescriptor<BankItem>()
 
         guard let items = try? context.fetch(fetchDescriptor),
-              let item = matchingItem(in: items, itemID: itemID, itemName: itemName, isSave: isSave) else {
+              let decision = WatchTimerSyncCoordinator.startDecision(for: message, items: items),
+              let item = items.first(where: { $0.id == decision.bankItemID }) else {
             return
         }
 
         TimerSessionCoordinator.persistRunningSession(
-            bankItemID: item.id,
-            sessionID: sessionID,
-            start: start,
+            bankItemID: decision.bankItemID,
+            sessionID: decision.sessionID,
+            start: decision.start,
             verifiedAt: Date()
         )
 
 #if canImport(ActivityKit)
         let runningState = TimerActivityAttributes.ContentState(
-            recordedSeconds: max(Int(Date().timeIntervalSince(start)), 0),
+            recordedSeconds: decision.recordedSeconds,
             sessionState: .running
         )
 
@@ -139,9 +108,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         let attributes = TimerActivityAttributes(
-            itemID: item.id.uuidString,
-            name: item.name,
-            start: start
+            itemID: decision.bankItemID.uuidString,
+            name: decision.itemName,
+            start: decision.start
         )
 
         do {
@@ -157,18 +126,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     @MainActor
-    private func handleWatchStop(itemID: UUID, itemName: String?, isSave: Bool?, sessionID: UUID?) async {
+    private func handleWatchStop(_ message: WatchTimerSyncMessage) async {
         let context = ModelContext(sharedModelContainer)
         let fetchDescriptor = FetchDescriptor<BankItem>()
-        let items = try? context.fetch(fetchDescriptor)
-        let matchedItem = items.flatMap { matchingItem(in: $0, itemID: itemID, itemName: itemName, isSave: isSave) }
-        let matchedBankItemID = matchedItem?.id ?? itemID
-        let matchesCurrentSession = TimerSessionCoordinator.currentSessionMatches(
-            bankItemID: matchedBankItemID,
-            sessionID: sessionID
-        )
-
-        guard matchesCurrentSession else {
+        guard let items = try? context.fetch(fetchDescriptor),
+              let decision = WatchTimerSyncCoordinator.stopDecision(for: message, items: items) else {
             return
         }
 
@@ -177,27 +139,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
 #if canImport(ActivityKit)
-        let activityItemID = matchedBankItemID.uuidString
+        let activityItemID = decision.bankItemID.uuidString
         for activity in Activity<TimerActivityAttributes>.activities where activity.attributes.itemID == activityItemID {
             await activity.end(nil, dismissalPolicy: .immediate)
         }
 #endif
-    }
-
-    private func matchingItem(in items: [BankItem], itemID: UUID, itemName: String?, isSave: Bool?) -> BankItem? {
-        if let exact = items.first(where: { $0.id == itemID }) {
-            return exact
-        }
-
-        guard let itemName else {
-            return nil
-        }
-
-        if let isSave {
-            return items.first(where: { $0.name == itemName && $0.isSave == isSave })
-        }
-
-        return items.first(where: { $0.name == itemName })
     }
 }
 #endif

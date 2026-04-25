@@ -12,18 +12,6 @@ import WatchConnectivity
 final class WatchLiveActivityMessenger: NSObject, WCSessionDelegate {
     static let shared = WatchLiveActivityMessenger()
 
-    private enum WatchTimerMessage {
-        static let action = "action"
-        static let itemID = "itemID"
-        static let itemName = "itemName"
-        static let isSave = "isSave"
-        static let sessionID = "sessionID"
-        static let start = "start"
-        static let end = "end"
-        static let startTimer = "startTimer"
-        static let stopTimer = "stopTimer"
-    }
-
     func activate() {
         guard WCSession.isSupported() else {
             return
@@ -35,25 +23,23 @@ final class WatchLiveActivityMessenger: NSObject, WCSessionDelegate {
     }
 
     func sendStart(itemID: UUID, itemName: String, isSave: Bool, sessionID: UUID, start: Date) {
-        send([
-            WatchTimerMessage.action: WatchTimerMessage.startTimer,
-            WatchTimerMessage.itemID: itemID.uuidString,
-            WatchTimerMessage.itemName: itemName,
-            WatchTimerMessage.isSave: isSave,
-            WatchTimerMessage.sessionID: sessionID.uuidString,
-            WatchTimerMessage.start: start.timeIntervalSince1970,
-        ])
+        send(WatchTimerSyncMessage.startPayload(
+            itemID: itemID,
+            itemName: itemName,
+            isSave: isSave,
+            sessionID: sessionID,
+            start: start
+        ))
     }
 
     func sendStop(itemID: UUID, itemName: String, isSave: Bool, sessionID: UUID, end: Date) {
-        send([
-            WatchTimerMessage.action: WatchTimerMessage.stopTimer,
-            WatchTimerMessage.itemID: itemID.uuidString,
-            WatchTimerMessage.itemName: itemName,
-            WatchTimerMessage.isSave: isSave,
-            WatchTimerMessage.sessionID: sessionID.uuidString,
-            WatchTimerMessage.end: end.timeIntervalSince1970,
-        ])
+        send(WatchTimerSyncMessage.stopPayload(
+            itemID: itemID,
+            itemName: itemName,
+            isSave: isSave,
+            sessionID: sessionID,
+            end: end
+        ))
     }
 
     private func send(_ payload: [String: Any]) {

@@ -209,7 +209,7 @@ struct WatchHome: View {
 #else
         .tabViewStyle(.page)
 #endif
-        .containerBackground( type == .save ? Color.red.gradient : Color.green.gradient, for: .navigation)
+        .containerBackground(settings.themeColor(isSave: type == .save).gradient, for: .navigation)
 
     }
 
@@ -255,9 +255,9 @@ struct WatchHome: View {
         case .home:
             return "TimeBank"
         case .save:
-            return "Save"
+            return "SaveTime"
         case .kill:
-            return "Kill"
+            return "KillTime"
         }
     }
     

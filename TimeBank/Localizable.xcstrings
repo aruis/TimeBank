@@ -577,14 +577,7 @@
       }
     },
     "KillTime" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "KillTime"
-          }
-        }
-      }
+      "shouldTranslate" : false
     },
     "KILLTIME" : {
       "localizations" : {
@@ -777,14 +770,7 @@
       }
     },
     "SaveTime" : {
-      "localizations" : {
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SaveTime"
-          }
-        }
-      }
+      "shouldTranslate" : false
     },
     "SAVETIME" : {
       "localizations" : {

@@ -233,6 +233,7 @@ struct ShowItemWatch: View {
     }
     
     private func resetTimer() {
+        let currentSessionID = sessionID ?? TimerSessionCoordinator.currentSession()?.sessionID
         TimerSessionCoordinator.clearSession()
 
         withAnimation{
@@ -245,6 +246,16 @@ struct ShowItemWatch: View {
 
         if let start {
             let now = Date()
+
+            if let currentSessionID {
+                WatchLiveActivityMessenger.shared.sendStop(
+                    itemID: bankItem.id,
+                    itemName: bankItem.name,
+                    isSave: bankItem.isSave,
+                    sessionID: currentSessionID,
+                    end: now
+                )
+            }
             
             let stopResult = bankItem.stopTimer(start: start, end: now)
 
@@ -261,18 +272,9 @@ struct ShowItemWatch: View {
                 })
 
                 self.start = nil
+                self.sessionID = nil
                 
                 return
-            }
-
-            if let currentSessionID = sessionID ?? TimerSessionCoordinator.currentSession()?.sessionID {
-                WatchLiveActivityMessenger.shared.sendStop(
-                    itemID: bankItem.id,
-                    itemName: bankItem.name,
-                    isSave: bankItem.isSave,
-                    sessionID: currentSessionID,
-                    end: now
-                )
             }
         }
 

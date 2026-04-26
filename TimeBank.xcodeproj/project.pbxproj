@@ -69,7 +69,7 @@
 		83F410E32B4CF5F8008F004A /* TimeBankWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F410E22B4CF5F8008F004A /* TimeBankWatchApp.swift */; };
 		83F410E72B4CF5F9008F004A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83F410E62B4CF5F9008F004A /* Assets.xcassets */; };
 		83F410EA2B4CF5F9008F004A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83F410E92B4CF5F9008F004A /* Preview Assets.xcassets */; };
-		83F410ED2B4CF5F9008F004A /* TimeBank.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 83F410E02B4CF5F8008F004A /* TimeBank.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		83F410ED2B4CF5F9008F004A /* TimeBankWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 83F410E02B4CF5F8008F004A /* TimeBankWatch Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		83F410F32B4CF62C008F004A /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BCD6DC2B07369D004FCBE1 /* AppSetting.swift */; };
 		83F410F42B4CF62C008F004A /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0BB6E2B2AEE8400F1396E /* DateExt.swift */; };
 		83F410F82B4CF62C008F004A /* NewBankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835B8B7B2AFCDAB5001A144D /* NewBankItem.swift */; };
@@ -120,7 +120,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				83F410ED2B4CF5F9008F004A /* TimeBank.app in Embed Watch Content */,
+				83F410ED2B4CF5F9008F004A /* TimeBankWatch Watch App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -180,7 +180,7 @@
 		83F2276D2B4E8BC400D26488 /* ShowItemWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowItemWatch.swift; sourceTree = "<group>"; };
 		83F2276F2B4E8C4D00D26488 /* PageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageType.swift; sourceTree = "<group>"; };
 		83F2277A2B4E989100D26488 /* TimeBankWatch-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TimeBankWatch-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
-		83F410E02B4CF5F8008F004A /* TimeBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		83F410E02B4CF5F8008F004A /* TimeBankWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TimeBankWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		83F410E22B4CF5F8008F004A /* TimeBankWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBankWatchApp.swift; sourceTree = "<group>"; };
 		83F410E62B4CF5F9008F004A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83F410E92B4CF5F9008F004A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -310,7 +310,7 @@
 			children = (
 				8317E6312AFCC2B7003543CB /* TimeBank.app */,
 				A10000032D7A000000000001 /* TimeBankTests.xctest */,
-				83F410E02B4CF5F8008F004A /* TimeBank.app */,
+				83F410E02B4CF5F8008F004A /* TimeBankWatch Watch App.app */,
 				8302EA8E2B4E22F400A8ECF8 /* TimeBankVision.app */,
 				571361A42CFAED3100BED020 /* TimeBankWidgetExtension.appex */,
 			);
@@ -506,7 +506,7 @@
 			);
 			name = "TimeBankWatch Watch App";
 			productName = "TimeBankWatch Watch App";
-			productReference = 83F410E02B4CF5F8008F004A /* TimeBank.app */;
+			productReference = 83F410E02B4CF5F8008F004A /* TimeBankWatch Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A10000062D7A000000000001 /* TimeBankTests */ = {
@@ -766,7 +766,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.26.2;
+				MARKETING_VERSION = 1.26.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.TimeBankWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -804,7 +804,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.26.2;
+				MARKETING_VERSION = 1.26.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.TimeBankWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -834,7 +834,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.26.2;
+				MARKETING_VERSION = 1.26.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -862,7 +862,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.26.2;
+				MARKETING_VERSION = 1.26.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -1028,7 +1028,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.26.2;
+				MARKETING_VERSION = 1.26.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -1071,7 +1071,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.26.2;
+				MARKETING_VERSION = 1.26.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -1102,7 +1102,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.26.2;
+				MARKETING_VERSION = 1.26.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1133,7 +1133,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.26.2;
+				MARKETING_VERSION = 1.26.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.muyuntage.TimeBank.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;

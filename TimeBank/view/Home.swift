@@ -517,6 +517,7 @@ struct Home: View {
 
 private struct InterruptedSessionReview: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
 
     let log: ItemLog
     let onComplete: () -> Void
@@ -590,6 +591,7 @@ private struct InterruptedSessionReview: View {
             }
 
             try bankItem.updateLog(log, begin: log.begin, end: end)
+            try modelContext.save()
             onComplete()
             dismiss()
         } catch BankItem.LogRecordError.invalidRange {

@@ -174,6 +174,7 @@ struct ShowItemWatch: View {
                     Button(role: .destructive, action: {
                         bankItem.removeLog(item)
                         modelContext.delete(item)
+                        try? modelContext.save()
                     })  {
                         Image(systemName: "trash")
                     }
@@ -276,6 +277,8 @@ struct ShowItemWatch: View {
                 
                 return
             }
+
+            try? modelContext.save()
         }
 
         self.start = nil

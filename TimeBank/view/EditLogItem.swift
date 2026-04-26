@@ -5,6 +5,7 @@
 //  Created by Rui Liu on 2024/12/11.
 //
 import SwiftUI
+import SwiftData
 
 struct EditLogItem: View {
     enum Mode {
@@ -13,6 +14,7 @@ struct EditLogItem: View {
     }
 
     private let mode: Mode
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
     @State private var begin: Date
@@ -144,6 +146,7 @@ struct EditLogItem: View {
                 try bankItem.updateLog(log, begin: begin, end: end)
             }
 
+            try modelContext.save()
             dismiss()
         } catch BankItem.LogRecordError.invalidRange {
             errorMessage = String(localized: "End time must be later than begin time.")

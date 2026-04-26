@@ -67,6 +67,7 @@ struct WatchHome: View {
                 if let selectItem {
                     Button(selectItem.isPin ? "Unpin" : "Pin") {
                         selectItem.isPin.toggle()
+                        try? modelContext.save()
                     }
 
                     Button("Edit") {
@@ -75,6 +76,7 @@ struct WatchHome: View {
 
                     Button("Delete", role: .destructive) {
                         modelContext.delete(selectItem)
+                        try? modelContext.save()
                         self.selectItem = nil
                     }
                 }

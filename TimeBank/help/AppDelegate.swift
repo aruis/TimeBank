@@ -78,51 +78,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let fetchDescriptor = FetchDescriptor<BankItem>()
 
         guard let items = try? context.fetch(fetchDescriptor),
-              let decision = WatchTimerSyncCoordinator.startDecision(for: message, items: items),
-              let item = items.first(where: { $0.id == decision.bankItemID }) else {
+              WatchTimerSyncCoordinator.startDecision(for: message, items: items) != nil else {
             return
         }
 
-        TimerSessionCoordinator.persistRunningSession(
-            bankItemID: decision.bankItemID,
-            sessionID: decision.sessionID,
-            start: decision.start,
-            verifiedAt: Date()
-        )
-
-#if canImport(ActivityKit)
-        let runningState = TimerActivityAttributes.ContentState(
-            recordedSeconds: decision.recordedSeconds,
-            sessionState: .running
-        )
-
-        if let existing = Activity<TimerActivityAttributes>.activities.first(where: {
-            $0.attributes.itemID == item.id.uuidString
-        }) {
-            await existing.update(.init(state: runningState, staleDate: nil))
-            return
-        }
-
-        for activity in Activity<TimerActivityAttributes>.activities {
-            await activity.end(nil, dismissalPolicy: .immediate)
-        }
-
-        let attributes = TimerActivityAttributes(
-            itemID: decision.bankItemID.uuidString,
-            name: decision.itemName,
-            start: decision.start
-        )
-
-        do {
-            _ = try Activity.request(
-                attributes: attributes,
-                content: .init(state: runningState, staleDate: nil),
-                pushType: nil
-            )
-        } catch {
-            print("Failed to start Live Activity from watch sync: \(error)")
-        }
-#endif
+        // Watch owns Watch-started timers. The iPhone treats start messages as sync
+        // events only, so it does not create a local running session or Live Activity.
     }
 
     @MainActor

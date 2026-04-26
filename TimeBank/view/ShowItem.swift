@@ -9,7 +9,6 @@ import SwiftUI
 #if canImport(ActivityKit) && !os(macOS)
 import ActivityKit
 #endif
-import UserNotifications
 
 struct ShowItem: View {
     @EnvironmentObject var settings: AppSetting
@@ -117,6 +116,7 @@ struct ShowItem: View {
 
                     Button(bankItem.isPin ? "Unpin" : "Pin", systemImage: bankItem.isPin ? "mappin.slash.circle" :  "mappin.circle"){
                         bankItem.isPin.toggle()
+                        try? modelContext.save()
                     }
                     .labelStyle(.iconOnly)
                     .contentShape(.circle)
@@ -267,6 +267,7 @@ struct ShowItem: View {
             Button("Delete", role: .destructive) {
                 bankItem.removeLog(item)
                 modelContext.delete(item)
+                try? modelContext.save()
                 itemToDelete = nil
             }
             Button("Cancel", role: .cancel) {
@@ -298,17 +299,8 @@ struct ShowItem: View {
         TimerSessionController(bankItemID: bankItem.id)
     }
 
-    private func isAuthorizedNotificationStatus(_ status: UNAuthorizationStatus) -> Bool {
-        switch status {
-        case .authorized, .provisional:
-            return true
-        #if !os(macOS)
-        case .ephemeral:
-            return true
-        #endif
-        default:
-            return false
-        }
+    private var notificationScheduler: TimerNotificationScheduler {
+        TimerNotificationScheduler()
     }
 
     private func startTimer() {
@@ -349,43 +341,21 @@ struct ShowItem: View {
         if settings.isTimerEnabled && settings.timerDuration > 0 {
             let notificationID = "\(notificationIDPrefix)-\(UUID().uuidString)"
             pendingNotificationID = notificationID
-            let remainingSeconds = max((settings.timerDuration * 60) - Double(timeRemaining), 0)
-            guard remainingSeconds > 0 else {
+            notificationScheduler.scheduleCompletionNotification(
+                identifier: notificationID,
+                itemName: bankItem.name,
+                isSave: bankItem.isSave,
+                timerDurationMinutes: settings.timerDuration,
+                elapsedSeconds: timeRemaining
+            ) {
                 pendingNotificationID = nil
-                return
-            }
-            UNUserNotificationCenter.current().getNotificationSettings { notificationSettings in
-                guard isAuthorizedNotificationStatus(notificationSettings.authorizationStatus) else {
-                    DispatchQueue.main.async {
-                        pendingNotificationID = nil
-                    }
-                    return
-                }
-
-                let content = UNMutableNotificationContent()
-                content.title = bankItem.isSave ? String(localized: "SaveTime Complete") : String(localized: "KillTime Complete")
-
-                let actionWord = bankItem.isSave ? String(localized: "Invested") : String(localized: "Spent")
-                content.subtitle = String(
-                    format: String(localized: "YouHaveJustInvested"),
-                    locale: Locale.current,
-                    String(Int(settings.timerDuration)),
-                    "[\(bankItem.name)]",
-                    actionWord
-                )
-                content.sound = UNNotificationSound.default
-
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: remainingSeconds, repeats: false)
-                let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
-
-                UNUserNotificationCenter.current().add(request)
             }
         }
     }
 
     private func resetTimer() {
         if let pendingNotificationID {
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [pendingNotificationID])
+            notificationScheduler.cancelNotification(identifier: pendingNotificationID)
             self.pendingNotificationID = nil
         }
 
@@ -425,6 +395,7 @@ struct ShowItem: View {
                 return
             }
 
+            try? modelContext.save()
             HapticFeedback.success()
         }
 

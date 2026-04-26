@@ -74,6 +74,7 @@ struct ListView: View {
                 if (item.isPin){
                     Button(item.isPin ? "Unpin" : "Pin", systemImage: item.isPin ? "mappin.slash.circle" : "mappin.circle"){
                         item.isPin.toggle()
+                        try? modelContext.save()
                     }
                     .labelStyle(.iconOnly)
                     .contentShape(.circle)
@@ -140,6 +141,7 @@ struct ListView: View {
                             
                             Button(role:.destructive){
                                 modelContext.delete(item)
+                                try? modelContext.save()
                             }label: {
                                 Label("Delete", systemImage:  "trash")
                             }

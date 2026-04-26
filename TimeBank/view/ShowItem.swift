@@ -29,6 +29,7 @@ struct ShowItem: View {
     @State private var selectedLog: ItemLog?
     @State private var itemToDelete: ItemLog?
     @State private var showCreateLog = false
+    @State private var showStats = false
 
     @State private var showConfirmDelete = false
     @State private var showTip = false
@@ -101,36 +102,76 @@ struct ShowItem: View {
             .frame(minWidth: 420,minHeight:  350)
 #endif
             .toolbar(content: {
-#if os(macOS) || os(visionOS)
+#if os(macOS)
+                ToolbarItem(placement: .cancellationAction, content: {
+                    HStack(spacing: 8) {
+                        statsButton()
+                        closeButton()
+                    }
+                })
+#elseif os(visionOS)
                 ToolbarItem(placement: .cancellationAction, content: {
 
-                    Button{
-                        dismiss()
-                    }label: {
-                        Text("Close")
-                    }
-                    .opacity(isTimerRunning ? 0 : 1)
+                    closeButton()
                 })
 #endif
                 ToolbarItem(placement: .destructiveAction, content: {
-
-                    Button(bankItem.isPin ? "Unpin" : "Pin", systemImage: bankItem.isPin ? "mappin.slash.circle" :  "mappin.circle"){
-                        bankItem.isPin.toggle()
-                        try? modelContext.save()
-                    }
-                    .labelStyle(.iconOnly)
-                    .contentShape(.circle)
-                    .buttonStyle(.borderless)
-                    .controlSize(.large)
-                    .padding(10)
+                    pinButton()
 
                 })
+#if os(iOS)
+                ToolbarItem(placement: .primaryAction, content: {
+                    statsButton()
+                })
+#endif
             })
         }
         .interactiveDismissDisabled(isTimerRunning)
+#if os(iOS) || os(macOS)
+        .sheet(isPresented: $showStats) {
+            ItemStatsView(item: bankItem)
+                .environmentObject(settings)
+        }
+#endif
         .task {
             resumeTimerIfNeeded()
         }
+    }
+
+    @ViewBuilder
+    private func closeButton() -> some View {
+        Button {
+            dismiss()
+        } label: {
+            Text("Close")
+        }
+        .opacity(isTimerRunning ? 0 : 1)
+        .disabled(isTimerRunning)
+    }
+
+    @ViewBuilder
+    private func pinButton() -> some View {
+        Button(bankItem.isPin ? "Unpin" : "Pin", systemImage: bankItem.isPin ? "mappin.slash.circle" :  "mappin.circle"){
+            bankItem.isPin.toggle()
+            try? modelContext.save()
+        }
+        .labelStyle(.iconOnly)
+        .contentShape(.circle)
+        .buttonStyle(.borderless)
+        .controlSize(.large)
+        .padding(10)
+    }
+
+    @ViewBuilder
+    private func statsButton() -> some View {
+        Button("Stats", systemImage: "chart.bar.xaxis") {
+            showStats = true
+        }
+        .labelStyle(.iconOnly)
+        .contentShape(.circle)
+        .buttonStyle(.borderless)
+        .controlSize(.large)
+        .padding(10)
     }
 
     @ViewBuilder

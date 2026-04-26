@@ -20,6 +20,7 @@ struct Home: View {
     @State private var pageType = PageType.save
     @State private var isShowAdd = false
     @State private var isShowSetting = false
+    @State private var isShowGlobalStats = false
     @State private var isShowBalanceTitle = false
     @State private var routedItemID: UUID?
     @State private var routedItem: BankItem?
@@ -70,6 +71,12 @@ struct Home: View {
         .sheet(isPresented: $isShowSetting, content: {
             SettingView()
         })
+#if os(iOS) || os(macOS)
+        .sheet(isPresented: $isShowGlobalStats, content: {
+            GlobalStatsView(items: items)
+                .environmentObject(settings)
+        })
+#endif
         .sheet(item: $routedItem, onDismiss: {
             routedResumeStart = nil
         }) { item in
@@ -129,6 +136,7 @@ struct Home: View {
                 title()
                     .focusable(false)
                 Spacer()
+                analyticsButton()
                 balance()
             }
             .padding(.horizontal, 16)
@@ -140,6 +148,7 @@ struct Home: View {
             HStack {
                 title()
                 Spacer()
+                analyticsButton()
                 settingsButton()
             }
             .padding(.horizontal, 16)
@@ -311,6 +320,29 @@ struct Home: View {
         .buttonStyle(.plain)
         .frame(width: 52, height: 52)
         .contentShape(Rectangle())
+    }
+
+    @ViewBuilder
+    func analyticsButton() -> some View {
+#if os(iOS) || os(macOS)
+        Button {
+            HapticFeedback.tap()
+            isShowGlobalStats = true
+        } label: {
+            Image(systemName: "chart.bar.xaxis")
+                .font(.body.weight(.semibold))
+                .frame(width: 44, height: 44)
+                .background(.regularMaterial, in: Circle())
+                .overlay {
+                    Circle()
+                        .stroke(.white.opacity(0.35), lineWidth: 0.8)
+                }
+                .shadow(color: .black.opacity(0.08), radius: 10, y: 4)
+        }
+        .buttonStyle(.plain)
+        .frame(width: 52, height: 52)
+        .contentShape(Rectangle())
+#endif
     }
 
     @ViewBuilder

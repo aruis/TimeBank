@@ -17,6 +17,13 @@ struct ReleaseNote: Identifiable, Equatable {
 enum ReleaseNotesRegistry {
     static let notes: [ReleaseNote] = [
         ReleaseNote(
+            version: "1.26.3",
+            features: [
+                String(localized: "Added Statistics to help you understand where your saved and spent time goes."),
+                String(localized: "Added item-level yearly activity maps so each habit or category is easier to review.")
+            ]
+        ),
+        ReleaseNote(
             version: "1.26.2",
             features: [
                 String(localized: "Add and edit logs manually for easier backfilling."),

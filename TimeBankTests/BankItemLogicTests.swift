@@ -14,6 +14,29 @@ struct BankItemLogicTests {
         TimerSessionCoordinator.clearSession(store: sessionStore)
     }
 
+    private var testCalendar: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        return calendar
+    }
+
+    private func date(
+        _ year: Int,
+        _ month: Int,
+        _ day: Int,
+        hour: Int = 0,
+        minute: Int = 0
+    ) -> Date {
+        testCalendar.date(from: DateComponents(
+            timeZone: testCalendar.timeZone,
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute
+        ))!
+    }
+
     @Test
     func filteredAndSortedPinsFirstThenLastTouchThenCreateTime() {
         let pinned = BankItem(name: "Pinned", isSave: true)
@@ -749,5 +772,146 @@ struct BankItemLogicTests {
 
         #expect(TimerSessionCoordinator.currentSession(store: sessionStore)?.phase == .interrupted)
         #expect(TimerSessionCoordinator.currentSession(store: sessionStore)?.bankItemID == snapshot.bankItemID)
+    }
+
+    @Test
+    func analyticsGlobalSummaryRespectsRateAndStableTopItems() {
+        let saveA = BankItem(name: "Alpha", isSave: true, rate: 2)
+        saveA.logs = [
+            ItemLog(bankItem: saveA, begin: date(2026, 1, 1), end: date(2026, 1, 1, hour: 1))
+        ]
+        let saveB = BankItem(name: "Beta", isSave: true, rate: 1)
+        saveB.logs = [
+            ItemLog(bankItem: saveB, begin: date(2026, 1, 2), end: date(2026, 1, 2, hour: 1))
+        ]
+        let kill = BankItem(name: "Video", isSave: false, rate: 3)
+        kill.logs = [
+            ItemLog(bankItem: kill, begin: date(2026, 1, 3), end: date(2026, 1, 3, hour: 1))
+        ]
+
+        let minuteSummary = AnalyticsAggregator.globalSummary(
+            items: [kill, saveB, saveA],
+            useRate: false,
+            calendar: testCalendar
+        )
+        #expect(minuteSummary.saveTotal == 120)
+        #expect(minuteSummary.killTotal == 60)
+        #expect(minuteSummary.balance == 60)
+        #expect(minuteSummary.topSaveItems.map(\.name) == ["Alpha", "Beta"])
+
+        let valueSummary = AnalyticsAggregator.globalSummary(
+            items: [kill, saveB, saveA],
+            useRate: true,
+            calendar: testCalendar
+        )
+        #expect(valueSummary.saveTotal == 180)
+        #expect(valueSummary.killTotal == 180)
+        #expect(valueSummary.balance == 0)
+        #expect(valueSummary.topSaveItems.map(\.name) == ["Alpha", "Beta"])
+    }
+
+    @Test
+    func analyticsGlobalSummaryFiltersByDateRangeUsingBeginDate() {
+        let save = BankItem(name: "Reading", isSave: true, rate: 2)
+        save.logs = [
+            ItemLog(bankItem: save, begin: date(2025, 12, 31, hour: 23, minute: 30), end: date(2026, 1, 1)),
+            ItemLog(bankItem: save, begin: date(2026, 1, 10), end: date(2026, 1, 10, hour: 1)),
+            ItemLog(bankItem: save, begin: date(2026, 2, 1), end: date(2026, 2, 1, hour: 1))
+        ]
+        let kill = BankItem(name: "Video", isSave: false)
+        kill.logs = [
+            ItemLog(bankItem: kill, begin: date(2026, 1, 9), end: date(2026, 1, 9, hour: 1))
+        ]
+        let now = date(2026, 1, 10, hour: 12)
+
+        let currentMonth = AnalyticsAggregator.globalSummary(
+            items: [save, kill],
+            useRate: false,
+            calendar: testCalendar,
+            range: .currentMonth,
+            now: now
+        )
+        #expect(currentMonth.saveTotal == 60)
+        #expect(currentMonth.killTotal == 60)
+
+        let recentTwoDays = AnalyticsAggregator.globalSummary(
+            items: [save, kill],
+            useRate: true,
+            calendar: testCalendar,
+            range: .recentDays(2),
+            now: now
+        )
+        #expect(recentTwoDays.saveTotal == 120)
+        #expect(recentTwoDays.killTotal == 60)
+        #expect(recentTwoDays.topSaveItems.map(\.name) == ["Reading"])
+    }
+
+    @Test
+    func analyticsItemSummaryCombinesActiveDaysAndLastActivity() {
+        let item = BankItem(name: "Reading", isSave: true)
+        item.logs = [
+            ItemLog(bankItem: item, begin: date(2026, 1, 1, hour: 8), end: date(2026, 1, 1, hour: 8, minute: 30)),
+            ItemLog(bankItem: item, begin: date(2026, 1, 1, hour: 9), end: date(2026, 1, 1, hour: 9, minute: 45)),
+            ItemLog(bankItem: item, begin: date(2026, 1, 2, hour: 10), end: date(2026, 1, 2, hour: 11))
+        ]
+
+        let summary = AnalyticsAggregator.itemSummary(item: item, calendar: testCalendar)
+
+        #expect(summary.totalMinutes == 135)
+        #expect(summary.logCount == 3)
+        #expect(summary.activeDays == 2)
+        #expect(summary.lastActivity == date(2026, 1, 2, hour: 11))
+    }
+
+    @Test
+    func analyticsYearHeatmapFillsYearAndGroupsByBeginDay() throws {
+        let item = BankItem(name: "Reading", isSave: true)
+        item.logs = [
+            ItemLog(bankItem: item, begin: date(2026, 1, 8, hour: 23, minute: 50), end: date(2026, 1, 9, hour: 0, minute: 20)),
+            ItemLog(bankItem: item, begin: date(2026, 1, 10, hour: 8), end: date(2026, 1, 10, hour: 8, minute: 30)),
+            ItemLog(bankItem: item, begin: date(2026, 1, 10, hour: 9), end: date(2026, 1, 10, hour: 9, minute: 15))
+        ]
+
+        let heatmap = AnalyticsAggregator.yearHeatmap(
+            item: item,
+            endingAt: date(2026, 1, 10, hour: 12),
+            calendar: testCalendar
+        )
+        let firstDay = testCalendar.startOfDay(for: date(2025, 1, 11))
+        let endDay = testCalendar.startOfDay(for: date(2026, 1, 10))
+
+        #expect(heatmap.count == 365)
+        #expect(heatmap.first?.date == firstDay)
+        #expect(heatmap.last?.date == endDay)
+        #expect(heatmap.first?.minutes == 0)
+        #expect(heatmap.first?.level == 0)
+
+        let january8 = try #require(heatmap.first { $0.date == testCalendar.startOfDay(for: date(2026, 1, 8)) })
+        let january9 = try #require(heatmap.first { $0.date == testCalendar.startOfDay(for: date(2026, 1, 9)) })
+        let january10 = try #require(heatmap.first { $0.date == endDay })
+
+        #expect(january8.minutes == 30)
+        #expect(january9.minutes == 0)
+        #expect(january10.minutes == 45)
+        #expect(january10.level > january8.level)
+    }
+
+    @Test
+    func analyticsYearHeatmapLevelsIgnoreLogsOutsideVisibleYear() throws {
+        let item = BankItem(name: "Reading", isSave: true)
+        item.logs = [
+            ItemLog(bankItem: item, begin: date(2024, 12, 31, hour: 8), end: date(2024, 12, 31, hour: 13)),
+            ItemLog(bankItem: item, begin: date(2026, 1, 10, hour: 8), end: date(2026, 1, 10, hour: 8, minute: 30))
+        ]
+
+        let heatmap = AnalyticsAggregator.yearHeatmap(
+            item: item,
+            endingAt: date(2026, 1, 10, hour: 12),
+            calendar: testCalendar
+        )
+        let january10 = try #require(heatmap.first { $0.date == testCalendar.startOfDay(for: date(2026, 1, 10)) })
+
+        #expect(january10.minutes == 30)
+        #expect(january10.level == AnalyticsAggregator.heatmapLevelCount - 1)
     }
 }

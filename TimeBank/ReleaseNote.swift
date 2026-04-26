@@ -20,7 +20,8 @@ enum ReleaseNotesRegistry {
             version: "1.26.3",
             features: [
                 String(localized: "Added Statistics to help you understand where your saved and spent time goes."),
-                String(localized: "Added item-level yearly activity maps so each habit or category is easier to review.")
+                String(localized: "Added item-level yearly activity maps so each habit or category is easier to review."),
+                String(localized: "Improved interaction details on Apple Watch.")
             ]
         ),
         ReleaseNote(

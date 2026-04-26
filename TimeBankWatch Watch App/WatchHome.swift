@@ -131,8 +131,8 @@ struct WatchHome: View {
     func homeView() -> some View{
         TabView{
             numberView(title: String(localized: "Your Balance"),value: balanceString)
-            numberView(title: "SaveTime",value: saveMinString)
-            numberView(title: "KillTime",value: killMinString)
+            numberView(title: "SaveTime", value: saveMinString, color: settings.themeColor(isSave: true))
+            numberView(title: "KillTime", value: killMinString, color: settings.themeColor(isSave: false))
         }
 #if os(watchOS)
         .tabViewStyle(.verticalPage)
@@ -142,11 +142,11 @@ struct WatchHome: View {
     }
     
     @ViewBuilder
-    func numberView(title:String,value:String) -> some View{
+    func numberView(title: String, value: String, color: Color = .primary) -> some View{
         VStack{
             Text(value)
                 .font(.largeTitle)
-                .foregroundStyle(.primary)
+                .foregroundStyle(color)
             
             Text(title)
                 .font(.subheadline)

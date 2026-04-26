@@ -1110,6 +1110,16 @@
           }
         }
       }
+    },
+    "Improved interaction details on Apple Watch.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "优化了 Apple Watch 上的一些交互细节"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
